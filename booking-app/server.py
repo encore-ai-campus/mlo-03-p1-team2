@@ -1,8 +1,9 @@
-"""Local TIKIT server. Python standard library only; never serves the DB."""
+"""Local TIKIT API. MariaDB by default; explicit SQLite compatibility mode."""
 import argparse
 import hashlib
 import hmac
 import json
+import os
 import re
 import secrets
 import sqlite3
@@ -205,15 +206,17 @@ class Handler(SimpleHTTPRequestHandler):
                 origin = self.headers.get('Origin')
                 if (origin and origin != f'http://{host}') or self.headers.get('Sec-Fetch-Site') == 'cross-site':
                     raise APIError(403, '동일한 사이트에서 요청해 주세요.')
-            with closing(connect(self.server.db_path)) as db, db:
+            connector = getattr(self.server, 'connect_db', lambda: connect(self.server.db_path))
+            with closing(connector()) as db, db:
                 # Serialize writes so complete/cancel/retry races cannot duplicate transitions.
                 if self.command == 'POST':
-                    db.execute('BEGIN IMMEDIATE')
+                    begin_write = getattr(self.server, 'begin_write', lambda db: db.execute('BEGIN IMMEDIATE'))
+                    begin_write(db)
                 status, result, cookie = self.route(db)
             self.send_json(status, result, cookie)
         except APIError as exc:
             self.send_json(exc.status, {'error':exc.message})
-        except sqlite3.IntegrityError:
+        except getattr(self.server, 'integrity_errors', sqlite3.IntegrityError):
             self.send_json(409, {'error':'이미 사용 중인 이메일이거나 중복된 요청입니다.'})
         except Exception:
             import traceback
@@ -224,7 +227,8 @@ class Handler(SimpleHTTPRequestHandler):
         path = urlsplit(self.path).path
         method = self.command
         if method == 'GET' and path == '/api/performances':
-            return 200, [json.loads(r['data']) for r in db.execute('SELECT data FROM performances ORDER BY rowid')], None
+            query = getattr(self.server, 'performances_query', 'SELECT data FROM performances ORDER BY rowid')
+            return 200, [json.loads(r['data']) for r in db.execute(query)], None
         if method == 'GET' and path == '/api/me':
             user = self.user(db, False)
             return 200, public_user(user) if user else None, None
@@ -328,7 +332,112 @@ class Handler(SimpleHTTPRequestHandler):
         raise APIError(404, '요청한 API를 찾을 수 없습니다.')
 
 
-def make_server(db_path, port=8000, frontend_dir=None):
+def mariadb_driver():
+    try:
+        import pymysql
+    except ImportError as exc:
+        raise RuntimeError('Run: python -m pip install -r requirements.txt') from exc
+    return pymysql
+
+
+def mariadb_settings():
+    """Load the app's .env; process environment variables take precedence."""
+    try:
+        from dotenv import load_dotenv
+    except ImportError as exc:
+        raise RuntimeError('Run: python -m pip install -r requirements.txt') from exc
+    load_dotenv(ROOT / '.env', override=False, interpolate=False, encoding='utf-8-sig')
+    required = ('MARIADB_USER', 'MARIADB_PASSWORD', 'MARIADB_DATABASE')
+    missing = [key for key in required if not os.environ.get(key)]
+    if missing:
+        raise ValueError('Configure booking-app/.env or environment variables: ' + ', '.join(missing))
+    return {
+        'host': os.environ.get('MARIADB_HOST', '127.0.0.1'),
+        'port': int(os.environ.get('MARIADB_PORT', '3306')),
+        'user': os.environ['MARIADB_USER'],
+        'password': os.environ['MARIADB_PASSWORD'],
+        'database': os.environ['MARIADB_DATABASE'],
+    }
+
+
+class MariaDBConnection:
+    """Expose the small connection interface used by the shared HTTP handlers."""
+    def __init__(self, config):
+        pymysql = mariadb_driver()
+        self.raw = pymysql.connect(
+            **config, charset='utf8mb4', autocommit=False,
+            cursorclass=pymysql.cursors.DictCursor, connect_timeout=10,
+            init_command="SET SESSION sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
+        )
+
+    def execute(self, sql, params=()):
+        # Shared queries use SQLite's positional markers; values remain bound.
+        with self.raw.cursor() as cursor:
+            cursor.execute(sql.replace('?', '%s'), params)
+            return MariaDBResult(cursor.fetchall() if cursor.description else ())
+
+    def __enter__(self):
+        self.raw.begin()
+        return self
+
+    def __exit__(self, exc_type, exc, traceback):
+        if exc_type is None:
+            self.raw.commit()
+        else:
+            self.raw.rollback()
+
+    def close(self):
+        self.raw.close()
+
+
+class MariaDBResult:
+    def __init__(self, rows):
+        self.rows = iter(rows)
+
+    def fetchone(self):
+        return next(self.rows, None)
+
+    def __iter__(self):
+        return self.rows
+
+
+def begin_mariadb_write(db):
+    # An InnoDB row lock serializes POST transactions across server processes.
+    # Preserve SQLite's retry and complete/cancel guarantees with a small local
+    # app; commit/rollback releases the lock even after a request fails.
+    db.execute('SELECT id FROM api_write_lock WHERE id=1 FOR UPDATE')
+
+
+def initialize_mariadb(config):
+    with closing(MariaDBConnection(config)) as db:
+        for statement in (ROOT / 'mariadb' / 'schema.sql').read_text(encoding='utf-8').split(';'):
+            if statement.strip():
+                db.execute(statement)
+        db.raw.commit()
+        with db:
+            for position, show in enumerate(json.loads((ROOT / 'performances.json').read_text(encoding='utf-8'))):
+                db.execute(
+                    'INSERT INTO performances (id,title,data,sort_order) VALUES (?,?,?,?) '
+                    'ON DUPLICATE KEY UPDATE id=VALUES(id)',
+                    (show['id'], show['title'], json.dumps(show, ensure_ascii=False), position),
+                )
+
+
+def make_mariadb_server(config=None, port=8000, frontend_dir=None):
+    config = dict(config if config is not None else mariadb_settings())
+    initialize_mariadb(config)
+    server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
+    server.connect_db = lambda: MariaDBConnection(config)
+    server.begin_write = begin_mariadb_write
+    server.integrity_errors = mariadb_driver().IntegrityError
+    server.performances_query = 'SELECT data FROM performances ORDER BY sort_order,id'
+    server.frontend_dir = Path(frontend_dir) if frontend_dir is not None else FRONTEND_ROOT
+    return server
+
+
+def make_server(db_path=None, port=8000, frontend_dir=None):
+    if db_path is None:
+        return make_mariadb_server(port=port, frontend_dir=frontend_dir)
     initialize(db_path)
     server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
     server.db_path = str(db_path)
@@ -336,12 +445,21 @@ def make_server(db_path, port=8000, frontend_dir=None):
     return server
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+def server_from_args(argv=None):
+    parser = argparse.ArgumentParser(description='TIKIT server (MariaDB by default)')
     parser.add_argument('--port', type=int, default=8000)
-    parser.add_argument('--db', type=Path, default=ROOT / 'data' / 'tikit.sqlite3')
-    args = parser.parse_args()
-    server = make_server(args.db, args.port)
+    parser.add_argument('--backend', choices=('mariadb', 'sqlite'), default='mariadb')
+    parser.add_argument('--db', type=Path, help='SQLite path; requires --backend sqlite')
+    args = parser.parse_args(argv)
+    if args.backend == 'sqlite':
+        return make_server(args.db or ROOT / 'data' / 'tikit.sqlite3', args.port)
+    if args.db is not None:
+        parser.error('--db requires --backend sqlite')
+    return make_server(port=args.port)
+
+
+if __name__ == '__main__':
+    server = server_from_args()
     print(f'TIKIT: http://127.0.0.1:{server.server_port} (Ctrl+C to stop)', flush=True)
     try:
         server.serve_forever()
