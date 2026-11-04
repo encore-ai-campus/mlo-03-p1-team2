@@ -1,10 +1,15 @@
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, HTTPException, Response, status
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from app.api.deps import CurrentUser, DbSession
 from app.core.security import hash_password, verify_password
-from app.models import User
+from app.models import Event, Favorite, Order, User
+from app.schemas.event import EventOut
+from app.schemas.export import ExportOut
+from app.schemas.order import OrderOut
 from app.schemas.user import PasswordChangeIn, ProfileUpdateIn, UserOut
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -46,5 +51,33 @@ def change_password(body: PasswordChangeIn, user: CurrentUser, db: DbSession) ->
     if verify_password(body.new_password, user.password_hash):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "현재 비밀번호와 다른 비밀번호를 입력해 주세요.")
     user.password_hash = hash_password(body.new_password)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/me/export", response_model=ExportOut)
+def export_me(user: CurrentUser, db: DbSession) -> ExportOut:
+    orders = db.scalars(
+        select(Order).where(Order.user_id == user.id).order_by(Order.created_at.desc())
+    ).all()
+    events = db.scalars(
+        select(Event).where(Event.user_id == user.id).order_by(Event.created_at.desc())
+    ).all()
+    favs = db.scalars(select(Favorite.performance_id).where(Favorite.user_id == user.id)).all()
+    return ExportOut(
+        exported_at=datetime.now(timezone.utc),
+        profile=UserOut.model_validate(user),
+        orders=[OrderOut.model_validate(o) for o in orders],
+        events=[EventOut.model_validate(e) for e in events],
+        favorites=list(favs),
+    )
+
+
+@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
+def delete_me(user: CurrentUser, db: DbSession) -> Response:
+    # Explicit deletes so linked data goes even where FK cascades are not enforced (e.g. SQLite)
+    for model in (Order, Event, Favorite):
+        db.execute(delete(model).where(model.user_id == user.id))
+    db.delete(user)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
