@@ -30,3 +30,33 @@ a.my-ticket{display:flex}
 @media(max-width:860px){.auth-card{grid-template-columns:1fr}.auth-visual{min-height:220px;padding:26px}.auth-visual .hero-sticker{font-size:40px}.auth-visual h1{font-size:22px}.auth-form{padding:30px 24px}}
 @media(max-width:760px){.auth-main{padding:24px 0 40px}.genre-nav a{font-size:13px}}
 
+/* ===== 마이페이지 ===== */
+.mypage-main{background:#faf9fc;padding:40px 0 64px}
+.mypage-head h1{font-size:28px;letter-spacing:-1.2px;margin:7px 0 26px;font-weight:800}
+.mypage-head h1 span{color:var(--purple)}
+.mypage-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:28px;align-items:start}
+.mypage-side{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 18px;position:sticky;top:20px}
+.mypage-profile{display:flex;align-items:center;gap:14px;padding:4px 6px 20px;border-bottom:1px solid var(--line);min-width:0}
+.mypage-profile>div{min-width:0}
+.mypage-profile b{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mypage-profile p{margin:5px 0 0;font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mypage-mbti{flex:none;background:var(--purple);color:#fff;font-weight:800;font-size:13px;border-radius:10px;padding:10px 9px;transform:rotate(-8deg);box-shadow:0 6px 14px #7138ec26;letter-spacing:0}
+.mypage-menu-title{font-size:10px;font-weight:800;letter-spacing:1.4px;color:#96899f;margin:20px 6px 8px}
+.mypage-menu ul{list-style:none;margin:0;padding:0}
+.mypage-menu a{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 10px;border-radius:8px;font-size:13px;font-weight:600}
+.mypage-menu a:hover{background:var(--pale);color:var(--purple)}
+.mypage-menu a.active{background:var(--pale);color:var(--purple);font-weight:800}
+.soon-pill{font-size:9px;font-weight:700;color:#9a8fa3;background:#f2eff6;border-radius:20px;padding:3px 7px;white-space:nowrap}
+.mypage-panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:32px 36px;min-height:420px}
+.panel-head{border-bottom:1px solid var(--line);margin-bottom:24px}
+.panel-head h2{font-size:22px;font-weight:800;letter-spacing:-1px;margin:7px 0 8px}
+.mypage-form{max-width:520px}
+.mypage-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 0;padding:16px 18px;background:var(--pale);border-radius:9px}
+.mypage-meta dt{font-size:9px;font-weight:800;letter-spacing:1.2px;color:#9570cd;margin-bottom:5px}
+.mypage-meta dd{margin:0;font-size:13px;font-weight:600}
+.soon-box{text-align:center;padding:50px 20px;border:1px dashed #e0d6ee;border-radius:12px;background:#fdfcff}
+.soon-icon{width:56px;height:56px;margin:0 auto 16px;border-radius:50%;background:var(--pale);color:var(--purple);font-size:24px;display:grid;place-items:center}
+.soon-box b{font-size:16px}
+.soon-box p{font-size:12px;color:#93849e;line-height:1.8;margin:10px auto 22px;max-width:360px}
+.soon-link{display:inline-block;width:auto;padding:11px 22px}
+@media(max-width:860px){.mypage-layout{grid-template-columns:1fr}.mypage-side{position:static}.mypage-panel{padding:24px 20px}.mypage-meta{grid-template-columns:1fr}}

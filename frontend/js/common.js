@@ -54,7 +54,7 @@ function renderAccount(profile, { onLogout } = {}) {
   if (!box) return;
   const myTicket = `<a href="./?open=mytikit" class="my-ticket" data-mytikit>${ticketIcon} 마이티킷</a>`;
   if (profile) {
-    box.innerHTML = `<b class="account-name"></b><span></span><button type="button" id="logoutButton">로그아웃</button>${myTicket}`;
+    box.innerHTML = `<a href="mypage.html" class="account-name"></a><span></span><a href="mypage.html">마이페이지</a><span></span><button type="button" id="logoutButton">로그아웃</button>${myTicket}`;
     $('.account-name', box).textContent = `${profile.name}님`;
     $('#logoutButton', box).onclick = () => {
       tikitAuth.logout();

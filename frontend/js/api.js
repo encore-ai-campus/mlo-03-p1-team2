@@ -15,6 +15,9 @@ const tikitApi = (() => {
     password_confirm: '비밀번호 확인을 입력해 주세요.',
     mbti: 'MBTI를 선택해 주세요.',
     consent: '개인정보 수집에 동의해 주세요.',
+    current_password: '현재 비밀번호를 확인해 주세요.',
+    new_password: '새 비밀번호는 8~128자로 입력해 주세요.',
+    new_password_confirm: '새 비밀번호 확인을 입력해 주세요.',
   };
   function validationMessage(detail) {
     const first = detail[0] || {};
