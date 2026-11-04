@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7138ec">
+  <title>로그인 — TIKIT 티킷</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/config.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/auth.js" defer></script>
+  <script src="js/common.js" defer></script>
+  <script src="js/login.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-main wrap">
+      <a href="./" class="logo" aria-label="티킷 홈">ti<span>k</span>it<span class="logo-dot">.</span></a>
+      <form class="search" action="./" method="get" role="search">
+        <input name="q" type="search" maxlength="100" placeholder="어떤 설렘을 찾고 있나요?" aria-label="공연 검색">
+        <button aria-label="검색" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
+      </form>
+      <div class="account" id="account"></div>
+    </div>
+    <nav class="wrap nav" aria-label="공연 카테고리"><div class="genre-nav" id="genreNav"></div></nav>
+  </header>
+
+  <main class="auth-main">
+    <div class="wrap">
+      <div class="auth-card">
+        <div class="auth-visual">
+          <img src="https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80" alt="">
+          <div class="hero-sticker">THE<br>STAGE<br><span>IS YOURS</span></div>
+          <div class="eyebrow"><span class="live-dot"></span> WELCOME BACK</div>
+          <h1>다시 만나서<br><em>반가워요.</em></h1>
+          <p>로그인하고 찜한 공연과 예매 내역을 확인하세요.</p>
+        </div>
+        <div class="auth-form">
+          <div class="section-kicker">LOGIN</div>
+          <h2>로그인</h2>
+          <p class="modal-intro">가입한 이메일과 비밀번호로 로그인해 주세요.</p>
+          <form id="loginForm" novalidate>
+            <label class="form-field"><span>이메일</span><input name="email" type="email" required maxlength="100" autocomplete="username" placeholder="hello@example.com" autofocus></label>
+            <label class="form-field"><span>비밀번호</span><span class="password-control"><input name="password" type="password" required maxlength="128" autocomplete="current-password" placeholder="비밀번호 입력"><button type="button" data-toggle-password="password" aria-label="비밀번호 표시" aria-pressed="false">보기</button></span></label>
+            <p class="form-error" role="alert" hidden></p>
+            <button class="primary" type="submit">로그인</button>
+          </form>
+          <p class="switch-link">처음이신가요?<a id="toSignup" href="signup.html">회원가입</a></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

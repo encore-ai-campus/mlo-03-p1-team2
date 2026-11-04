@@ -28,6 +28,11 @@ const tikitAuth = (() => {
       return start(result);
     },
 
+    async login(email, password) {
+      const result = await tikitApi.request('/auth/login', { method: 'POST', body: { email, password } });
+      return start(result);
+    },
+
     // 저장된 토큰으로 현재 사용자를 조회합니다. 만료·무효 토큰이면 지우고 null을 반환합니다.
     async current() {
       if (!memoryToken) return null;

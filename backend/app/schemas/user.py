@@ -43,6 +43,11 @@ class SignupIn(BaseModel):
         return self
 
 
+class LoginIn(BaseModel):
+    email: EmailStr
+    password: str = Field(max_length=128)
+
+
 class UserOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
