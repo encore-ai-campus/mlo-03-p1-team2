@@ -1,0 +1,41 @@
+# TIKIT 프론트엔드 nginx 설정
+# - 정적 파일(/usr/share/nginx/html) 제공
+# - /api/ 요청은 백엔드(FastAPI)로 프록시 → 브라우저 입장에서 같은 출처라 CORS 설정이 필요 없음
+# 공식 nginx 이미지가 시작할 때 ${BACKEND_UPSTREAM} 값을 환경 변수로 치환합니다.
+
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+    charset utf-8;
+    server_tokens off;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" always;
+
+    # 백엔드 API 프록시
+    location /api/ {
+        proxy_pass http://${BACKEND_UPSTREAM};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 30s;
+        client_max_body_size 1m;
+    }
+
+    # CSS/JS는 짧게 캐시 (파일명에 버전이 없으므로 재검증)
+    location ~* \.(css|js)$ {
+        add_header Cache-Control "no-cache" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        try_files $uri =404;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
