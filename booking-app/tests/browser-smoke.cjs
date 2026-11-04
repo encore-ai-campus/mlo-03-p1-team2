@@ -1,0 +1,111 @@
+// Optional browser check: npm install --no-save playwright, start a test server,
+// then node tests/browser-smoke.cjs [path-to-playwright-package].
+const {chromium} = require(process.argv[2] || 'playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+(async () => {
+  const browser = await chromium.launch({headless:true});
+  try {
+    const page = await browser.newPage({viewport:{width:1440,height:1000}});
+    const errors=[];
+    page.on('pageerror', error=>errors.push(error.message));
+    await page.route('https://**/*', route=>route.abort()); // Local behavior works without fonts/images.
+    await page.goto(process.env.BASE_URL || 'http://127.0.0.1:8000');
+    await page.locator('#performanceGrid .show-card').first().waitFor();
+    await page.locator('#signupButton').click();
+    await page.locator('[name=nickname]').fill('브라우저 관객');
+    const email=`browser-${Date.now()}@example.com`;
+    await page.locator('[name=email]').fill(email);
+    await page.locator('[name=password]').fill('browser-password');
+    await page.locator('[name=passwordConfirm]').fill('browser-password');
+    await page.locator('[name=mbti][value=INFP]').check();
+    await page.locator('[name=consent]').check();
+    await page.locator('#signupForm [type=submit]').click();
+    await page.locator('#loginButton').filter({hasText:'브라우저 관객'}).waitFor();
+    await page.locator('#performanceGrid [data-show=city]').first().click();
+    await page.locator('#quantitySelect').selectOption('2');
+    assert.equal(await page.locator('#confirmBooking').innerText(),'예매하기');
+    await page.locator('#confirmBooking').click();
+    await page.locator('#bookingForm input[type=checkbox]').check();
+    assert.match(await page.locator('#bookingForm [type=submit]').innerText(),/^예매하기/);
+    await page.locator('#bookingForm [type=submit]').click();
+    await page.locator('#viewOrders').click();
+    await page.locator('[data-complete]').waitFor();
+    assert.ok(page.url().endsWith('#my-tickets'));
+    assert.equal(await page.evaluate(()=>document.querySelector('#modal')?.open ?? false),false);
+    assert.equal(await page.locator('#homePage').isVisible(),false);
+    assert.equal(await page.locator('#ticketsPage').isVisible(),true);
+    assert.equal(await page.locator('#paymentTab,#reservationTab').count(),0);
+    assert.match(await page.locator('#ticketsContent').innerText(),/결제 대기/);
+    assert.match(await page.locator('#ticketsContent').innerText(),/198,000원/);
+    assert.doesNotMatch(await page.locator('#ticketsContent').innerText(),/요청 시간|취소 시간|모의|실제 결제|DB/);
+    assert.equal(await page.locator('[data-complete]').innerText(),'결제하기');
+    await page.locator('[data-complete]').click();
+    await page.locator('.status-completed').waitFor();
+    const completed=await page.locator('#ticketsContent').innerText();
+    assert.match(completed,/결제 완료/);
+    assert.match(completed,/결제 완료 일시/);
+    assert.match(await page.locator('.payment-completed-at').innerText(),/\d{2}:\d{2}(?!:)/);
+    assert.doesNotMatch(await page.locator('.payment-completed-at').innerText(),/\d{2}:\d{2}:\d{2}|초/);
+    assert.equal(await page.locator('#ticketsContent .order-status').evaluate(el=>parseFloat(getComputedStyle(el).fontSize)),11);
+    await page.locator('[data-cancel-order]').click();
+    await page.locator('#confirmCancel').click();
+    await page.locator('.status-cancelled').waitFor();
+    assert.match(await page.locator('#ticketsContent').innerText(),/결제 취소/);
+    assert.equal(await page.evaluate(()=>document.querySelector('#modal')?.open ?? false),false);
+    assert.equal(await page.locator('[data-complete],[data-cancel-order]').count(),0);
+    await page.reload();
+    await page.locator('.status-cancelled').waitFor();
+    assert.ok(page.url().endsWith('#my-tickets'));
+    // Home navigation and browser history work without reopening a dialog.
+    await page.locator('.tickets-back').click();
+    await page.locator('#heroBook').waitFor();
+    await page.goBack();
+    await page.locator('.status-cancelled').waitFor();
+    // A failed request is recoverable on the page itself.
+    await page.route('**/api/reservations',route=>route.fulfill({status:500,contentType:'application/json',body:'{"error":"Temporary failure"}'}));
+    await page.locator('#ticketsButton').click();
+    await page.locator('#retryHistory').waitFor();
+    await page.unroute('**/api/reservations');
+    await page.locator('#retryHistory').click();
+    await page.locator('.status-cancelled').waitFor();
+    await page.setViewportSize({width:390,height:844});
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true);
+    fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});
+    await page.screenshot({path:path.join(__dirname,'artifacts/browser-mobile.png'),fullPage:true});
+    await page.setViewportSize({width:1440,height:1000});
+    await page.screenshot({path:path.join(__dirname,'artifacts/browser-desktop.png'),fullPage:true});
+    await page.locator('#signupButton').click();
+    await page.locator('#ticketsLogin').waitFor();
+    assert.equal(await page.locator('.ticket-card').count(),0);
+    await page.reload();
+    await page.locator('#ticketsLogin').waitFor();
+    assert.equal(await page.evaluate(()=>document.querySelector('#modal')?.open ?? false),false);
+    await page.locator('#ticketsSignup').click();
+    await page.locator('[name=nickname]').fill('새 관객');
+    await page.locator('[name=email]').fill(`empty-${Date.now()}@example.com`);
+    await page.locator('[name=password]').fill('browser-password');
+    await page.locator('[name=passwordConfirm]').fill('browser-password');
+    await page.locator('[name=mbti][value=INFP]').check();
+    await page.locator('[name=consent]').check();
+    await page.locator('#signupForm [type=submit]').click();
+    await page.locator('.tickets-empty h2').filter({hasText:'아직 예매한 공연이 없어요'}).waitFor();
+    assert.equal(await page.evaluate(()=>document.querySelector('#modal')?.open ?? false),false);
+    // The immediate payment button after booking also lands on the full page.
+    await page.locator('.tickets-empty a').click();
+    await page.locator('#performanceGrid [data-show=city]').first().click();
+    await page.locator('#confirmBooking').click();
+    await page.locator('#bookingForm input[type=checkbox]').check();
+    await page.locator('#bookingForm [type=submit]').click();
+    await page.locator('#payNow').click();
+    await page.locator('#ticketsContent .status-completed').waitFor();
+    assert.equal(await page.evaluate(()=>document.querySelector('#modal')?.open ?? false),false);
+    // Genre navigation returns to the performance list from this page.
+    await page.locator('#genreNav [data-category]').first().click();
+    await page.locator('#heroBook').waitFor();
+    assert.equal(await page.locator('#ticketsPage').isVisible(),false);
+    assert.deepEqual(errors,[]);
+    console.log('PASS: unified tickets page, booking, payment, cancel, direct reload, browser history, retry, logout privacy, empty state, mobile layout; no page errors.');
+  } finally { await browser.close(); }
+})().catch(error=>{console.error(error);process.exitCode=1;});

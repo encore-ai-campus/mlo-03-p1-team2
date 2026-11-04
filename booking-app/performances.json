@@ -1,0 +1,163 @@
+[
+  {
+    "id": "city",
+    "category": "콘서트",
+    "title": "2026 시티 라이츠 페스티벌",
+    "english": "CITY\nLIGHTS",
+    "sub": "MUSIC FESTIVAL",
+    "image": "photo-1470229722913-7c0e2dbbafd3",
+    "style": "city",
+    "venue": "올림픽공원 88잔디마당",
+    "date": "2026.11.21 - 11.22",
+    "start": "2026-11-21",
+    "price": 99000,
+    "badge": "단독 판매",
+    "tag": "티킷 PICK",
+    "days": 2,
+    "slots": [
+      "14:00",
+      "18:00"
+    ]
+  },
+  {
+    "id": "opera",
+    "category": "뮤지컬",
+    "title": "뮤지컬 〈오페라의 유령〉",
+    "english": "The\nPhantom\nof the Opera",
+    "sub": "THE MUSICAL",
+    "image": "photo-1503095396549-807759245b35",
+    "style": "opera",
+    "venue": "샤롯데씨어터",
+    "date": "2026.11.10 - 2027.01.31",
+    "start": "2026-11-10",
+    "price": 80000,
+    "badge": "화제의 뮤지컬",
+    "tag": "인기 급상승",
+    "days": 7,
+    "slots": [
+      "14:00",
+      "19:30"
+    ]
+  },
+  {
+    "id": "color",
+    "category": "전시",
+    "title": "컬러 오브 모먼트 : 일상의 조각들",
+    "english": "COLOR\nOF\nMOMENT",
+    "sub": "COLLECT YOUR MOMENTS",
+    "image": "photo-1579783902614-a3fb3927b6a5",
+    "style": "art",
+    "venue": "그라운드시소 성수",
+    "date": "2026.11.05 - 2027.02.28",
+    "start": "2026-11-05",
+    "price": 18000,
+    "badge": "새로운 시선",
+    "tag": "추천 전시",
+    "days": 7,
+    "slots": [
+      "10:00",
+      "12:00",
+      "14:00",
+      "16:00"
+    ]
+  },
+  {
+    "id": "jazz",
+    "category": "콘서트",
+    "title": "블루 아워 재즈 나이트",
+    "english": "Blue Hour\nJazz Night",
+    "sub": "A NIGHT TO REMEMBER",
+    "image": "photo-1511192336575-5a79af67a629",
+    "style": "jazz",
+    "venue": "노들섬 라이브하우스",
+    "date": "2026.11.14 - 11.15",
+    "start": "2026-11-14",
+    "price": 65000,
+    "badge": "가을밤의 재즈",
+    "tag": "매진 임박",
+    "days": 2,
+    "slots": [
+      "18:00",
+      "20:00"
+    ]
+  },
+  {
+    "id": "baseball",
+    "category": "스포츠",
+    "title": "서울 베이스볼 올스타 매치",
+    "english": "PLAY\nYOUR\nGAME.",
+    "sub": "2026 BASEBALL ALL STARS",
+    "image": "photo-1471295253337-3ceaaedca402",
+    "style": "sport",
+    "venue": "잠실야구장",
+    "date": "2026.11.07 - 11.08",
+    "start": "2026-11-07",
+    "price": 25000,
+    "badge": "스페셜 매치",
+    "tag": "주말 추천",
+    "days": 2,
+    "slots": [
+      "14:00",
+      "18:00"
+    ]
+  },
+  {
+    "id": "classic",
+    "category": "클래식",
+    "title": "가을을 닮은 선율 : 피아노 리사이틀",
+    "english": "Autumn\nSonata",
+    "sub": "PIANO RECITAL",
+    "image": "photo-1520523839897-bd0b52f945a0",
+    "style": "classic",
+    "venue": "예술의전당 콘서트홀",
+    "date": "2026.11.18 - 11.20",
+    "start": "2026-11-18",
+    "price": 50000,
+    "badge": "깊어지는 선율",
+    "tag": "티킷 PICK",
+    "days": 3,
+    "slots": [
+      "19:30"
+    ]
+  },
+  {
+    "id": "theater",
+    "category": "연극",
+    "title": "연극 〈우리가 빛나던 계절〉",
+    "english": "우리가\n빛나던\n계절",
+    "sub": "OUR SHINING DAYS",
+    "image": "photo-1507676184212-d03ab07a01bf",
+    "style": "theater",
+    "venue": "대학로 아트원씨어터",
+    "date": "2026.11.06 - 12.27",
+    "start": "2026-11-06",
+    "price": 35000,
+    "badge": "마음을 잇는 이야기",
+    "tag": "대학로 추천",
+    "days": 7,
+    "slots": [
+      "15:00",
+      "19:00"
+    ]
+  },
+  {
+    "id": "dance",
+    "category": "뮤지컬",
+    "title": "뮤지컬 〈미드나잇 인 서울〉",
+    "english": "MIDNIGHT\nIN SEOUL",
+    "sub": "THE CITY IS YOUR STAGE",
+    "image": "photo-1516280440614-37939bbacd81",
+    "style": "dance",
+    "venue": "블루스퀘어 신한카드홀",
+    "date": "2026.11.13 - 12.20",
+    "start": "2026-11-13",
+    "price": 70000,
+    "badge": "새로운 무대",
+    "tag": "신규 오픈",
+    "days": 7,
+    "slots": [
+      "14:30",
+      "19:30"
+    ]
+  }
+]
