@@ -6,14 +6,13 @@ import PerformanceCard from '@/components/PerformanceCard.vue';
 import RankingList from '@/components/RankingList.vue';
 import CategoryIcon from '@/components/CategoryIcon.vue';
 import BookingModal from '@/components/BookingModal.vue';
-import MyTicketModal from '@/components/MyTicketModal.vue';
 import TasteModal from '@/components/TasteModal.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useAuthedApi } from '@/composables/useAuthedApi';
 import { toast } from '@/composables/useToast';
 import { CATEGORIES, PENDING_BOOKING_KEY, loginRoute, session } from '@/utils';
 
-// 메인 화면: 배너, 카테고리, 공연 목록, 랭킹, 예매·마이티킷·취향(모달)
+// 메인 화면: 배너, 카테고리, 공연 목록, 랭킹, 예매·취향(모달). 마이티킷은 /my-tickets 화면입니다.
 // 검색어·카테고리·정렬은 주소(?q= / ?category= / ?sort=)에 들어 있어 로그인 후 돌아와도 같은 화면이 됩니다.
 const SORTS = [{ id: 'popular', label: '인기순' }, { id: 'date', label: '공연일순' }, { id: 'price', label: '낮은 가격순' }];
 
@@ -108,7 +107,7 @@ watch(modal, (now, before) => {
 });
 const closeModal = () => { modal.value = null; };
 
-async function openBooking(id, { saved = {}, startAtPayment = false, track = true } = {}) {
+async function openBooking(id, { saved = {}, startAtConfirm = false, track = true } = {}) {
   let show;
   try {
     show = await auth.api(`/performances/${encodeURIComponent(id)}`);
@@ -118,20 +117,11 @@ async function openBooking(id, { saved = {}, startAtPayment = false, track = tru
   }
   // 조회 기록은 실패해도 예매 흐름에 영향을 주지 않습니다.
   if (track) auth.api('/events', { method: 'POST', body: { performance_id: id } }).catch(() => {});
-  modal.value = { type: 'booking', show, saved, startAtPayment };
+  modal.value = { type: 'booking', show, saved, startAtConfirm };
 }
 
-async function openOrders() {
-  const next = '/?open=mytikit';
-  if (!auth.profile) { router.push(loginRoute(next)); return; }
-  try {
-    const orders = await authed('/orders', {}, next);
-    modal.value = { type: 'mytikit', orders };
-  } catch (err) {
-    toast(err.message);
-  }
-}
-const likedShows = computed(() => allShows.value.filter(s => favorites.value.includes(s.id)));
+// 예매 내역은 마이티킷 화면에서 확인합니다 (로그인하지 않았으면 router가 로그인 화면으로 보냄).
+const openOrders = () => router.push('/my-tickets');
 
 function openTaste() {
   if (!auth.profile) { router.push(loginRoute('/?open=taste')); return; }
@@ -142,21 +132,22 @@ function chooseTaste(c) {
   chooseCategory(c);
 }
 
-// ?open=mytikit|taste, ?resume=booking 은 한 번만 처리하고 주소에서 지웁니다.
+// ?open=mytikit|taste, ?resume=booking, ?show=<공연 id> 는 한 번만 처리하고 주소에서 지웁니다.
 async function handleOneShot() {
-  const { open, resume, ...rest } = route.query;
-  if (!open && !resume) return;
+  const { open, resume, show, ...rest } = route.query;
+  if (!open && !resume && !show) return;
+  if (open === 'mytikit') { router.replace('/my-tickets'); return; } // 이전 주소 호환
   router.replace({ query: rest });
   try { await auth.restore(); } catch { /* 아래에서 로그인 여부로 처리 */ }
-  if (open === 'mytikit') openOrders();
+  if (typeof show === 'string') openBooking(show);
   if (open === 'taste') openTaste();
   if (resume === 'booking') {
     let saved = null;
     try { saved = JSON.parse(session.take(PENDING_BOOKING_KEY)); } catch { /* 무시 */ }
-    if (saved?.showId) openBooking(saved.showId, { saved, startAtPayment: true, track: false });
+    if (saved?.showId) openBooking(saved.showId, { saved, startAtConfirm: true, track: false });
   }
 }
-watch(() => [route.query.open, route.query.resume], handleOneShot);
+watch(() => [route.query.open, route.query.resume, route.query.show], handleOneShot);
 
 /* ---------- 시작 ---------- */
 onMounted(async () => {
@@ -227,12 +218,8 @@ onMounted(async () => {
   </main>
 
   <BookingModal
-    v-if="modal?.type === 'booking'" :key="modal.show.id" :show="modal.show" :saved="modal.saved" :start-at-payment="modal.startAtPayment"
-    @close="closeModal" @booked="loadRanking" @view-orders="openOrders"
-  />
-  <MyTicketModal
-    v-else-if="modal?.type === 'mytikit'" :orders="modal.orders" :liked="likedShows"
-    @close="closeModal" @open-show="openBooking" @deleted="closeModal"
+    v-if="modal?.type === 'booking'" :key="modal.show.id" :show="modal.show" :saved="modal.saved" :start-at-confirm="modal.startAtConfirm"
+    @close="closeModal" @paid="loadRanking" @view-orders="openOrders"
   />
   <TasteModal v-else-if="modal?.type === 'taste'" @close="closeModal" @choose="chooseTaste" />
 </template>

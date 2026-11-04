@@ -27,3 +27,9 @@ MBTI_TYPES = (
     "ISTJ", "ISFJ", "ESTJ", "ESFJ", "ISTP", "ISFP", "ESTP", "ESFP",
 )
 CATEGORIES = ("콘서트", "뮤지컬", "스포츠", "전시", "클래식", "연극")
+
+# 예매(reservations) 흐름의 상태값
+RESERVATION_STATUSES = ("REQUESTED", "CONFIRMED", "CANCELLED")
+PAYMENT_STATUSES = ("PENDING", "COMPLETED", "CANCELLED")
+# 인기순·랭킹의 "구매 수"로 집계하는 이벤트: 기존 즉시 모의 결제(orders) + 예매 결제 완료
+PURCHASE_EVENT_TYPES = ("mock_purchase", "payment_completed")

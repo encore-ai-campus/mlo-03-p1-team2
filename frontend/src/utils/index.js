@@ -35,3 +35,26 @@ export const session = {
 };
 
 export const PENDING_BOOKING_KEY = 'tikit.pendingBooking';
+
+/* ---------- 예매(reservations) ---------- */
+export const PREMIUM_SURCHARGE = 30000;
+export const MAX_QUANTITY = 4;
+export const RESERVATION_LABELS = { REQUESTED: '예매 요청', CONFIRMED: '예매 완료', CANCELLED: '예매 취소' };
+export const PAYMENT_LABELS = { PENDING: '결제 대기', COMPLETED: '결제 완료', CANCELLED: '결제 취소' };
+export const seatLabel = grade => (grade === 'PREMIUM' ? '프리미엄석' : '일반석');
+export const orderNumber = id => String(id).slice(0, 8).toUpperCase();
+
+// 서버 시각(UTC)을 한국 시간으로 분 단위까지 표시합니다.
+export const koreanTime = iso => new Date(iso).toLocaleString('ko-KR', {
+  timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
+  hour: '2-digit', minute: '2-digit', hour12: false,
+});
+
+// 예매 요청 키(UUID). 같은 키로 다시 보내면 서버가 기존 예매를 돌려주어 중복 예매를 막습니다.
+export function newRequestKey() {
+  if (globalThis.crypto?.randomUUID) return crypto.randomUUID();
+  const b = crypto.getRandomValues(new Uint8Array(16));
+  b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
+  const h = [...b].map(x => x.toString(16).padStart(2, '0')).join('');
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+}

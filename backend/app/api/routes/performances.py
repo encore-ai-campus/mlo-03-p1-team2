@@ -4,16 +4,17 @@ from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import func, or_, select
 
 from app.api.deps import DbSession
+from app.core.config import PURCHASE_EVENT_TYPES
 from app.models import Event, Performance
 from app.schemas.performance import PerformanceDetailOut, PerformanceOut, RankingOut
 
 router = APIRouter(prefix="/performances", tags=["performances"])
 
 
-def _event_counts(event_type: str):
+def _event_counts(*event_types: str):
     return (
         select(Event.performance_id, func.count().label("n"))
-        .where(Event.type == event_type)
+        .where(Event.type.in_(event_types))
         .group_by(Event.performance_id)
         .subquery()
     )
@@ -39,7 +40,7 @@ def list_performances(
     elif sort == "price":
         stmt = stmt.order_by(Performance.price, Performance.id)
     else:
-        buys = _event_counts("mock_purchase")
+        buys = _event_counts(*PURCHASE_EVENT_TYPES)
         stmt = stmt.outerjoin(buys, buys.c.performance_id == Performance.id).order_by(
             func.coalesce(buys.c.n, 0).desc(), Performance.id
         )
@@ -48,7 +49,7 @@ def list_performances(
 
 @router.get("/ranking", response_model=list[RankingOut])
 def ranking(db: DbSession, limit: int = Query(5, ge=1, le=50)):
-    buys = _event_counts("mock_purchase")
+    buys = _event_counts(*PURCHASE_EVENT_TYPES)
     views = _event_counts("performance_view")
     purchases = func.coalesce(buys.c.n, 0)
     view_count = func.coalesce(views.c.n, 0)

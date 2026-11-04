@@ -90,7 +90,7 @@ frontend/
 
 ## 5. 실행 방법
 
-먼저 백엔드를 실행합니다 (`backend/readme_kor.md` 참고, 기본 `127.0.0.1:8000`). Node.js 18 이상이 필요합니다.
+먼저 백엔드를 실행합니다 ([backend.md](backend.md) 참고, 기본 `127.0.0.1:8000`). Node.js 18 이상이 필요합니다.
 
 ### 개발 (코드 수정하며 확인)
 ```powershell

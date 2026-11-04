@@ -21,6 +21,7 @@ backend/
 │  ├─ env.py                 DATABASE_URL을 앱 설정에서 읽어 마이그레이션 실행
 │  ├─ script.py.mako         마이그레이션 파일 템플릿
 │  └─ versions/0001_initial.py   최초 스키마 (5개 테이블)
+│     └─ 0002_reservations.py    예매·결제·상태 이력 테이블 (docs/booking.md)
 ├─ app/
 │  ├─ main.py                FastAPI 앱, CORS, 라우터 등록, /health
 │  ├─ core/
@@ -30,24 +31,25 @@ backend/
 │  │  ├─ base.py             SQLAlchemy DeclarativeBase
 │  │  ├─ session.py          DB 엔진, 세션, get_db 의존성
 │  │  └─ seed.py             공연 시연 데이터 8건 입력 스크립트
-│  ├─ models/                user, performance, order, event, favorite
+│  ├─ models/                user, performance, order, event, favorite, reservation(예매·결제·이력)
 │  ├─ schemas/               요청/응답 Pydantic 모델 (user, performance, order, event, export)
 │  └─ api/
 │     ├─ deps.py             DB 세션·현재 사용자 의존성
 │     ├─ router.py           /api/v1 하위 라우터 묶음
-│     └─ routes/             auth, users, performances, orders, favorites, events
+│     └─ routes/             auth, users, performances, orders, reservations, favorites, events
 └─ tests/
    ├─ conftest.py            테스트용 SQLite DB, 클라이언트, 로그인 픽스처
    ├─ test_auth.py           회원가입·로그인·인증 테스트
    ├─ test_profile.py        회원 정보 수정·비밀번호 변경 테스트
-   └─ test_booking.py        공연·예매·찜·이벤트·내보내기·탈퇴 테스트
+   ├─ test_booking.py        공연·예매·찜·이벤트·내보내기·탈퇴 테스트
+   └─ test_reservations.py   예매 → 결제 → 취소 흐름 테스트
 ```
 
 ---
 
 ## 2. 데이터 모델
 
-`sample/README.md`에 정리된 localStorage 필드를 테이블로 옮겼습니다.
+[sample.md](sample.md)에 정리된 localStorage 필드를 테이블로 옮겼습니다.
 
 | 테이블 | 기존 저장 위치 | 주요 컬럼 |
 |---|---|---|

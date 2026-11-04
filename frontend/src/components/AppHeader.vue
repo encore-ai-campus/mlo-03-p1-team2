@@ -64,7 +64,7 @@ function logout() {
           <RouterLink :to="loginRoute(next)">로그인</RouterLink><span></span>
           <RouterLink :to="signupRoute(next)">회원가입</RouterLink>
         </template>
-        <RouterLink :to="{ path: '/', query: { ...(isHome ? route.query : {}), open: 'mytikit' } }" class="my-ticket">
+        <RouterLink to="/my-tickets" class="my-ticket" :aria-current="route.name === 'my-tickets' ? 'page' : undefined">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v5a2 2 0 0 0 0 4v5H4v-5a2 2 0 0 0 0-4Z" /><path d="M15 5v3m0 3v2m0 3v3" /></svg> 마이티킷
         </RouterLink>
       </div>

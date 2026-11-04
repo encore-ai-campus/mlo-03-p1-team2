@@ -17,4 +17,8 @@ class Event(Base):
     type: Mapped[str] = mapped_column(String(30), index=True)
     performance_id: Mapped[str] = mapped_column(ForeignKey("performances.id"), index=True)
     category: Mapped[str] = mapped_column(String(20))
+    # 예매 관련 이벤트(reservation_requested·payment_completed·reservation_cancelled)일 때 연결된 예매
+    reservation_id: Mapped[str | None] = mapped_column(
+        ForeignKey("reservations.id", ondelete="CASCADE"), index=True, nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

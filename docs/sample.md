@@ -7,7 +7,7 @@
 프로젝트 루트에서 실행한 후 http://localhost:5173 에 접속합니다.
 
 ```powershell
-python -m http.server 5173 --directory ticket-platform/dist
+python -m http.server 5173 --directory sample/dist
 ```
 
 ## 기능

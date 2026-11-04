@@ -1,8 +1,0 @@
-data/
-.env
-static/
-__pycache__/
-tests/artifacts/
-frontend/node_modules/
-frontend/dist/
-frontend/.npm-cache/

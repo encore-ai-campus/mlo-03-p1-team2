@@ -6,7 +6,8 @@ from pydantic import BaseModel, ConfigDict
 
 class EventIn(BaseModel):
     performance_id: str
-    type: Literal["performance_view"] = "performance_view"
+    # 화면에서 보낼 수 있는 탐색 이벤트. 예매·결제·취소 이벤트는 서버가 직접 기록합니다.
+    type: Literal["performance_view", "booking_started"] = "performance_view"
 
 
 class EventOut(BaseModel):
@@ -18,4 +19,5 @@ class EventOut(BaseModel):
     type: str
     performance_id: str
     category: str
+    reservation_id: str | None = None
     created_at: datetime
