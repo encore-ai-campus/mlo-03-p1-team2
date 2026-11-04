@@ -10,9 +10,10 @@
 
 | 이름 | GitHub | 담당 역할 |
 |---|---|---|
-| 정상효 | [@nomorehuman90](https://github.com/nomorehuman90) | 회원 관리 |
-| 오정민 | [@OZAM0415](https://github.com/OZAM0415) | 공연 관리 |
 | 김한울 | [@hannyeee](https://github.com/hannyeee) | 예매 및 결제 관리 |
+| 오정민 | [@OZAM0415](https://github.com/OZAM0415) | 공연 관리 |
+| 정상효 | [@nomorehuman90](https://github.com/nomorehuman90) | 회원 관리 |
+
 
 ---
 
