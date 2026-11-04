@@ -10,11 +10,9 @@
 
 | 이름 | GitHub | 담당 역할 |
 |---|---|---|
-| 팀원 A | [@GitHub-ID](https://github.com/GitHub-ID) | 회원 관리 |
-| 팀원 B | [@GitHub-ID](https://github.com/GitHub-ID) | 공연 관리 |
-| 팀원 C | [@GitHub-ID](https://github.com/GitHub-ID) | 예매 및 결제 관리 |
-
-※ GitHub-ID는 각 팀원의 실제 계정으로 변경합니다.
+| 정상효 | [@nomorehuman90](https://github.com/nomorehuman90) | 회원 관리 |
+| 오정민 | [@OZAM0415](https://github.com/OZAM0415) | 공연 관리 |
+| 김한울 | [@hannyeee](https://github.com/hannyeee) | 예매 및 결제 관리 |
 
 ---
 
