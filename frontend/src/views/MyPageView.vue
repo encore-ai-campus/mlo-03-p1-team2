@@ -4,26 +4,29 @@ import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import ProfileForm from '@/components/mypage/ProfileForm.vue';
 import PasswordForm from '@/components/mypage/PasswordForm.vue';
-import ComingSoon from '@/components/mypage/ComingSoon.vue';
+import OrdersPanel from '@/components/mypage/OrdersPanel.vue';
+import FavoritesPanel from '@/components/mypage/FavoritesPanel.vue';
+import TasteReportPanel from '@/components/mypage/TasteReportPanel.vue';
+import NotificationsPanel from '@/components/mypage/NotificationsPanel.vue';
+import WithdrawPanel from '@/components/mypage/WithdrawPanel.vue';
 
 // 마이페이지: 왼쪽 메뉴 + 오른쪽 내용. 주소(/mypage/password 등)로 메뉴를 전환합니다.
-// 새 기능을 붙일 때는 MENU에서 해당 항목의 soon을 지우고 component에 화면 컴포넌트를 연결하면 됩니다.
-// 다른 화면으로 보내는 메뉴는 to에 주소를 적습니다.
+// 각 메뉴는 마이페이지 안의 기능 패널을 표시합니다.
 const MENU = [
   { group: '나의 계정', items: [
     { id: 'profile', label: '회원 정보 수정', component: ProfileForm },
     { id: 'password', label: '비밀번호 변경', component: PasswordForm },
   ] },
   { group: '나의 티켓', items: [
-    { id: 'orders', label: '예매 내역', to: '/my-tickets' }, // 마이티킷 화면으로 이동
-    { id: 'favorites', label: '찜한 공연', soon: '하트로 담아 둔 공연을 모아 보고 바로 예매할 수 있어요.' },
+    { id: 'orders', label: '예매 내역', component: OrdersPanel },
+    { id: 'favorites', label: '찜한 공연', component: FavoritesPanel },
   ] },
   { group: '나의 취향', items: [
-    { id: 'taste', label: 'MBTI 취향 리포트', soon: '나의 관람 기록과 같은 MBTI 사용자의 취향을 분석해 보여드려요.' },
+    { id: 'taste', label: 'MBTI 취향 리포트', component: TasteReportPanel },
   ] },
   { group: '설정', items: [
-    { id: 'notifications', label: '알림 설정', soon: '티켓 오픈·관람일 알림을 받을 방법을 선택할 수 있어요.' },
-    { id: 'withdraw', label: '회원 탈퇴', soon: '계정과 연결된 모든 데이터를 삭제하고 탈퇴할 수 있어요.' },
+    { id: 'notifications', label: '알림 설정', component: NotificationsPanel },
+    { id: 'withdraw', label: '회원 탈퇴', component: WithdrawPanel },
   ] },
 ];
 const ITEMS = MENU.flatMap(g => g.items);
@@ -31,7 +34,7 @@ const DEFAULT_TAB = 'profile';
 
 const route = useRoute();
 const auth = useAuthStore();
-const active = computed(() => ITEMS.find(i => i.id === route.params.section && !i.to) || ITEMS.find(i => i.id === DEFAULT_TAB));
+const active = computed(() => ITEMS.find(i => i.id === route.params.section) || ITEMS.find(i => i.id === DEFAULT_TAB));
 </script>
 
 <template>
@@ -54,17 +57,16 @@ const active = computed(() => ITEMS.find(i => i.id === route.params.section && !
               <ul>
                 <li v-for="i in g.items" :key="i.id">
                   <RouterLink
-                    :to="i.to || `/mypage/${i.id}`" :class="{ active: i.id === active.id }"
+                    :to="`/mypage/${i.id}`" :class="{ active: i.id === active.id }"
                     :aria-current="i.id === active.id ? 'page' : undefined" active-class="" exact-active-class=""
-                  >{{ i.label }}<span v-if="i.soon" class="soon-pill">준비 중</span></RouterLink>
+                  >{{ i.label }}</RouterLink>
                 </li>
               </ul>
             </template>
           </nav>
         </aside>
         <section class="mypage-panel" aria-live="polite">
-          <ComingSoon v-if="active.soon" :key="active.id" :item="active" />
-          <component :is="active.component" v-else :key="active.id" />
+          <component :is="active.component" :key="active.id" />
         </section>
       </div>
     </div>

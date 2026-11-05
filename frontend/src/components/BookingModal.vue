@@ -91,7 +91,7 @@ async function pay() {
   if (busy.value) return;
   busy.value = true;
   try {
-    order.value = await reservations.complete(order.value.id, '/my-tickets');
+    order.value = await reservations.complete(order.value.id, '/mypage/orders');
     emit('paid', order.value);
     toast('결제가 완료되었습니다.');
   } catch (err) {
@@ -177,7 +177,7 @@ async function pay() {
         <h3>{{ order.payment_status === 'COMPLETED' ? '결제까지 모두 끝났어요!' : '설레는 순간을 예약했어요!' }}</h3>
         <p>{{ order.performance_title }}<br>{{ order.performance_date }} {{ order.session_time }} · {{ seatLabel(order.seat_grade) }} {{ order.quantity }}매</p>
         <span class="order-status" :class="`status-${order.payment_status.toLowerCase()}`">{{ PAYMENT_LABELS[order.payment_status] }}</span>
-        <p>{{ order.payment_status === 'COMPLETED' ? '결제 금액' : '결제 예정 금액' }} {{ won(order.amount) }}<br>마이티킷에서 예매 내역을 확인할 수 있어요.</p>
+        <p>{{ order.payment_status === 'COMPLETED' ? '결제 금액' : '결제 예정 금액' }} {{ won(order.amount) }}<br>마이페이지의 예매 내역에서 확인할 수 있어요.</p>
       </div>
       <div class="demo-note">실제 결제·환불·티켓 발급은 발생하지 않는 모의 결제입니다.</div>
       <button v-if="order.payment_status === 'PENDING'" class="primary" type="button" :disabled="busy" @click="pay">

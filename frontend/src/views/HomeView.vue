@@ -8,23 +8,23 @@ import CategoryIcon from '@/components/CategoryIcon.vue';
 import BookingModal from '@/components/BookingModal.vue';
 import TasteModal from '@/components/TasteModal.vue';
 import { useAuthStore } from '@/stores/auth';
-import { useAuthedApi } from '@/composables/useAuthedApi';
+import { useFavoritesStore } from '@/stores/favorites';
 import { toast } from '@/composables/useToast';
 import { CATEGORIES, PENDING_BOOKING_KEY, loginRoute, session } from '@/utils';
 
-// 메인 화면: 배너, 카테고리, 공연 목록, 랭킹, 예매·취향(모달). 마이티킷은 /my-tickets 화면입니다.
+// 메인 화면: 배너, 카테고리, 공연 목록, 랭킹, 예매·취향(모달). 예매 내역은 /mypage/orders 화면입니다.
 // 검색어·카테고리·정렬은 주소(?q= / ?category= / ?sort=)에 들어 있어 로그인 후 돌아와도 같은 화면이 됩니다.
 const SORTS = [{ id: 'popular', label: '인기순' }, { id: 'date', label: '공연일순' }, { id: 'price', label: '낮은 가격순' }];
 
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
-const authed = useAuthedApi();
 
 const allShows = ref([]);
 const listShows = ref([]);
 const ranking = ref([]);
-const favorites = ref([]);
+const favoritesStore = useFavoritesStore();
+const favorites = computed(() => favoritesStore.ids);
 const expanded = ref(false);
 const modal = ref(null);
 const performancesEl = ref(null);
@@ -39,10 +39,6 @@ const sort = computed({
 
 function chooseCategory(c) {
   router.push({ path: '/', query: c === '전체' ? {} : { category: c } });
-}
-function seeAll() {
-  expanded.value = true;
-  router.push('/');
 }
 const scrollToList = () => nextTick(() => performancesEl.value?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
 
@@ -81,18 +77,15 @@ async function loadRanking() {
 
 /* ---------- 찜 ---------- */
 async function loadFavorites() {
-  if (!auth.profile) { favorites.value = []; return; }
-  try { favorites.value = await auth.api('/favorites'); } catch { favorites.value = []; }
+  try { await favoritesStore.load(); } catch (err) { toast(err.message); }
 }
 watch(() => auth.profile?.id, loadFavorites);
 
 async function toggleFavorite(id) {
   if (!auth.profile) { router.push(loginRoute(route.fullPath)); return; }
-  const saved = favorites.value.includes(id);
   try {
-    await authed(`/favorites/${encodeURIComponent(id)}`, { method: saved ? 'DELETE' : 'PUT' });
-    favorites.value = saved ? favorites.value.filter(x => x !== id) : [...favorites.value, id];
-    toast(saved ? '찜한 공연에서 해제했어요.' : '좋아하는 공연에 담았어요. 마이티킷에서 확인하세요.');
+    const saved = await favoritesStore.toggle(id);
+    if (saved !== undefined) toast(saved ? '찜한 공연에 담았어요. 마이페이지에서 확인하세요.' : '찜한 공연에서 해제했어요.');
   } catch (err) {
     toast(err.message);
   }
@@ -120,8 +113,8 @@ async function openBooking(id, { saved = {}, startAtConfirm = false, track = tru
   modal.value = { type: 'booking', show, saved, startAtConfirm };
 }
 
-// 예매 내역은 마이티킷 화면에서 확인합니다 (로그인하지 않았으면 router가 로그인 화면으로 보냄).
-const openOrders = () => router.push('/my-tickets');
+// 예매 내역은 마이페이지에서 확인합니다 (로그인하지 않았으면 router가 로그인 화면으로 보냄).
+const openOrders = () => router.push('/mypage/orders');
 
 function openTaste() {
   if (!auth.profile) { router.push(loginRoute('/?open=taste')); return; }
@@ -136,7 +129,7 @@ function chooseTaste(c) {
 async function handleOneShot() {
   const { open, resume, show, ...rest } = route.query;
   if (!open && !resume && !show) return;
-  if (open === 'mytikit') { router.replace('/my-tickets'); return; } // 이전 주소 호환
+  if (open === 'mytikit') { router.replace('/mypage/orders'); return; } // 이전 주소 호환
   router.replace({ query: rest });
   try { await auth.restore(); } catch { /* 아래에서 로그인 여부로 처리 */ }
   if (typeof show === 'string') openBooking(show);
@@ -179,7 +172,6 @@ onMounted(async () => {
     <section id="performances" ref="performancesEl" class="section wrap">
       <div class="section-head">
         <div><div class="section-kicker">YOUR NEXT MOMENT</div><h2>{{ listTitle }} <span>✦</span></h2></div>
-        <button class="text-link" type="button" @click="seeAll">전체보기 ↗</button>
       </div>
       <div class="filter-row">
         <div class="chips">
@@ -194,7 +186,7 @@ onMounted(async () => {
       </div>
       <div class="performance-grid" aria-live="polite">
         <PerformanceCard
-          v-for="s in visibleShows" :key="s.id" :show="s" :saved="favorites.includes(s.id)"
+          v-for="s in visibleShows" :key="s.id" :show="s" :saved="favorites.includes(s.id)" :busy="favoritesStore.loading || favoritesStore.pending.includes(s.id)"
           @open="openBooking" @favorite="toggleFavorite"
         />
       </div>
@@ -225,3 +217,15 @@ onMounted(async () => {
   />
   <TasteModal v-else-if="modal?.type === 'taste'" @close="closeModal" @choose="chooseTaste" />
 </template>
+
+<style scoped>
+.chips .chip {
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .chips .chip {
+    font-size: 12px;
+  }
+}
+</style>

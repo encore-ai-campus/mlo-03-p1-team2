@@ -76,7 +76,7 @@ async function submit() {
             <div class="mbti-options" role="radiogroup" aria-labelledby="mbtiTitle">
               <label v-for="m in MBTIS" :key="m" class="mbti-option"><input v-model="form.mbti" type="radio" name="mbti" :value="m" required><span>{{ m }}</span></label>
             </div>
-            <label class="check-label"><input v-model="form.consent" type="checkbox" name="consent" required><span>[필수] MBTI·공연 조회·모의 예매 내역을 공연 취향 분석 목적으로 수집하는 데 동의합니다. 데이터는 티킷 서버에 보관되며, 마이티킷에서 삭제할 수 있습니다.</span></label>
+            <label class="check-label"><input v-model="form.consent" type="checkbox" name="consent" required><span>[필수] MBTI·공연 조회·모의 예매 내역을 공연 취향 분석 목적으로 수집하는 데 동의합니다. 데이터는 티킷 서버에 보관되며, 마이페이지의 회원 탈퇴에서 삭제할 수 있습니다.</span></label>
             <div class="demo-note">시연용 서비스입니다. 비밀번호는 서버에 원문 대신 해시값으로만 저장됩니다. 실제 사용하는 비밀번호는 입력하지 마세요.</div>
             <p v-if="error" class="form-error" role="alert">{{ error }}</p>
             <button class="primary" type="submit" :disabled="busy">{{ busy ? '가입 중…' : '동의하고 시작하기' }}</button>

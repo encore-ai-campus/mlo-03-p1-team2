@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from app.api.deps import CurrentUser, DbSession
 from app.core.security import hash_password, verify_password
 from app.models import Event, Favorite, Order, Payment, Reservation, StatusHistory, User
+from app.models.notification import NotificationSettings
 from app.schemas.event import EventOut
 from app.schemas.export import ExportOut
 from app.schemas.order import OrderOut
@@ -84,7 +85,7 @@ def delete_me(user: CurrentUser, db: DbSession) -> Response:
     # 예매를 참조하는 결제·이력·이벤트부터 지운 뒤 예매를 지웁니다.
     reservation_ids = select(Reservation.id).where(Reservation.user_id == user.id).scalar_subquery()
     db.execute(delete(Payment).where(Payment.reservation_id.in_(reservation_ids)))
-    for model in (StatusHistory, Event, Reservation, Order, Favorite):
+    for model in (StatusHistory, Event, Reservation, Order, Favorite, NotificationSettings):
         db.execute(delete(model).where(model.user_id == user.id))
     db.delete(user)
     db.commit()

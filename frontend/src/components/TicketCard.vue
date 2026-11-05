@@ -2,7 +2,7 @@
 import PosterArt from './PosterArt.vue';
 import { PAYMENT_LABELS, koreanTime, orderNumber, seatLabel, won } from '@/utils';
 
-// 마이티킷의 예매 한 건: 포스터 · 예매 정보 · 결제 금액/상태 · 결제·취소 버튼
+// 예매 한 건: 포스터 · 예매 정보 · 결제 금액/상태 · 결제·취소 버튼
 defineProps({
   order: { type: Object, required: true },
   show: { type: Object, default: null }, // 공연 정보(포스터). 없으면 포스터를 생략합니다.

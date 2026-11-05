@@ -8,7 +8,7 @@ const routes = [
   { path: '/', name: 'home', component: HomeView, meta: { title: 'TIKIT 티킷 — 취향이 만나는 순간', footer: true } },
   { path: '/login', name: 'login', component: () => import('@/views/LoginView.vue'), meta: { title: '로그인 — TIKIT 티킷', guestOnly: true } },
   { path: '/signup', name: 'signup', component: () => import('@/views/SignupView.vue'), meta: { title: '회원가입 — TIKIT 티킷', guestOnly: true } },
-  { path: '/my-tickets', name: 'my-tickets', component: () => import('@/views/MyTicketsView.vue'), meta: { title: '마이티킷 — TIKIT 티킷', requiresAuth: true, footer: true } },
+  { path: '/my-tickets', redirect: '/mypage/orders' },
   { path: '/mypage/:section?', name: 'mypage', component: () => import('@/views/MyPageView.vue'), meta: { title: '마이페이지 — TIKIT 티킷', requiresAuth: true, footer: true } },
 
   // 이전(.html) 주소 호환

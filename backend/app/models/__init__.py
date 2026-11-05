@@ -4,5 +4,6 @@ from app.models.order import Order
 from app.models.performance import Performance
 from app.models.reservation import Payment, Reservation, StatusHistory
 from app.models.user import User
+from app.models.notification import NotificationSettings
 
 __all__ = ["Event", "Favorite", "Order", "Payment", "Performance", "Reservation", "StatusHistory", "User"]
