@@ -1,8 +1,9 @@
-"""Seed demo performances (기본 8건 + 추가 샘플). Run: python -m app.db.seed"""
+"""Seed demo performances (기본 8건 + 직접 작성한 샘플 72건 + 카테고리별 생성 샘플). Run: python -m app.db.seed"""
 from datetime import date, datetime
 
 from sqlalchemy.orm import Session
 
+from app.db.seed_bulk import generate_performances, period_fields
 from app.models import Performance
 
 PERFORMANCES = [
@@ -92,7 +93,6 @@ STYLE_IMAGES = {
     "classic": "photo-1520523839897-bd0b52f945a0",
     "theater": "photo-1507676184212-d03ab07a01bf",
 }
-MAX_BOOKABLE_DAYS = 7  # 기존 데이터와 같이 예매 가능 날짜는 최대 7일
 
 
 def _show(id, category, style, title, english, sub, venue, period, price, badge, tag, slots):
@@ -100,15 +100,9 @@ def _show(id, category, style, title, english, sub, venue, period, price, badge,
     start_s, _, end_s = period.partition("~")
     start = datetime.strptime(start_s, "%Y.%m.%d").date()
     end = datetime.strptime(end_s or start_s, "%Y.%m.%d").date()
-    if end == start:
-        label = f"{start:%Y.%m.%d}"
-    elif end.year == start.year:
-        label = f"{start:%Y.%m.%d} - {end:%m.%d}"
-    else:
-        label = f"{start:%Y.%m.%d} - {end:%Y.%m.%d}"
-    return dict(id=id, category=category, title=title, english=english, sub=sub, image=SHOW_IMAGES.get(id, STYLE_IMAGES[style]),
-                style=style, venue=venue, date_label=label, start_date=start,
-                days=min((end - start).days + 1, MAX_BOOKABLE_DAYS), price=price, badge=badge, tag=tag, slots=slots)
+    return dict(id=id, category=category, title=title, english=english, sub=sub,
+                image=SHOW_IMAGES.get(id, STYLE_IMAGES[style]), style=style, venue=venue,
+                **period_fields(start, end), price=price, badge=badge, tag=tag, slots=slots)
 
 
 EXTRA_PERFORMANCES = [_show(*row) for row in [
@@ -270,6 +264,10 @@ EXTRA_PERFORMANCES = [_show(*row) for row in [
 ]]
 
 PERFORMANCES += EXTRA_PERFORMANCES
+
+# 카테고리별 대량 샘플 100건씩 (app/db/seed_bulk.py 에서 생성)
+BULK_PER_CATEGORY = 100
+PERFORMANCES += generate_performances(BULK_PER_CATEGORY)
 
 
 def seed(db: Session) -> int:
