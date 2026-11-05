@@ -158,6 +158,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env.local
 
 # Spyder project settings
 .spyderproject
@@ -221,3 +222,8 @@ __marimo__/
 
 
 .idea/runConfigurations/Backend_uvicorn.xml
+
+
+node_modules/
+
+
