@@ -135,6 +135,7 @@ Tikit은 콘서트, 뮤지컬, 스포츠, 전시, 클래식, 연극 등 다양�
 - `payments`
 
 **추후 ERD 이미지 추가 예정**
+<img width="562" height="747" alt="image" src="https://github.com/user-attachments/assets/3c980295-c06b-4966-99ef-517c266d0d35" />
 
 ---
 
