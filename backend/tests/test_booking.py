@@ -1,3 +1,5 @@
+from app.db.seed import PERFORMANCES
+
 API = "/api/v1"
 
 ORDER = {
@@ -12,9 +14,10 @@ ORDER = {
 
 def test_list_filter_sort_and_detail(client):
     all_ = client.get(f"{API}/performances").json()
-    assert len(all_) == 8
+    assert len(all_) == len(PERFORMANCES)
     musicals = client.get(f"{API}/performances", params={"category": "뮤지컬"}).json()
-    assert {p["id"] for p in musicals} == {"opera", "dance"}
+    assert {p["id"] for p in musicals} == {p["id"] for p in PERFORMANCES if p["category"] == "뮤지컬"}
+    assert {"opera", "dance"} <= {p["id"] for p in musicals}
     by_price = client.get(f"{API}/performances", params={"sort": "price"}).json()
     assert [p["price"] for p in by_price] == sorted(p["price"] for p in by_price)
     found = client.get(f"{API}/performances", params={"q": "재즈"}).json()
