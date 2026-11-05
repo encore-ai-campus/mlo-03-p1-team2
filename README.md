@@ -48,17 +48,23 @@ Tikit은 콘서트, 뮤지컬, 스포츠, 전시, 클래식, 연극 등 다양�
 
 ## 03. 🛠 기술 스택
 
-| 구분 | 기술 |
-|---|---|
-| Language | Python, SQL |
-| Backend | FastAPI |
-| Database | MariaDB |
-| Data Processing | 추후 확정 |
-| Data Visualization | 추후 확정 |
-| Infrastructure | 추후 확정 |
-| Collaboration | Git, GitHub |
-
-※ 실제 사용 기술이 확정되면 업데이트합니다.
+| 구분 | 기술 | 역할 |
+|---|---|---|
+| 언어 | Python, SQL | 백엔드 개발 및 데이터 조회·처리 |
+| 백엔드 | FastAPI | API 및 서비스 로직 처리 |
+| 관계형 데이터베이스 | MariaDB | 관계형 데이터 저장 |
+| 문서형 데이터베이스 | MongoDB | 문서형 데이터 저장. 서비스의 저장 대상은 미정 |
+| 데이터 처리 | 추후 확정 | 데이터 추출·정제·변환·적재 |
+| 데이터 분석 시각화 | 추후 확정 | 고객 행동 및 예매 데이터 분석 결과 시각화 |
+| 가상화 | VMware Workstation / Fusion | 물리 PC에서 Linux VM 실행 |
+| 운영체제 | Linux | VM의 서버 운영체제 |
+| 웹 서버 | Nginx | 외부 요청 수신, TLS 종료, FastAPI로 요청 전달 |
+| 프록시 | HAProxy | PC마다 1대씩 배치. 연결 경로는 미정 |
+| 메트릭 | Prometheus | Alloy 또는 서비스별 exporter의 메트릭 수집·저장 |
+| 로그 수집 | Grafana Alloy | 각 VM의 로그를 수집하여 Loki로 전송 |
+| 로그 저장 | Loki | 중앙 로그 저장 |
+| 운영 모니터링 시각화 | Grafana | 메트릭·로그 대시보드 |
+| 협업 | Git, GitHub | 버전 관리 및 협업 |
 
 ---
 
@@ -111,7 +117,43 @@ Tikit은 콘서트, 뮤지컬, 스포츠, 전시, 클래식, 연극 등 다양�
 
 서비스와 데이터 처리 시스템의 전체 구조를 나타냅니다.
 
-**추후 시스템 아키텍처 다이어그램 추가 예정**
+```mermaid
+flowchart TB
+    USER["사용자"]
+
+    subgraph PC1["PC 1 · 웹 / 애플리케이션"]
+        subgraph APP["app-vm"]
+            NGINX["Nginx"]
+            API["FastAPI"]
+            NGINX -->|"요청 전달"| API
+        end
+        P1["proxy-1 · HAProxy"]
+    end
+
+    subgraph PC2["PC 2 · 데이터베이스"]
+        MARIA[("mariadb-vm · MariaDB")]
+        MONGO[("mongodb-vm · MongoDB")]
+        P2["proxy-2 · HAProxy"]
+    end
+
+    subgraph PC3["PC 3 · 모니터링 / 로그"]
+        subgraph MON["monitoring-vm"]
+            PROM["Prometheus"]
+            LOKI["Loki"]
+            GRAFANA["Grafana"]
+        end
+        P3["proxy-3 · HAProxy"]
+    end
+
+    LOGS["각 VM의 Alloy"]
+    METRICS["각 VM의 Alloy 또는 서비스별 exporter"]
+
+    USER -->|"외부 요청 · TLS 종료"| NGINX
+    LOGS -.->|"로그 전송"| LOKI
+    PROM -.->|"메트릭 수집"| METRICS
+    GRAFANA -->|"조회"| PROM
+    GRAFANA -->|"조회"| LOKI
+```
 
 포함할 구성 요소:
 - 사용자 및 웹서비스
