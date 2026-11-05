@@ -8,11 +8,11 @@
 
 **팀명: 티키타카 (TikiTaka)**
 
-| 이름 | GitHub | 담당 역할 |
-|---|---|---|
-| 김한울 | [@hannyeee](https://github.com/hannyeee) | 예매 및 결제 관리 |
-| 오정민 | [@OZAM0415](https://github.com/OZAM0415) | 공연 관리 |
-| 정상효 | [@nomorehuman90](https://github.com/nomorehuman90) | 회원 관리 |
+| 김한울 | 오정민 | 정상효 |
+|:---:|:---:|:---:|
+| <img src="https://github.com/hannyeee.png" width="120" alt="김한울"> | <img src="https://github.com/OZAM0415.png" width="120" alt="오정민"> | <img src="https://github.com/nomorehuman90.png" width="120" alt="정상효"> |
+| [@hannyeee](https://github.com/hannyeee) | [@OZAM0415](https://github.com/OZAM0415) | [@nomorehuman90](https://github.com/nomorehuman90) |
+| 예매 및 결제 관리 | 공연 관리 | 회원 관리 |
 
 
 ---
