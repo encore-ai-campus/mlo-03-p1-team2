@@ -16,7 +16,6 @@ const MENU = [
   ] },
   { group: '나의 티켓', items: [
     { id: 'orders', label: '예매 내역', to: '/my-tickets' }, // 마이티킷 화면으로 이동
-    { id: 'refunds', label: '취소·환불 내역', soon: '예매 취소 신청과 환불 진행 상황을 확인할 수 있어요.' },
     { id: 'favorites', label: '찜한 공연', soon: '하트로 담아 둔 공연을 모아 보고 바로 예매할 수 있어요.' },
   ] },
   { group: '나의 취향', items: [

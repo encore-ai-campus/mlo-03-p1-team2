@@ -167,12 +167,14 @@ onMounted(async () => {
 <template>
   <main>
     <HeroSlider :shows="allShows" @open="openBooking" />
+<!--
 
     <section class="quick-categories wrap" aria-label="공연 카테고리 바로가기">
       <button v-for="c in CATEGORIES.slice(1)" :key="c" type="button" class="quick-category" @click="chooseCategory(c)">
         <span class="category-icon"><CategoryIcon :category="c" /></span>{{ c }}
       </button>
     </section>
+-->
 
     <section id="performances" ref="performancesEl" class="section wrap">
       <div class="section-head">
