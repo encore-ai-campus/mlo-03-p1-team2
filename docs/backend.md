@@ -30,7 +30,8 @@ backend/
 │  ├─ db/
 │  │  ├─ base.py             SQLAlchemy DeclarativeBase
 │  │  ├─ session.py          DB 엔진, 세션, get_db 의존성
-│  │  └─ seed.py             공연 시연 데이터 8건 입력 스크립트
+│  │  ├─ seed.py             공연 시연 데이터 680건 입력 스크립트
+│  │  └─ seed_bulk.py        카테고리별 대량 샘플 공연 생성기 (시드 고정)
 │  ├─ models/                user, performance, order, event, favorite, reservation(예매·결제·이력)
 │  ├─ schemas/               요청/응답 Pydantic 모델 (user, performance, order, event, export)
 │  └─ api/
