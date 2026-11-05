@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import { useAuthStore } from './auth';
+import { track } from '@/utils/tracker';
 
 export const useFavoritesStore = defineStore('favorites', () => {
   const auth = useAuthStore();
@@ -48,6 +49,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
       if (generation !== accountGeneration) return;
       revision++;
       ids.value = saved ? ids.value.filter(value => value !== id) : [...ids.value, id];
+      track(saved ? 'favorite_remove' : 'favorite_add', { performance_id: id });
       return !saved;
     } finally {
       if (generation === accountGeneration) pending.value = pending.value.filter(value => value !== id);

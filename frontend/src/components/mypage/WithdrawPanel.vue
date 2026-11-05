@@ -6,6 +6,7 @@ import BaseModal from '@/components/BaseModal.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useAuthedApi } from '@/composables/useAuthedApi';
 import { toast } from '@/composables/useToast';
+import { track } from '@/utils/tracker';
 
 const auth = useAuthStore();
 const authed = useAuthedApi();
@@ -27,6 +28,7 @@ async function withdraw() {
   error.value = '';
   try {
     await authed('/users/me', { method: 'DELETE' });
+    track('account_withdraw');
     auth.logout();
     confirming.value = false;
     await router.replace('/');

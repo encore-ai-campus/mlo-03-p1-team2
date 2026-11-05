@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { toast } from '@/composables/useToast';
 import { CATEGORIES, loginRoute, safeNext, signupRoute } from '@/utils';
+import { track } from '@/utils/tracker';
 
 const route = useRoute();
 const router = useRouter();
@@ -28,6 +29,7 @@ watch(() => route.query.q, q => { keyword.value = isHome.value && typeof q === '
 
 function submitSearch() {
   const q = keyword.value.trim().slice(0, 100);
+  if (q) track('search', { query: q });
   router.push({ path: '/', query: q ? { q } : {} });
 }
 // 검색 중에 입력칸을 비우면 전체 목록으로 돌아갑니다.
@@ -40,6 +42,7 @@ function onSearchInput() {
 
 /* ---------- 계정 ---------- */
 function logout() {
+  track('logout');
   auth.logout();
   if (route.meta.requiresAuth) router.push('/');
   toast('로그아웃했어요.');

@@ -10,6 +10,7 @@ import {
   MAX_QUANTITY, PAYMENT_LABELS, PENDING_BOOKING_KEY, PREMIUM_SURCHARGE,
   loginRoute, newRequestKey, seatLabel, session, won,
 } from '@/utils';
+import { track } from '@/utils/tracker';
 
 // 예매 흐름: 01 날짜·회차 → 02 예매 확인(예매 요청) → 03 완료(결제 대기 → 결제하기)
 const QUANTITIES = Array.from({ length: MAX_QUANTITY }, (_, i) => i + 1);
@@ -54,6 +55,10 @@ function goConfirm() {
   }
   // 예매 시작 기록(분석용). 실패해도 예매에는 영향이 없습니다.
   auth.api('/events', { method: 'POST', body: { performance_id: s.id, type: 'booking_started' } }).catch(() => {});
+  track('booking_start', {
+    performance_id: s.id, category: s.category, performance_date: booking.date, session_time: booking.slot,
+    seat_grade: booking.premium ? 'PREMIUM' : 'STANDARD', quantity: booking.quantity, amount_krw: total.value,
+  });
   step.value = 'confirm';
 }
 function backToSelect() {

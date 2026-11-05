@@ -4,6 +4,7 @@ import PanelHead from './PanelHead.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import { useAuthedApi } from '@/composables/useAuthedApi';
 import { toast } from '@/composables/useToast';
+import { track } from '@/utils/tracker';
 
 // 비밀번호 변경: 현재 비밀번호를 확인한 뒤 새 비밀번호로 바꿉니다.
 const authed = useAuthedApi();
@@ -32,6 +33,7 @@ async function submit() {
       body: { current_password: form.current, new_password: form.next, new_password_confirm: form.confirm },
     });
     Object.assign(form, empty());
+    track('password_change');
     toast('비밀번호를 변경했어요. 다음 로그인부터 새 비밀번호를 사용해 주세요.');
   } catch (err) {
     error.value = err.message;

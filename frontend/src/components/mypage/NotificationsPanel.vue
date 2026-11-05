@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from 'vue';
 import PanelHead from './PanelHead.vue';
 import { useAuthedApi } from '@/composables/useAuthedApi';
 import { toast } from '@/composables/useToast';
+import { track } from '@/utils/tracker';
 
 const authed = useAuthedApi();
 const settings = reactive({ booking_reminders: false, favorite_updates: false });
@@ -34,6 +35,7 @@ async function save() {
   error.value = '';
   try {
     Object.assign(settings, await authed('/users/me/notification-settings', { method: 'PUT', body: { ...settings } }));
+    track('notification_settings_update', { ...settings });
     toast('알림 설정을 저장했어요.');
     await loadItems();
   } catch (err) { error.value = err.message; }

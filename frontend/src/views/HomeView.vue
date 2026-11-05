@@ -11,6 +11,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useFavoritesStore } from '@/stores/favorites';
 import { toast } from '@/composables/useToast';
 import { CATEGORIES, PENDING_BOOKING_KEY, loginRoute, session } from '@/utils';
+import { track } from '@/utils/tracker';
 
 // 메인 화면: 배너, 카테고리, 공연 목록, 랭킹, 예매·취향(모달). 예매 내역은 /mypage/orders 화면입니다.
 // 검색어·카테고리·정렬은 주소(?q= / ?category= / ?sort=)에 들어 있어 로그인 후 돌아와도 같은 화면이 됩니다.
@@ -34,15 +35,23 @@ const category = computed(() => (CATEGORIES.includes(route.query.category) ? rou
 const search = computed(() => (typeof route.query.q === 'string' ? route.query.q.trim().slice(0, 100) : ''));
 const sort = computed({
   get: () => (SORTS.some(s => s.id === route.query.sort) ? route.query.sort : 'popular'),
-  set: value => router.replace({ query: { ...route.query, sort: value === 'popular' ? undefined : value } }),
+  set: value => {
+    track('sort_change', { sort: value });
+    router.replace({ query: { ...route.query, sort: value === 'popular' ? undefined : value } });
+  },
 });
 
-function chooseCategory(c) {
+function chooseCategory(c, source = 'list') {
+  track('category_select', { category: c, source });
   router.push({ path: '/', query: c === '전체' ? {} : { category: c } });
 }
 const scrollToList = () => nextTick(() => performancesEl.value?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
 
 /* ---------- 공연 목록 ---------- */
+function toggleExpanded() {
+  expanded.value = !expanded.value;
+  track('list_expand', { expanded: expanded.value, category: category.value });
+}
 const visibleShows = computed(() => (expanded.value ? listShows.value : listShows.value.slice(0, 4)));
 const listTitle = computed(() => {
   if (search.value) return `“${search.value}” 검색 결과`;
@@ -100,7 +109,8 @@ watch(modal, (now, before) => {
 });
 const closeModal = () => { modal.value = null; };
 
-async function openBooking(id, { saved = {}, startAtConfirm = false, track = true } = {}) {
+// source: 공연을 연 위치 (hero·list·ranking·link). 로그인 후 예매를 이어갈 때(resume)는 기록하지 않습니다.
+async function openBooking(id, { saved = {}, startAtConfirm = false, record = true, source = 'list' } = {}) {
   let show;
   try {
     show = await auth.api(`/performances/${encodeURIComponent(id)}`);
@@ -109,7 +119,10 @@ async function openBooking(id, { saved = {}, startAtConfirm = false, track = tru
     return;
   }
   // 조회 기록은 실패해도 예매 흐름에 영향을 주지 않습니다.
-  if (track) auth.api('/events', { method: 'POST', body: { performance_id: id } }).catch(() => {});
+  if (record) {
+    auth.api('/events', { method: 'POST', body: { performance_id: id } }).catch(() => {});
+    track('performance_view', { performance_id: show.id, category: show.category, price_krw: show.price, source });
+  }
   modal.value = { type: 'booking', show, saved, startAtConfirm };
 }
 
@@ -118,11 +131,12 @@ const openOrders = () => router.push('/mypage/orders');
 
 function openTaste() {
   if (!auth.profile) { router.push(loginRoute('/?open=taste')); return; }
+  track('taste_view', { source: 'home' });
   modal.value = { type: 'taste' };
 }
 function chooseTaste(c) {
   closeModal();
-  chooseCategory(c);
+  chooseCategory(c, 'taste');
 }
 
 // ?open=mytikit|taste, ?resume=booking, ?show=<공연 id> 는 한 번만 처리하고 주소에서 지웁니다.
@@ -132,12 +146,12 @@ async function handleOneShot() {
   if (open === 'mytikit') { router.replace('/mypage/orders'); return; } // 이전 주소 호환
   router.replace({ query: rest });
   try { await auth.restore(); } catch { /* 아래에서 로그인 여부로 처리 */ }
-  if (typeof show === 'string') openBooking(show);
+  if (typeof show === 'string') openBooking(show, { source: 'link' });
   if (open === 'taste') openTaste();
   if (resume === 'booking') {
     let saved = null;
     try { saved = JSON.parse(session.take(PENDING_BOOKING_KEY)); } catch { /* 무시 */ }
-    if (saved?.showId) openBooking(saved.showId, { saved, startAtConfirm: true, track: false });
+    if (saved?.showId) openBooking(saved.showId, { saved, startAtConfirm: true, record: false });
   }
 }
 watch(() => [route.query.open, route.query.resume, route.query.show], handleOneShot);
@@ -159,7 +173,7 @@ onMounted(async () => {
 
 <template>
   <main>
-    <HeroSlider :shows="allShows" @open="openBooking" />
+    <HeroSlider :shows="allShows" @open="id => openBooking(id, { source: 'hero' })" />
 <!--
 
     <section class="quick-categories wrap" aria-label="공연 카테고리 바로가기">
@@ -187,11 +201,11 @@ onMounted(async () => {
       <div class="performance-grid" aria-live="polite">
         <PerformanceCard
           v-for="s in visibleShows" :key="s.id" :show="s" :saved="favorites.includes(s.id)" :busy="favoritesStore.loading || favoritesStore.pending.includes(s.id)"
-          @open="openBooking" @favorite="toggleFavorite"
+          @open="id => openBooking(id, { source: 'list' })" @favorite="toggleFavorite"
         />
       </div>
       <div v-if="!listShows.length" class="empty">검색 결과가 없어요.<br><small>다른 공연명이나 장소로 검색해 보세요.</small></div>
-      <button v-if="listShows.length > 4" class="more-button" type="button" @click="expanded = !expanded">
+      <button v-if="listShows.length > 4" class="more-button" type="button" @click="toggleExpanded">
         <template v-if="expanded">간략히 보기 <span>−</span></template>
         <template v-else>더 많은 설렘 만나보기 <span>＋</span></template>
       </button>
@@ -203,7 +217,7 @@ onMounted(async () => {
       <button type="button" @click="openTaste">내 취향 찾으러 가기 <span>↗</span></button>
     </section>
 
-    <RankingList :ranking="ranking" @open="openBooking" />
+    <RankingList :ranking="ranking" @open="id => openBooking(id, { source: 'ranking' })" />
 
     <section class="service-strip wrap">
       <div><b>좋아하는 순간을 놓치지 않도록.</b><p>당신의 다음 설렘도 티킷과 함께하세요.</p></div>

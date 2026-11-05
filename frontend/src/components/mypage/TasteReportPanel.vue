@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import PanelHead from './PanelHead.vue';
 import { useAuthedApi } from '@/composables/useAuthedApi';
+import { track } from '@/utils/tracker';
 
 const authed = useAuthedApi();
 const report = ref(null);
@@ -15,7 +16,10 @@ const score = c => c.views + c.favorites + c.bookings;
 async function load() {
   loading.value = true;
   error.value = '';
-  try { report.value = await authed('/users/me/taste-report'); }
+  try {
+    report.value = await authed('/users/me/taste-report');
+    track('taste_view', { source: 'mypage' });
+  }
   catch (err) { error.value = err.message; }
   finally { loading.value = false; }
 }

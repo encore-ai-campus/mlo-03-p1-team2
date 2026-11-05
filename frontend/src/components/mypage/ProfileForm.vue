@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useAuthedApi } from '@/composables/useAuthedApi';
 import { toast } from '@/composables/useToast';
 import { MBTIS, formatDate } from '@/utils';
+import { track } from '@/utils/tracker';
 
 // 회원 정보 수정: 닉네임·이메일·MBTI. 이메일을 바꿀 때만 현재 비밀번호를 받습니다.
 const auth = useAuthStore();
@@ -43,6 +44,7 @@ async function submit() {
   busy.value = true;
   try {
     auth.profile = await authed('/users/me', { method: 'PATCH', body });
+    track('profile_update', { fields: Object.keys(body).filter(k => k !== 'current_password').join(',') });
     reset();
     toast('회원 정보를 변경했어요.');
   } catch (err) {

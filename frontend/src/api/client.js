@@ -43,7 +43,7 @@ function validationMessage(detail) {
   return fieldMessages[field] || '입력한 내용을 다시 확인해 주세요.';
 }
 
-export async function request(path, { method = 'GET', body, token } = {}) {
+export async function request(path, { method = 'GET', body, token, keepalive = false } = {}) {
   const headers = { Accept: 'application/json' };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -51,7 +51,7 @@ export async function request(path, { method = 'GET', body, token } = {}) {
   let response;
   try {
     response = await fetch(`${base}${path}`, {
-      method, headers, body: body === undefined ? undefined : JSON.stringify(body),
+      method, headers, body: body === undefined ? undefined : JSON.stringify(body), keepalive,
     });
   } catch {
     throw new ApiError('서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.', 0);
