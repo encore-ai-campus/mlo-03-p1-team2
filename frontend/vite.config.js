@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': { target: process.env.BACKEND_URL || 'http://127.0.0.1:8001', changeOrigin: true },
+      '/api': { target: process.env.BACKEND_URL || 'http://127.0.0.1:8000', changeOrigin: true },
     },
   },
 });

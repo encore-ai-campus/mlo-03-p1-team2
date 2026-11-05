@@ -39,6 +39,7 @@ export const PENDING_BOOKING_KEY = 'tikit.pendingBooking';
 /* ---------- 예매(reservations) ---------- */
 export const PREMIUM_SURCHARGE = 30000;
 export const MAX_QUANTITY = 4;
+export const MAX_PERFORMANCE_PRICE = Math.floor(2147483647 / MAX_QUANTITY) - PREMIUM_SURCHARGE;
 export const RESERVATION_LABELS = { REQUESTED: '예매 요청', CONFIRMED: '예매 완료', CANCELLED: '예매 취소' };
 export const PAYMENT_LABELS = { PENDING: '결제 대기', COMPLETED: '결제 완료', CANCELLED: '결제 취소' };
 export const seatLabel = grade => (grade === 'PREMIUM' ? '프리미엄석' : '일반석');

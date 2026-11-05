@@ -95,6 +95,7 @@ class UserOut(BaseModel):
     consent: bool
     consented_at: datetime
     created_at: datetime
+    is_admin: bool = False
 
 
 class TokenOut(BaseModel):

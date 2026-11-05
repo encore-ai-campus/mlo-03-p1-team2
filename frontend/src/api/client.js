@@ -1,3 +1,5 @@
+import { MAX_PERFORMANCE_PRICE } from '@/utils';
+
 // 백엔드 API 호출 공통 처리: JSON 요청/응답, 토큰 헤더, 오류 메시지 변환
 // API 주소는 같은 출처의 /api/v1 (개발: Vite 프록시, 배포: nginx 프록시).
 // 프록시 없이 직접 연결할 때만 .env 파일에 VITE_API_BASE=http://localhost:8000/api/v1 을 지정합니다.
@@ -18,6 +20,18 @@ const fieldMessages = {
   current_password: '현재 비밀번호를 확인해 주세요.',
   new_password: '새 비밀번호는 8~128자로 입력해 주세요.',
   new_password_confirm: '새 비밀번호 확인을 입력해 주세요.',
+  title: '공연명은 1~200자로 입력해 주세요.',
+  category: '공연 카테고리를 선택해 주세요.',
+  venue: '공연장은 1~200자로 입력해 주세요.',
+  start_date: '올바른 공연 시작일을 입력해 주세요.',
+  end_date: '올바른 공연 종료일을 입력해 주세요.',
+  price: `가격은 0~${MAX_PERFORMANCE_PRICE.toLocaleString('ko-KR')}원 사이의 정수로 입력해 주세요.`,
+  slots: '회차는 1개 이상, 최대 24개까지 입력해 주세요.',
+  image: '올바른 포스터 이미지 주소를 입력해 주세요.',
+  english: '포스터 제목은 200자 이내로 입력해 주세요.',
+  sub: '포스터 부제는 200자 이내로 입력해 주세요.',
+  badge: '포스터 배지는 100자 이내로 입력해 주세요.',
+  tag: '목록 태그는 100자 이내로 입력해 주세요.',
 };
 
 function validationMessage(detail) {

@@ -58,6 +58,9 @@ function logout() {
         <template v-if="auth.profile">
           <RouterLink to="/mypage" class="account-name">{{ auth.profile.name }}님</RouterLink><span></span>
           <RouterLink to="/mypage">마이페이지</RouterLink><span></span>
+          <template v-if="auth.isAdmin">
+            <RouterLink to="/admin/performances" :aria-current="route.meta.requiresAdmin ? 'page' : undefined">공연 관리</RouterLink><span></span>
+          </template>
           <button type="button" @click="logout">로그아웃</button>
         </template>
         <template v-else>

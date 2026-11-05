@@ -90,6 +90,9 @@ backend/
 
 로그인이 필요한 요청은 헤더에 `Authorization: Bearer <access_token>`을 넣습니다. 서버 실행 후 http://localhost:8000/docs 에서 직접 호출해 볼 수 있습니다.
 
+관리자 전용 공연 CRUD는 `/api/v1/admin/performances`에서 제공합니다.
+적용 전에 `0004` 마이그레이션이 필요하며 관리자 지정과 상세 API는 [관리자 공연 관리](admin.md)를 참고하세요.
+
 ---
 
 ## 4. 주요 로직

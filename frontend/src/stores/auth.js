@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
   let restoring = null;
 
   const isLoggedIn = computed(() => Boolean(profile.value));
+  const isAdmin = computed(() => profile.value?.is_admin === true);
 
   function start(result) {
     token.value = result.access_token;
@@ -58,5 +59,5 @@ export const useAuthStore = defineStore('auth', () => {
   // 토큰을 붙여 API를 호출합니다.
   const api = (path, options = {}) => request(path, { ...options, token: token.value });
 
-  return { token, profile, isLoggedIn, signup, login, logout, restore, api };
+  return { token, profile, isLoggedIn, isAdmin, signup, login, logout, restore, api };
 });

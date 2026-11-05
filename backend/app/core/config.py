@@ -21,6 +21,8 @@ def get_settings() -> Settings:
 # Booking rules mirrored from sample/dist/app.js
 PREMIUM_SURCHARGE = 30000
 MAX_QUANTITY = 4
+# 프리미엄 추가금과 최대 수량을 포함해도 예매·결제의 INT 금액 범위를 넘지 않게 합니다.
+MAX_PERFORMANCE_PRICE = 2_147_483_647 // MAX_QUANTITY - PREMIUM_SURCHARGE
 PAYMENT_METHODS = ("간편결제", "신용카드", "계좌이체")
 MBTI_TYPES = (
     "INTJ", "INTP", "ENTJ", "ENTP", "INFJ", "INFP", "ENFJ", "ENFP",

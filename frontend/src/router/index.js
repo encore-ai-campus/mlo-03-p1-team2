@@ -6,6 +6,8 @@ import HomeView from '@/views/HomeView.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView, meta: { title: 'TIKIT 티킷 — 취향이 만나는 순간', footer: true } },
+  { path: '/admin', redirect: '/admin/performances' },
+  { path: '/admin/performances', name: 'admin-performances', component: () => import('@/views/AdminPerformancesView.vue'), meta: { title: '공연 관리 — TIKIT 티킷', requiresAuth: true, requiresAdmin: true, footer: true } },
   { path: '/login', name: 'login', component: () => import('@/views/LoginView.vue'), meta: { title: '로그인 — TIKIT 티킷', guestOnly: true } },
   { path: '/signup', name: 'signup', component: () => import('@/views/SignupView.vue'), meta: { title: '회원가입 — TIKIT 티킷', guestOnly: true } },
   { path: '/my-tickets', redirect: '/mypage/orders' },
@@ -40,6 +42,10 @@ router.beforeEach(async to => {
   }
   // 로그인하지 않았으면 로그인 페이지로 보냈다가 다시 돌아옵니다.
   if (to.meta.requiresAuth && !user) return loginRoute(to.fullPath);
+  if (to.meta.requiresAdmin && !user?.is_admin) {
+    toast('관리자만 이용할 수 있습니다.');
+    return '/';
+  }
   // 이미 로그인된 탭에서 로그인·회원가입 화면을 열면 바로 돌려보냅니다.
   if (to.meta.guestOnly && user) return safeNext(to.query.next);
   return true;

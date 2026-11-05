@@ -28,3 +28,7 @@ class Performance(Base):
     @property
     def available_dates(self) -> list[date]:
         return [self.start_date + timedelta(days=i) for i in range(self.days)]
+
+    @property
+    def end_date(self) -> date:
+        return self.start_date + timedelta(days=self.days - 1)
