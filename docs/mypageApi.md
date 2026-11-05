@@ -31,6 +31,12 @@
 기존 DB 버전 `0002`에서 `0003`으로 올리면 `notification_settings` 테이블이 추가된다.
 공유 DB 적용은 승인을 받은 뒤 실행한다. 기존 데이터는 수정하지 않는다.
 
+MySQL/MariaDB에서는 기존 `users.id`의 문자셋·콜레이션을 읽어 새 테이블에도 적용한다.
+DB 기본 콜레이션이 변경되어도 외래 키 양쪽 컬럼이 달라지지 않게 하기 위함이다.
+`0003` 적용 중 외래 키 오류(`errno: 150`)가 발생한 환경은 수정된 마이그레이션으로
+`python -m alembic upgrade head`를 다시 실행한다. 기존 `users` 테이블이나 DB 기본값을 변경하지 않는다.
+이 호환 처리는 온라인 마이그레이션에서 적용된다. `--sql` 출력만으로는 기존 DB 메타데이터를 확인하지 않는다.
+
 ```powershell
 cd backend
 python -m alembic upgrade head
