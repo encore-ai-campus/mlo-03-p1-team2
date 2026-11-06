@@ -181,7 +181,7 @@ flowchart TB
 
 ## 09. 📁 프로젝트 디렉터리 구조
 
-[📂 프로젝트 디렉터리 구조 보기 (Wiki)](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/projectStructure)
+[📂 프로젝트 디렉터리 구조 보기 (Wiki)](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Project-Structure)
 
 ---
 
