@@ -13,7 +13,7 @@ import sys
 from periods import aggregate_periods, KST, transaction_snapshot, transaction_event_errors
 from run import HERE
 from safety import save_json, compare_payload, visit_errors
-from scenarios import file_sha256
+from scenarios import file_sha256, profiles_for_run
 
 ROOT = HERE.parents[1]
 sys.path.insert(0,str(ROOT/'backend'))
@@ -108,7 +108,7 @@ def verify_periods(args):
         def check(value,message):
             if not value: errors.append(message)
         check(baseline['fingerprint']==state['fingerprint'],'Campaign settings changed')
-        check(file_sha256(HERE.parent/'personas.json')==state['fingerprint']['profiles_sha256'],'Profiles changed')
+        check(file_sha256(profiles_for_run(directory,HERE.parent/'personas.json'))==state['fingerprint']['profiles_sha256'],'Profiles changed')
         source=HERE/'artifacts'/state['fingerprint']['source_run']/'state.json'
         check(file_sha256(source)==state['fingerprint']['source_sha256'],'Original account state changed')
         check(synthetic_users==baseline['synthetic_user_ids'],'Synthetic account set changed; no signup was expected')

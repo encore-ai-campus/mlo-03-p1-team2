@@ -12,6 +12,7 @@ Profiles are analysis fixtures, not signup payloads (no passwords or consent).
 """
 
 import argparse
+import copy
 from collections import Counter
 import json
 from itertools import product
@@ -216,6 +217,49 @@ def positive_integer(value: str) -> int:
     if number <= 0:
         raise argparse.ArgumentTypeError("count must be a positive integer")
     return number
+
+
+def expand_personas(data: dict, target: int, seed: int = 42) -> dict:
+    """Append new identities without regenerating or mutating existing users."""
+    validate_dataset(data)
+    if type(target) is not int or not len(data['users']) <= target <= len(NAME_POOL):
+        raise ValueError('Target must preserve existing users and fit the name pool')
+    result = copy.deepcopy(data)
+    if target == len(result['users']):
+        return result
+    rng = random.Random(f'{seed}:append-v1:{len(data["users"])}:{target}')
+    used_names = {u['name'] for u in result['users']}
+    names = [n for n in NAME_POOL if n not in used_names]
+    rng.shuffle(names)
+    used_emails = {u['email'] for u in result['users']}
+    used_ids = {u['id'] for u in result['users']}
+    mbtis = Counter(u['mbti'] for u in result['users'])
+    personas = Counter(u['persona'] for u in result['users'])
+    number = len(result['users'])
+    while len(result['users']) < target:
+        number += 1
+        email = f'persona{number:04d}@example.com'
+        identity = str(uuid.uuid5(ID_NAMESPACE, f'append-v1:{seed}:{number}'))
+        if email in used_emails or identity in used_ids:
+            continue
+        mbti = rng.choice([m for m in MBTI_TYPES if mbtis[m] == min(mbtis[x] for x in MBTI_TYPES)])
+        persona = rng.choice([p for p in PERSONA_WEIGHTS if personas[p] == min(personas[x] for x in PERSONA_WEIGHTS)])
+        weights = category_weights(persona, rng)
+        preferred = sorted(CATEGORIES, key=lambda c: -weights[c])[:2]
+        companion, frequency, discovery = rng.choice(STYLE_OPTIONS)
+        style = dict(companion=companion, attendance_frequency=frequency, discovery_style=discovery)
+        result['users'].append(dict(id=identity, name=names.pop(), email=email, mbti=mbti,
+                                    persona=persona, preferred_categories=preferred,
+                                    category_weights=weights, viewing_style=style,
+                                    bio=profile_bio(preferred, style)))
+        mbtis[mbti] += 1
+        personas[persona] += 1
+        used_emails.add(email)
+        used_ids.add(identity)
+    result['metadata']['count'] = target
+    result['metadata']['expansion_version'] = 'append-v1'
+    validate_dataset(result)
+    return result
 
 
 def main() -> int:

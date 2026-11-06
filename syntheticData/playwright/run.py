@@ -18,7 +18,7 @@ from urllib.parse import parse_qs, urlsplit
 from urllib.request import Request, urlopen
 import uuid
 
-from scenarios import build_plan, check_resume, file_sha256, session_pending, tag_events
+from scenarios import build_plan, check_resume, file_sha256, session_pending, tag_events, profiles_for_run
 from safety import save_json, safe_message, run_bounded, visit_errors, check_server_identity
 from transport import OBSERVE_TRACKING, DRAIN_TRACKING
 
@@ -38,7 +38,8 @@ class Campaign:
         self.directory = HERE / 'artifacts' / args.run_id
         self.directory.mkdir(parents=True, exist_ok=True)
         self.path = self.directory / 'state.json'
-        fingerprint = {'base_url': args.base_url.rstrip('/'), 'profiles_sha256': file_sha256(PROFILES),
+        self.profile_path = profiles_for_run(self.directory, PROFILES)
+        fingerprint = {'base_url': args.base_url.rstrip('/'), 'profiles_sha256': file_sha256(self.profile_path),
                        'seed': args.seed, 'collection': 'simulation', 'generator_version': '1.0'}
         if self.path.exists():
             self.state = json.loads(self.path.read_text(encoding='utf-8'))
@@ -48,7 +49,7 @@ class Campaign:
                           'started_at': datetime.now(timezone.utc).isoformat(),
                           'password': secrets.token_urlsafe(24), 'accounts': {}}
             self.save()
-        self.plans = build_plan(json.loads(PROFILES.read_text(encoding='utf-8'))['users'], args.seed)
+        self.plans = build_plan(json.loads(self.profile_path.read_text(encoding='utf-8'))['users'], args.seed)
 
     def check_server(self):
         self.server = json.loads((self.directory / 'server.json').read_text(encoding='utf-8'))

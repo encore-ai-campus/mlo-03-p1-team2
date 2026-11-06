@@ -12,7 +12,7 @@ from pathlib import Path
 import sys
 from urllib.parse import urlsplit
 
-from scenarios import file_sha256
+from scenarios import file_sha256, profiles_for_run
 from safety import compare_payload, visit_errors
 
 
@@ -47,9 +47,10 @@ def verify(args):
     state = json.loads((directory / 'state.json').read_text(encoding='utf-8'))
     if state['fingerprint']['collection'] != 'simulation':
         raise ValueError('Wrong campaign collection')
-    if state['fingerprint']['profiles_sha256'] != file_sha256(HERE.parent / 'personas.json'):
+    profile_path = profiles_for_run(directory, HERE.parent / 'personas.json')
+    if state['fingerprint']['profiles_sha256'] != file_sha256(profile_path):
         raise ValueError('Profile input changed')
-    profiles = json.loads((HERE.parent / 'personas.json').read_text(encoding='utf-8'))['users'][:args.count]
+    profiles = json.loads(profile_path.read_text(encoding='utf-8'))['users'][:args.count]
     accounts = [state['accounts'][p['id']] for p in profiles]
     if len(accounts) != args.count or any(not a['user_id'] for a in accounts):
         raise ValueError('Missing account mappings')
