@@ -7,10 +7,46 @@ from pathlib import Path
 from unittest.mock import patch
 
 from syntheticData.playwright.load_control import Metrics
-from syntheticData.playwright.load_test import Campaign, stage_plan, spike_vus, write_report
+from syntheticData.playwright.load_test import Campaign, stage_plan, spike_vus, write_report, email, auth_resume_allowed, token_activation_delay
 
 
 class RunTests(unittest.TestCase):
+    def test_fresh_tokens_wait_past_issuance_but_large_clock_skew_fails_closed(self):
+        import json
+        import base64
+        def token(iat):
+            return 'header.' + base64.urlsafe_b64encode(json.dumps({'iat': iat}).encode()).decode().rstrip('=') + '.signature'
+        self.assertAlmostEqual(token_activation_delay(token(100), 99.994), .106, places=3)
+        self.assertEqual(token_activation_delay(token(100), 101), 0)
+        with self.assertRaises(RuntimeError):
+            token_activation_delay(token(200), 100)
+
+    def test_new_profiles_do_not_reuse_the_legacy_signup_namespace(self):
+        self.assertEqual(email({'email': 'persona0100@example.com'}), 'persona0100+synthetic@example.com')
+        self.assertEqual(email({'email': 'persona0101@example.com'}), 'persona0101+synthetic-load@example.com')
+        self.assertEqual(email({'email': 'persona0300@example.com'}), 'persona0300+synthetic-load@example.com')
+
+    def test_only_audited_account_only_failures_can_resume(self):
+        state = dict(started_at='2026-11-06T21:01:27+09:00', stages=[], reservations=[],
+                     stop_reason='ApiFailure: POST /auth/login: HTTP 401',
+                     evidence={'deltas': {'users': 0, 'reservations': 0, 'tracking': 100}, 'total': 100, 'issues': []})
+        budget = dict(committed=[100, 100], pending={})
+        self.assertTrue(auth_resume_allowed(state, budget))
+        state['reservations'] = ['already-written']
+        self.assertFalse(auth_resume_allowed(state, budget))
+        state['reservations'] = []
+        budget['pending'] = {'unknown': [5, 0]}
+        self.assertFalse(auth_resume_allowed(state, budget))
+
+    def test_account_creation_io_failure_requires_exact_database_ledger_match(self):
+        state = dict(started_at='2026-11-06T21:01:27+09:00', stages=[], reservations=[],
+                     stop_reason='Local state I/O error: PermissionError',
+                     evidence={'deltas': {'users': 185, 'reservations': 0, 'tracking': 568}, 'total': 753, 'issues': []})
+        budget = dict(committed=[753, 568], pending={})
+        self.assertTrue(auth_resume_allowed(state, budget))
+        state['evidence']['deltas']['users'] = 186
+        self.assertFalse(auth_resume_allowed(state, budget))
+
     def test_existing_browser_campaign_is_rejected_before_any_artifact_write(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)

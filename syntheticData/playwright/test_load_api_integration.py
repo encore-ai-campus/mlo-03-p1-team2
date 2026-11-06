@@ -24,7 +24,7 @@ from app.db.base import Base
 from app.db.session import get_db
 from app.db.mongo import get_event_collection
 from app.db.seed import seed
-from app.models import User, Reservation, Payment, StatusHistory, Event
+from app.models import User, Reservation, Payment, StatusHistory, Event, Favorite
 
 
 class MemoryMongo:
@@ -87,12 +87,29 @@ class ApiIntegrationTests(unittest.IsolatedAsyncioTestCase):
                     for _ in range(2):
                         await api.call('POST', '/tracking/events', token=account['token'],
                                        payload={'events': events}, total=1, tracking=1, expected=(202,))
+                    self.assertEqual(campaign.budget.used(), (20, 7))
+                    # Favorite add/remove creates one row even though its final
+                    # resident count is zero; search and tracking must also work.
+                    await campaign.visit(account, 13, 'mixed')
+                    self.assertEqual(len(campaign.state['favorite_removals']), 1)
+                    # Cover cancellation both before and after a mock payment.
+                    await campaign.visit(account, 78, 'mixed', 'city')
+                    await campaign.visit(account, 79, 'mixed', 'city')
+                    # A preexisting favorite is never removed by this workload.
+                    with Session(engine) as db:
+                        db.add(Favorite(user_id=signed['user']['id'], performance_id='baseball'))
+                        db.commit()
+                    account['favorites'].add('baseball')
+                    await campaign.visit(account, 15, 'mixed', 'baseball')
+                    self.assertEqual(len(campaign.state['favorite_removals']), 1)
                 with Session(engine) as db:
                     total = sum(db.scalar(select(func.count()).select_from(model))
-                                for model in (User, Reservation, Payment, StatusHistory, Event))
-                    self.assertEqual(db.scalar(select(func.count()).select_from(Reservation)), 1)
-                self.assertEqual(campaign.budget.used(), (total + len(mongo.docs), len(mongo.docs)))
-                self.assertEqual(campaign.budget.used(), (19, 6))
+                                for model in (User, Reservation, Payment, StatusHistory, Event, Favorite))
+                    self.assertEqual(db.scalar(select(func.count()).select_from(Reservation)), 3)
+                    self.assertTrue(all(r.status == 'CANCELLED' for r in db.scalars(select(Reservation))))
+                    self.assertIsNotNone(db.get(Favorite, (signed['user']['id'], 'baseball')))
+                expected_total = total - 1 + len(mongo.docs) + len(campaign.state['favorite_removals'])
+                self.assertEqual(campaign.budget.used(), (expected_total, len(mongo.docs)))
         finally:
             app.dependency_overrides.clear()
             app.dependency_overrides.update(previous)

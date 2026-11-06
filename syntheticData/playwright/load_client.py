@@ -32,7 +32,7 @@ class Api:
             status = response.status_code
             if status not in expected:
                 raise ApiFailure(f'{method} {label or path}: HTTP {status}')
-            data = response.json()
+            data = None if status == 204 else response.json()
             actual_total, actual_tracking = total, tracking
             if status == 409 and 409 in expected:
                 actual_total = actual_tracking = 0

@@ -47,9 +47,13 @@ class Evidence:
         result['tracking'] = self.collection.count_documents({'props.synthetic_run_id': self.run_id})
         return result
 
-    def verify(self, baseline, reservation_ids):
+    def verify(self, baseline, reservation_ids, removed_favorites=0):
         counts = self.counts()
         deltas = {k: counts[k] - baseline[k] for k in counts}
+        net_deltas = dict(deltas)
+        # Only favorites created by this run may be removed. They still count
+        # towards cumulative generated rows and must never refund the write cap.
+        deltas['favorites'] += removed_favorites
         issues = []
         states, business_events = {}, {}
         if any(v < 0 for v in deltas.values()):
@@ -68,7 +72,8 @@ class Evidence:
             business_events = {r['type']: r['n'] for r in self.query(
                 'SELECT type,COUNT(*) AS n FROM events WHERE reservation_id IN :ids GROUP BY type',
                 ids=list(reservation_ids))}
-        return dict(counts=counts, deltas=deltas, total=sum(deltas.values()), issues=issues,
+        return dict(counts=counts, deltas=deltas, net_deltas=net_deltas, total=sum(deltas.values()), issues=issues,
+                    retained_total=sum(net_deltas.values()),
                     reservation_states=states, business_events=business_events)
 
     def close(self):

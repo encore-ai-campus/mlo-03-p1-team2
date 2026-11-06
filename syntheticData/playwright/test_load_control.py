@@ -1,12 +1,39 @@
 import asyncio
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
-from syntheticData.playwright.load_control import Budget, BudgetExceeded, Metrics, stage_limit
+from syntheticData.playwright.load_control import Budget, BudgetExceeded, Metrics, stage_limit, save
 
 
 class BudgetTests(unittest.IsolatedAsyncioTestCase):
+    async def test_failed_persistence_cannot_admit_a_request_or_consume_phantom_rows(self):
+        with tempfile.TemporaryDirectory() as d:
+            b = Budget(Path(d) / 'budget.json')
+            with patch('syntheticData.playwright.load_control.save', side_effect=PermissionError):
+                with self.assertRaises(PermissionError):
+                    b.reserve(2, 2)
+            self.assertEqual(b.used(), (0, 0))
+
+    async def test_transient_windows_replace_lock_is_retried_before_admitting_write(self):
+        import os
+        import json
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'state.json'
+            save(path, {'value': 'old'})
+            replace = os.replace
+            attempts = []
+            def locked_once(source, target):
+                attempts.append(1)
+                if len(attempts) == 1:
+                    raise PermissionError('transient reader lock')
+                return replace(source, target)
+            with patch('syntheticData.playwright.load_control.os.replace', locked_once):
+                save(path, {'value': 'new'})
+            self.assertEqual(json.loads(path.read_text())['value'], 'new')
+            self.assertEqual(len(attempts), 2)
+
     async def test_parallel_writers_cannot_overrun_global_limit(self):
         with tempfile.TemporaryDirectory() as d:
             budget = Budget(Path(d) / 'budget.json', total_limit=10, tracking_limit=6)

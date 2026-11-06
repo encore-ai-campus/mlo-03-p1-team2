@@ -6,18 +6,26 @@ never refund an uncertain outcome. No credentials are stored here.
 import json
 import math
 import os
+import time
 import uuid
 from collections import defaultdict
 
 
 def save(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
-    temp = path.with_suffix(path.suffix + '.tmp')
+    temp = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
     with temp.open('w', encoding='utf-8') as stream:
         json.dump(value, stream, ensure_ascii=False, indent=2)
         stream.flush()
         os.fsync(stream.fileno())
-    os.replace(temp, path)
+    for attempt in range(8):
+        try:
+            os.replace(temp, path)
+            return
+        except PermissionError:
+            if attempt == 7:
+                raise
+            time.sleep(min(.025 * 2**attempt, .5))
 
 
 class BudgetExceeded(RuntimeError):
@@ -46,7 +54,12 @@ class Budget:
             raise BudgetExceeded('Shared database write budget reached')
         ticket = str(uuid.uuid4())
         self.data['pending'][ticket] = [total, tracking]
-        save(self.path, self.data)
+        try:
+            save(self.path, self.data)
+        except OSError:
+            # Admission failed before any HTTP request could be sent.
+            del self.data['pending'][ticket]
+            raise
         return ticket
 
     def settle(self, ticket, total, tracking=0):

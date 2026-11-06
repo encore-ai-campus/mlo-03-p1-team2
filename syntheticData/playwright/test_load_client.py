@@ -9,6 +9,16 @@ from syntheticData.playwright.load_control import Budget, Metrics
 
 
 class ClientTests(unittest.IsolatedAsyncioTestCase):
+    async def test_favorite_204_success_is_not_parsed_as_json(self):
+        with tempfile.TemporaryDirectory() as d:
+            budget = Budget(Path(d) / 'b.json')
+            async with httpx.AsyncClient(transport=httpx.MockTransport(
+                    lambda req: httpx.Response(204))) as client:
+                api = Api(client, 'https://example.test', budget, Metrics(), Path(d) / 'requests.jsonl')
+                result = await api.call('PUT', '/favorites/city', total=1, expected=(204,))
+            self.assertIsNone(result)
+            self.assertEqual(budget.used(), (1, 0))
+
     async def test_tracking_counts_only_inserted_documents(self):
         with tempfile.TemporaryDirectory() as d:
             budget = Budget(Path(d) / 'b.json')
