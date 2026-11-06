@@ -153,14 +153,14 @@ flowchart TB
 서비스의 데이터베이스 테이블과 관계를 나타냅니다.
 
 주요 테이블:
-- `users`
-- `performances`
-- `performance_schedules`
-- `orders`
-- `payments`
+- `users`: 회원 기본정보, 로그인 정보 및 MBTI 관리
+- `orders`: 공연 주문 내역, 주문 금액 및 주문 상태 관리
+- `events`: 사용자 활동 및 예매 관련 이벤트 로그 관리
+- `payments`: 결제 금액, 결제 상태 및 결제 처리 이력 관리
+- `performances`: 공연 기본정보, 카테고리, 장소, 일정 및 가격 관리
+- `reservations`: 공연 예매 정보, 좌석 등급, 수량 및 예매 상태 관리
 
-**추후 ERD 이미지 추가 예정**
-<img width="562" height="747" alt="image" src="https://github.com/user-attachments/assets/3c980295-c06b-4966-99ef-517c266d0d35" />
+<img width="566" height="1024" alt="image" src="https://github.com/user-attachments/assets/533a4fa1-a554-40ac-bcde-88e611758815" />
 
 ---
 
