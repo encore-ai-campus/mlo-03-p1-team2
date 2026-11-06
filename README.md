@@ -13,7 +13,7 @@
 | <img src="https://github.com/hannyeee.png" width="120" alt="김한울"> | <img src="https://github.com/OZAM0415.png" width="120" alt="오정민"> | <img width="120" height="120" alt="정상효" src="https://github.com/user-attachments/assets/5680e383-1dcb-4e1c-9e58-77f838c24c88" />|
 | [@hannyeee](https://github.com/hannyeee) | [@OZAM0415](https://github.com/OZAM0415) | [@nomorehuman90](https://github.com/nomorehuman90) |
 | 예매 및 결제 관리 | 공연 관리 | 회원 관리 |
-| 팀장 1 | 팀장 2 | 팀장(진) 3 |
+| 팀장 1 | 팀장 2 | 팀장 3 |
 
 
 ---
@@ -27,8 +27,6 @@
 ### 2.2 프로젝트 소개
 
 Tikit은 콘서트, 뮤지컬, 스포츠, 전시, 클래식, 연극 등 다양한 공연 정보를 제공하고 예매할 수 있는 데이터 기반 공연 예매 플랫폼입니다.
-
-회원 관리, 공연 조회 및 검색, 예매와 모의 결제 기능을 구현하고, 서비스 이용 과정에서 발생하는 데이터를 수집·처리하여 데이터 분석에 활용하는 것을 목표로 합니다.
 
 ### 2.3 프로젝트 필요성
 
@@ -49,23 +47,32 @@ Tikit은 콘서트, 뮤지컬, 스포츠, 전시, 클래식, 연극 등 다양�
 
 ## 03. 🛠 기술 스택
 
-| 구분 | 기술 | 역할 |
-|---|---|---|
-| 언어 | Python, SQL | 백엔드 개발 및 데이터 조회·처리 |
-| 백엔드 | FastAPI | API 및 서비스 로직 처리 |
-| 서비스 데이터 저장 | MariaDB | 회원·공연·예매·결제 데이터 저장 |
-| 이벤트 로그 저장 | MongoDB | 사용자 행동 이벤트 저장 (공연 조회·검색·예매 등) |
-| 데이터 처리 | 추후 확정 | 데이터 추출·정제·변환·적재 |
-| 데이터 분석 시각화 | 추후 확정 | 고객 행동 및 예매 데이터 분석 결과 시각화 |
-| 가상화 | VMware Workstation / Fusion | 물리 PC에서 Linux VM 실행 |
-| 운영체제 | Linux | VM의 서버 운영체제 |
-| 웹 서버 | Nginx | 외부 요청 수신, TLS 종료, FastAPI로 요청 전달 |
-| 프록시 | HAProxy | PC마다 1대씩 배치. 연결 경로는 미정 |
-| 메트릭 | Prometheus | Alloy 또는 서비스별 exporter의 메트릭 수집·저장 |
-| 로그 수집 | Grafana Alloy | 각 VM의 로그를 수집하여 Loki로 전송 |
-| 로그 저장 | Loki | 중앙 로그 저장 |
-| 운영 모니터링 시각화 | Grafana | 메트릭·로그 대시보드 |
-| 협업 | Git, GitHub | 버전 관리 및 협업 |
+### 📚 Skills
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-4479A1?style=for-the-badge)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+
+### ⚙️ Infra
+
+![VMware Workstation / Fusion](https://img.shields.io/badge/VMware_Workstation_%2F_Fusion-607078?style=for-the-badge)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
+![HAProxy](https://img.shields.io/badge/HAProxy-1E4B75?style=for-the-badge)
+
+### 📊 Monitoring
+
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
+![Grafana Alloy](https://img.shields.io/badge/Grafana_Alloy-F46800?style=for-the-badge)
+![Loki](https://img.shields.io/badge/Loki-F7B93E?style=for-the-badge)
+![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)
+
+### 🤝 Collaboration
+
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
 ---
 
@@ -155,14 +162,6 @@ flowchart TB
     GRAFANA -->|"조회"| PROM
     GRAFANA -->|"조회"| LOKI
 ```
-
-포함할 구성 요소:
-- 사용자 및 웹서비스
-- FastAPI 서버
-- MariaDB
-- 데이터 처리 파이프라인
-- 분석 및 시각화 시스템
-- 모니터링 환경
 
 ---
 
