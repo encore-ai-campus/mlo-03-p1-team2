@@ -10,7 +10,7 @@
 
 | 김한울 | 오정민 | 정상효 |
 |:---:|:---:|:---:|
-| <img src="https://github.com/user-attachments/assets/fb0b0b0f-60b8-4f1b-9035-baa75c7b5903" width="120" alt="김한울"> | <img src="https://github.com/OZAM0415.png" width="120" alt="오정민"> | <img width="120" height="120" alt="정상효" src="https://github.com/user-attachments/assets/5680e383-1dcb-4e1c-9e58-77f838c24c88" />|
+| <img src="https://github.com/user-attachments/assets/fb0b0b0f-60b8-4f1b-9035-baa75c7b5903" width="150" alt="김한울"> | <img src="https://github.com/OZAM0415.png" width="120" alt="오정민"> | <img width="120" height="120" alt="정상효" src="https://github.com/user-attachments/assets/5680e383-1dcb-4e1c-9e58-77f838c24c88" />|
 | [@hannyeee](https://github.com/hannyeee) | [@OZAM0415](https://github.com/OZAM0415) | [@nomorehuman90](https://github.com/nomorehuman90) |
 | 예매 및 결제 관리 | 공연 관리 | 회원 관리 |
 | 팀장 1 | 팀장 2 | 팀장 3 |
