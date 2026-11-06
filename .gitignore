@@ -229,4 +229,10 @@ __marimo__/
 
 node_modules/
 
+# Synthetic data browser automation
+/syntheticData/playwright/.venv/
+/syntheticData/playwright/.browsers/
+/syntheticData/playwright/artifacts/
+/syntheticData/playwright/__pycache__/
+
 
