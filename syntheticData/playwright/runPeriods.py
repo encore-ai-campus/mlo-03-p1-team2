@@ -11,7 +11,7 @@ import sys
 
 from periods import build_period_plan, period_tags, randomize_period_plan
 from run import Campaign, UserBrowser, HERE, PROFILES
-from scenarios import check_resume, file_sha256
+from scenarios import check_resume, file_sha256, profiles_for_run, save_profiles_snapshot
 from safety import save_json, run_bounded, safe_message, visit_errors, retained_favorites
 from transport import OBSERVE_TRACKING
 
@@ -24,15 +24,17 @@ class PeriodCampaign(Campaign):
         self.path = self.directory / 'state.json'
         source_path = HERE / 'artifacts' / args.source_run / 'state.json'
         source = json.loads(source_path.read_text(encoding='utf-8'))
-        digest = file_sha256(PROFILES)
+        self.profile_path = profiles_for_run(source_path.parent, PROFILES)
+        digest = file_sha256(self.profile_path)
         if source['fingerprint']['profiles_sha256'] != digest:
             raise ValueError('Source accounts do not match the current profiles')
-        self.plans = build_period_plan(json.loads(PROFILES.read_text(encoding='utf-8'))['users'],
+        save_profiles_snapshot(self.directory, self.profile_path)
+        self.plans = build_period_plan(json.loads(self.profile_path.read_text(encoding='utf-8'))['users'],
                                        args.start,args.days,args.visits,args.seed)
         if len(self.plans) != 100:
             raise ValueError('This campaign is restricted to the existing 100 personas')
         fingerprint = {'base_url':args.base_url,'profiles_sha256':digest,'seed':args.seed,
-                       'collection':'simulation','generator_version':'periods-1.0',
+                       'collection':'events','generator_version':'periods-1.0',
                        'source_run':args.source_run,'source_sha256':file_sha256(source_path),
                        'period_start':args.start.isoformat(),'days':args.days,'visits_per_user':args.visits}
         if self.path.exists():
@@ -56,7 +58,7 @@ class PeriodCampaign(Campaign):
             self.state = {'run_id':args.run_id,'synthetic':True,'fingerprint':fingerprint,
                           'started_at':datetime.now(timezone.utc).isoformat(),
                           'password':source['password'],'accounts':accounts}
-            self.plans=randomize_period_plan(json.loads(PROFILES.read_text(encoding='utf-8'))['users'],
+            self.plans=randomize_period_plan(json.loads(self.profile_path.read_text(encoding='utf-8'))['users'],
                                              accounts,args.start,args.days,100*args.visits,args.seed)
             save_json(self.directory/'plan.json',self.plans)
             self.state['fingerprint'].update(visit_policy='random-frequency-v1',target_visits=100*args.visits,
@@ -177,7 +179,7 @@ def change_to_random_schedule(campaign):
     if any(v['status']!='complete' for a in campaign.state['accounts'].values() for v in a['sessions'].values()):
         raise ValueError('Finish audited interrupted visits before changing the schedule')
     old=copy.deepcopy(campaign.state['fingerprint'])
-    users=json.loads(PROFILES.read_text(encoding='utf-8'))['users']
+    users=json.loads(campaign.profile_path.read_text(encoding='utf-8'))['users']
     plans=randomize_period_plan(users,campaign.state['accounts'],campaign.args.start,campaign.args.days,
                                 100*campaign.args.visits,campaign.args.seed)
     save_json(campaign.directory/'previous-fixed-plan.json',campaign.plans)
@@ -211,7 +213,7 @@ async def execute_periods(args):
         return
     baseline = campaign.directory / 'period-baseline.json'
     if not baseline.exists():
-        raise ValueError('Run verify_periods.py --baseline before browser actions')
+        raise ValueError('Run verifyPeriods.py --baseline before browser actions')
     campaign.check_pilot()
     campaign.check_server()
     from playwright.async_api import async_playwright

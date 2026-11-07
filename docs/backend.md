@@ -1,9 +1,12 @@
 # TIKIT 백엔드 API
 
-`sample/dist` 시연 프론트엔드가 브라우저(localStorage/sessionStorage)에 저장하던 계정·로그인·예매·찜·조회 기록을 서버에서 처리하는 백엔드입니다. `frontend/` 화면이 이 API를 사용합니다.
+`frontend/` 화면이 사용하는 FastAPI 백엔드입니다. 계정·인증·공연·예매·찜·마이페이지·관리자 API와 행동 이벤트 수집을 제공합니다.
+이 문서는 공통 구조·인증·실행 설정을 관리합니다. 기능별 상세 계약은
+[예매](booking.md), [마이페이지](mypageApi.md), [관리자](admin.md),
+[행동 이벤트](eventTracking.md)를 참고하세요.
 
 - 프레임워크: FastAPI
-- DB: MySQL 8 (SQLAlchemy 2.0 + PyMySQL), 마이그레이션은 Alembic
+- DB: MariaDB/MySQL (SQLAlchemy 2 + PyMySQL), 마이그레이션은 Alembic. 행동 로그는 MongoDB
 - 인증: JWT Bearer 토큰 (PyJWT), 비밀번호 해시는 Argon2 (pwdlib)
 - 검증: Pydantic v2
 - 테스트: pytest + FastAPI TestClient (인메모리 SQLite)
@@ -20,8 +23,11 @@ backend/
 ├─ alembic/
 │  ├─ env.py                 DATABASE_URL을 앱 설정에서 읽어 마이그레이션 실행
 │  ├─ script.py.mako         마이그레이션 파일 템플릿
-│  └─ versions/0001_initial.py   최초 스키마 (5개 테이블)
-│     └─ 0002_reservations.py    예매·결제·상태 이력 테이블 (docs/booking.md)
+│  └─ versions/
+│     ├─ 0001_initial.py        최초 스키마 (5개 테이블)
+│     ├─ 0002_reservations.py    예매·결제·상태 이력 테이블
+│     ├─ 0003_notification_settings.py   계정별 알림 설정
+│     └─ 0004_admin_role.py      관리자 권한
 ├─ app/
 │  ├─ main.py                FastAPI 앱, CORS, 라우터 등록, /health
 │  ├─ core/
@@ -37,20 +43,23 @@ backend/
 │  └─ api/
 │     ├─ deps.py             DB 세션·현재 사용자 의존성
 │     ├─ router.py           /api/v1 하위 라우터 묶음
-│     └─ routes/             auth, users, performances, orders, reservations, favorites, events
+│     └─ routes/             auth, users, mypage, performances, orders, reservations, favorites, events, tracking, admin
 └─ tests/
    ├─ conftest.py            테스트용 SQLite DB, 클라이언트, 로그인 픽스처
    ├─ test_auth.py           회원가입·로그인·인증 테스트
    ├─ test_profile.py        회원 정보 수정·비밀번호 변경 테스트
    ├─ test_booking.py        공연·예매·찜·이벤트·내보내기·탈퇴 테스트
-   └─ test_reservations.py   예매 → 결제 → 취소 흐름 테스트
+   ├─ test_reservations.py   예매 → 결제 → 취소 흐름 테스트
+   ├─ test_mypage.py         리포트·알림 설정·계정 격리
+   └─ test_tracking.py       MongoDB 행동 로그 수집
 ```
 
 ---
 
 ## 2. 데이터 모델
 
-[sample.md](sample.md)에 정리된 localStorage 필드를 테이블로 옮겼습니다.
+업무 데이터는 관계형 DB에 저장하며, MongoDB 행동 로그와 구분합니다.
+아래의 기존 저장 위치는 이전 시연판에서 옮겨 온 필드를 설명하는 이력입니다.
 
 | 테이블 | 기존 저장 위치 | 주요 컬럼 |
 |---|---|---|
@@ -63,6 +72,9 @@ backend/
 - `orders`, `events`, `favorites`의 `user_id`는 `ON DELETE CASCADE`로 연결되어 회원 탈퇴 시 함께 삭제됩니다.
 - 주문에 공연명·장소 등을 복사해 두어, 공연 정보가 바뀌어도 예매 당시 내역이 보존됩니다.
 - 공연 날짜 목록은 `start_date`부터 `days`일 동안으로 계산합니다(`Performance.available_dates`).
+- 현재 신규 예매는 `reservations`, `payments`, `status_history`를 사용합니다.
+  `orders`는 이전 즉시 모의 결제 내역과의 호환용입니다. 상태·금액·이력은 [예매 명세](booking.md),
+  `notification_settings`는 [마이페이지](mypageApi.md), MongoDB 계약은 [행동 이벤트](eventTracking.md)를 따릅니다.
 
 ---
 
@@ -80,18 +92,24 @@ backend/
 | GET | `/performances` | – | 공연 목록. `category`, `q`(검색어), `sort`(`popular`/`date`/`price`) |
 | GET | `/performances/ranking` | – | 예매 수 → 조회 수 순 랭킹 (`limit` 기본 5) |
 | GET | `/performances/{id}` | – | 공연 상세 + 예매 가능 날짜 목록 |
-| POST | `/orders` | 필요 | 모의 예매 생성 |
+| POST | `/orders` | 필요 | 이전 방식의 즉시 모의 결제 생성 (호환용) |
 | GET | `/orders` | 필요 | 내 예매 내역 (최신순) |
+| POST / GET | `/reservations` | 필요 | 신규 예매 요청 / 내 예매 목록 |
+| POST | `/reservations/{id}/complete` | 필요 | 모의 결제 완료 |
+| POST | `/reservations/{id}/cancel` | 필요 | 예매·모의 결제 취소 |
+| GET | `/payments` | 필요 | 내 결제 목록 |
 | GET | `/favorites` | 필요 | 찜 목록 (공연 ID 배열) |
 | PUT | `/favorites/{id}` | 필요 | 찜 추가 (중복 요청해도 안전) |
 | DELETE | `/favorites/{id}` | 필요 | 찜 해제 |
-| POST | `/events` | 선택 | 공연 조회 기록. 비로그인도 가능 |
+| POST | `/events` | 선택 | 공연 조회·예매 시작 업무 이벤트. 비로그인도 가능 |
+| POST | `/tracking/events` | 선택 | MongoDB 행동 로그 배치 수집 |
 | GET | `/health` | – | 서버 상태 확인 (`/api/v1` 밖) |
 
 로그인이 필요한 요청은 헤더에 `Authorization: Bearer <access_token>`을 넣습니다. 서버 실행 후 http://localhost:8000/docs 에서 직접 호출해 볼 수 있습니다.
 
 관리자 전용 공연 CRUD는 `/api/v1/admin/performances`에서 제공합니다.
 적용 전에 `0004` 마이그레이션이 필요하며 관리자 지정과 상세 API는 [관리자 공연 관리](admin.md)를 참고하세요.
+마이페이지의 리포트·알림 API와 집계 기준은 [mypageApi.md](mypageApi.md)를 따릅니다.
 
 ---
 
@@ -118,13 +136,12 @@ backend/
 - `PUT /users/me/password`는 현재 비밀번호 확인(틀리면 `403`), 새 비밀번호 8~128자·확인 일치(`422`), 현재와 같은 비밀번호 거절(`400`)
 - 비밀번호를 바꿔도 이미 발급된 토큰은 만료 시간까지 유효합니다. 즉시 다른 기기를 로그아웃시키려면 토큰 무효화 기능이 추가로 필요합니다.
 
-### 4-4. 예매 (`app/api/routes/orders.py`)
-- 클라이언트는 공연 ID, 날짜, 회차, 좌석 등급, 수량, 결제 방법만 보냅니다.
-- **금액은 서버가 계산합니다.** `단가 = DB의 공연 가격 + (프리미엄석이면 30,000원)`, `총액 = 단가 × 수량`
-- 없는 공연 `404`, 공연 기간 밖 날짜·없는 회차·수량 1~4 밖·잘못된 등급/결제 방법 `422`
-- 저장 시 `status=MOCK_PAID`, `is_mock=true`로 기록하고, 같은 트랜잭션에서 `mock_purchase` 이벤트도 남깁니다.
-- 좌석 재고와 좌석 번호는 관리하지 않습니다(등급만 선택).
-- 수치 규칙(프리미엄 추가금, 최대 수량, 결제 방법, MBTI 목록, 분류)은 `app/core/config.py`에 모아 두었습니다.
+### 4-4. 예매 (`app/api/routes/reservations.py`, `orders.py`)
+
+신규 화면은 `app/api/routes/reservations.py`의 예매 → 결제 → 취소 흐름을 사용합니다.
+금액은 서버가 계산하며 같은 요청 키의 재시도는 중복 예매를 만들지 않습니다.
+`orders.py`는 이전 즉시 모의 결제 경로로 유지합니다.
+상태 전이·오류 코드·동시성·데이터 모델·화면 흐름은 [booking.md](booking.md)에서 관리합니다.
 
 ### 4-5. 공연 목록·랭킹 (`app/api/routes/performances.py`)
 - `category`: `전체`이거나 없으면 전체 목록 / `q`: 공연명·장소·분류 부분 일치 검색
@@ -187,6 +204,9 @@ Run → Edit Configurations → `+` → Python
 | `JWT_EXPIRE_MINUTES` | `60` | 토큰 유효 시간(분) |
 | `CORS_ORIGINS` | `["http://localhost:5173"]` | 프록시 없이 직접 호출할 때 허용할 프론트 주소 |
 
+MongoDB 연결·컬렉션 환경 변수는 [행동 이벤트 설정](eventTracking.md#설정-backendenv)을 참고하세요.
+실서버 HAProxy·nginx·TLS 연결은 [서버 연결 가이드](FrontToBackSetting.md)에서 관리합니다.
+
 `.env`에는 실제 DB 비밀번호가 들어가므로 커밋하지 않습니다(`.gitignore`에 포함).
 
 ---
@@ -197,7 +217,8 @@ Run → Edit Configurations → `+` → Python
 .venv\Scripts\python -m pytest -q
 ```
 
-MySQL 없이 인메모리 SQLite에서 실행되며, 현재 21개 모두 통과합니다.
+관계형 DB 검사는 인메모리 SQLite를 사용합니다. MongoDB 수집 검사는 대체 컬렉션을 사용합니다.
+실제 서버 성능 검증과는 별개이며 테스트 개수·통과 여부는 실행 시 출력으로 확인합니다.
 - 회원가입: 성공·이메일 소문자 정규화, 중복 이메일 `409`, 비밀번호 불일치·동의 누락·잘못된 MBTI·짧은 비밀번호 `422`, 오류 응답에 비밀번호 미포함
 - 로그인: 성공, 틀린 비밀번호·없는 이메일 `401`(같은 메시지), 토큰 없음·잘못된 토큰 `401`
 - 회원 정보 수정: 닉네임·MBTI 변경, 이메일 변경 시 현재 비밀번호 확인, 중복 이메일 `409`, 비밀번호 변경 후 새 비밀번호로만 로그인
@@ -210,5 +231,5 @@ MySQL 없이 인메모리 SQLite에서 실행되며, 현재 21개 모두 통과�
 
 - 이메일 인증, 비밀번호 재설정(찾기), 토큰 갱신(refresh token)
 - 비밀번호 변경·로그아웃 시 기존 토큰 즉시 무효화
-- 좌석 재고·좌석 번호 관리, 예매 취소·환불 API
+- 좌석 재고·좌석 번호 관리, 실제 결제·환불 연동 (모의 결제·취소는 구현됨)
 - 공연 일정과 가격은 시연 데이터입니다.

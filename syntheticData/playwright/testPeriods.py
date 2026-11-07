@@ -6,7 +6,8 @@ import unittest
 
 from periods import build_period_plan, period_tags, aggregate_periods, transaction_snapshot, transaction_event_errors, allocate_visit_counts, randomize_period_plan
 
-USERS = json.loads((Path(__file__).resolve().parents[1] / 'personas.json').read_text(encoding='utf-8'))['users']
+# This suite verifies the original 100-person historical campaign.
+USERS = json.loads((Path(__file__).resolve().parents[1] / 'personas.json').read_text(encoding='utf-8'))['users'][:100]
 
 
 class PeriodTests(unittest.TestCase):

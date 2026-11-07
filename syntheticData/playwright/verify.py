@@ -12,8 +12,8 @@ from pathlib import Path
 import sys
 from urllib.parse import urlsplit
 
-from scenarios import file_sha256
-from safety import compare_payload, visit_errors
+from scenarios import file_sha256, profiles_for_run
+from safety import compare_payload, visit_errors, campaign_collection
 
 
 HERE = Path(__file__).resolve().parent
@@ -31,25 +31,25 @@ def verify(args):
     settings = Settings(_env_file=ROOT / 'backend' / '.env')
     mongo = MongoClient(settings.mongodb_url, serverSelectionTimeoutMS=5000, tz_aware=True)
     db = mongo[settings.mongodb_db]
-    collection = db['simulation']
+    directory = HERE / 'artifacts' / args.run_id if not args.preflight else None
+    state = json.loads((directory / 'state.json').read_text(encoding='utf-8')) if directory else None
+    collection_name = campaign_collection(state)
+    collection = db[collection_name]
     engine = create_engine(settings.database_url, pool_pre_ping=True)
     host = urlsplit(settings.mongodb_url)
     with engine.connect() as connection:
         version = connection.execute(text('SELECT VERSION()')).scalar_one()
     print(json.dumps({'sql_version': version, 'mongo_host': host.hostname,
                       'mongo_port': host.port, 'mongo_db': settings.mongodb_db,
-                      'mongo_collection': 'simulation'}, ensure_ascii=False))
+                      'mongo_collection': collection_name}, ensure_ascii=False))
     mongo.admin.command('ping')
     if args.preflight:
         print('Read-only connection preflight passed')
         return
-    directory = HERE / 'artifacts' / args.run_id
-    state = json.loads((directory / 'state.json').read_text(encoding='utf-8'))
-    if state['fingerprint']['collection'] != 'simulation':
-        raise ValueError('Wrong campaign collection')
-    if state['fingerprint']['profiles_sha256'] != file_sha256(HERE.parent / 'personas.json'):
+    profile_path = profiles_for_run(directory, HERE.parent / 'personas.json')
+    if state['fingerprint']['profiles_sha256'] != file_sha256(profile_path):
         raise ValueError('Profile input changed')
-    profiles = json.loads((HERE.parent / 'personas.json').read_text(encoding='utf-8'))['users'][:args.count]
+    profiles = json.loads(profile_path.read_text(encoding='utf-8'))['users'][:args.count]
     accounts = [state['accounts'][p['id']] for p in profiles]
     if len(accounts) != args.count or any(not a['user_id'] for a in accounts):
         raise ValueError('Missing account mappings')
@@ -62,7 +62,7 @@ def verify(args):
         expected_records.append(json.loads(line))
     event_ids = {r['event']['event_id'] for r in expected_records}
     actual_events = {r['event_id']: r for r in collection.find({'event_id': {'$in': list(event_ids)}})}
-    check(len(actual_events) == len(event_ids), 'Missing acknowledged events in simulation')
+    check(len(actual_events) == len(event_ids), f'Missing acknowledged events in {collection_name}')
     user_ids = [a['user_id'] for a in accounts]
     with Session(engine) as session:
         users = {u.id: u for u in session.scalars(select(User).where(User.id.in_(user_ids)))}
@@ -132,14 +132,16 @@ def verify(args):
                   and actual['anonymous_id'] == account['anonymous_id']
                   and actual.get('user_id') == (account['user_id'] if record['authenticated'] else None),
                   f'Mongo tag/user mismatch: {eid}')
-        leaked = db['events'].count_documents({'props.synthetic_run_id': args.run_id})
-        check(leaked == 0, 'Campaign logs leaked into the original events collection')
+        other_collection = 'simulation' if collection_name == 'events' else 'events'
+        leaked = db[other_collection].count_documents({'props.synthetic_run_id': args.run_id})
+        check(leaked == 0, f'Campaign logs found outside {collection_name}')
         check(collection.count_documents({'props.synthetic_run_id': args.run_id}) == len(actual_events),
               'Some campaign events have no acknowledged outbound evidence')
         baseline_path = HERE / 'artifacts' / 'baseline.json'
         if baseline_path.exists():
             for relative, digest in json.loads(baseline_path.read_text(encoding='utf-8')).items():
-                check(file_sha256(ROOT / relative) == digest, f'Existing file changed: {relative}')
+                check((ROOT / relative).is_file() and file_sha256(ROOT / relative) == digest,
+                      f'Existing file changed or removed: {relative}')
         report = {
             'run_id': args.run_id, 'fingerprint': state['fingerprint'], 'passed': not errors,
             'checked_at': datetime.now(timezone.utc).isoformat(), 'sql_version': version,
@@ -147,7 +149,7 @@ def verify(args):
             'favorites': len(favorites), 'reservations': len(reservations),
             'payment_statuses': dict(Counter(r.payment.status for r in reservations)),
             'sql_event_types': dict(Counter(e.type for e in sql_events)),
-            'mongo_db': settings.mongodb_db, 'mongo_collection': 'simulation',
+            'mongo_db': settings.mongodb_db, 'mongo_collection': collection_name,
             'mongo_events': len(actual_events),
             'mongo_event_types': dict(Counter(e['type'] for e in actual_events.values())),
             'original_events_leaked': leaked, 'errors': errors,

@@ -2,6 +2,8 @@
 
 import copy
 import hashlib
+import json
+from pathlib import Path
 import random
 
 
@@ -12,6 +14,30 @@ OUTCOME_WEIGHTS = {
     'monthly': (30, 25, 20, 5, 20),
     'frequent': (20, 25, 20, 5, 30),
 }
+
+
+def profiles_for_run(directory, current):
+    """Resolve immutable campaign input after the shared dataset is expanded."""
+    directory, current = Path(directory), Path(current)
+    state = directory / 'state.json'
+    if not state.exists():
+        return current
+    expected = json.loads(state.read_text(encoding='utf-8'))['fingerprint']['profiles_sha256']
+    for candidate in (directory / 'profiles-input.json', current):
+        if candidate.exists() and file_sha256(candidate) == expected:
+            return candidate
+    raise ValueError('Neither current profiles nor historical snapshot matches the campaign')
+
+
+def save_profiles_snapshot(directory, source):
+    source = Path(source)
+    snapshot = Path(directory) / 'profiles-input.json'
+    if snapshot.exists():
+        if file_sha256(snapshot) != file_sha256(source):
+            raise ValueError('Refusing to replace a different historical profile snapshot')
+    else:
+        snapshot.write_bytes(source.read_bytes())
+    return snapshot
 REVISIT_PROBABILITY = {'familiar': 0.8, 'mixed': 0.4, 'adventurous': 0.0}
 
 
