@@ -1,7 +1,9 @@
 # TIKIT 프론트엔드 (Vue 3)
 
 `backend/`의 FastAPI API에 연결한 티켓 예매 화면입니다. **Vue 3 + Vite + Vue Router + Pinia**로 만들었고, 빌드 결과(`dist/`)를 nginx에서 제공합니다.
-디자인은 `sample/dist`의 스타일(`styles.css`)을 그대로 사용합니다.
+공통 스타일은 `frontend/src/assets/styles.css`, 홈 디자인의 기존 기준값은
+[homeDesign.md](homeDesign.md)에서 관리합니다. 예매 상세는 [booking.md](booking.md),
+마이페이지 API·집계 규칙은 [mypageApi.md](mypageApi.md)를 참고하세요.
 
 ## 1. 폴더 구성
 
@@ -12,27 +14,30 @@ frontend/
 ├─ src/
 │  ├─ main.js                 앱 생성, router·pinia 등록, styles.css 불러오기
 │  ├─ App.vue                 공통 헤더 + 화면(RouterView) + 푸터 + 토스트
-│  ├─ assets/styles.css       sample 스타일 + 로그인·회원가입·마이페이지 스타일
+│  ├─ assets/styles.css       홈·로그인·회원가입·마이페이지 공통 스타일
 │  ├─ router/index.js         주소 ↔ 화면 연결, 로그인 필요 화면 보호, 예전 .html 주소 호환
 │  ├─ stores/auth.js          로그인 상태(Pinia): 가입·로그인·로그아웃·상태 복원, 토큰 보관
+│  ├─ stores/favorites.js     홈과 마이페이지가 공유하는 서버 찜 상태
 │  ├─ api/client.js           fetch 공통 처리, 서버 오류 → 한국어 메시지 변환
 │  ├─ composables/
 │  │  ├─ useToast.js          화면 하단 알림
+│  │  ├─ useReservations.js   예매·결제·취소 API
+│  │  ├─ useAdminApi.js       관리자 API와 권한 오류 처리
 │  │  └─ useAuthedApi.js      로그인이 필요한 API 호출 (401이면 로그인 화면으로)
 │  ├─ utils/index.js          카테고리·MBTI 목록, 금액·날짜 표시, safeNext, sessionStorage 도우미
 │  ├─ views/                  화면 단위 컴포넌트
 │  │  ├─ HomeView.vue         메인: 배너, 카테고리, 공연 목록, 랭킹, 모달 열기
 │  │  ├─ LoginView.vue, SignupView.vue
-│  │  └─ MyPageView.vue       마이페이지 (메뉴 설정 MENU)
+│  │  ├─ MyPageView.vue       마이페이지 (메뉴 설정 MENU)
+│  │  └─ AdminPerformancesView.vue   관리자 공연 관리
 │  └─ components/             재사용 컴포넌트
 │     ├─ AppHeader.vue, AppFooter.vue
 │     ├─ HeroSlider.vue, PerformanceCard.vue, PosterArt.vue, RankingList.vue, CategoryIcon.vue
 │     ├─ BaseModal.vue        <dialog> 공통 틀 (제목·닫기·배경 클릭·Esc)
 │     ├─ BookingModal.vue     예매: 날짜·회차 → 모의 결제 → 완료
-│     ├─ MyTicketModal.vue    마이티킷: 예매 내역·찜·데이터 내려받기·계정 삭제
 │     ├─ TasteModal.vue       MBTI 취향 찾기
 │     ├─ PasswordField.vue    비밀번호 입력 + 보기/숨기기
-│     └─ mypage/              ProfileForm, PasswordForm, ComingSoon, PanelHead
+│     └─ mypage/              계정·예매·찜·리포트·알림·탈퇴 패널
 ├─ public/                    그대로 복사되는 정적 파일
 ├─ nginx/templates/default.conf.template   Docker용 nginx 설정
 └─ Dockerfile                 Node로 빌드 → nginx 이미지에 dist 복사 (2단계)
@@ -45,8 +50,9 @@ frontend/
 | `/` | 메인 | `?category=뮤지컬`, `?q=재즈`, `?sort=price` 로 목록 상태를 표현 |
 | `/login`, `/signup` | 로그인·회원가입 | `?next=` 로 로그인 후 돌아갈 주소 전달. 이미 로그인했으면 바로 next로 이동 |
 | `/mypage/:메뉴` | 마이페이지 | 예: `/mypage/password`. 로그인하지 않았으면 로그인 화면으로 이동 후 복귀 |
+| `/mypage/orders`, `/my-tickets` | 예매 내역 | `/my-tickets`는 `/mypage/orders`로 이동하는 호환 주소 |
 | `/admin/performances` | 관리자 공연 관리 | 관리자만 조회·등록·수정·삭제 가능. `/admin`도 이 주소로 이동 |
-| `/?open=mytikit`, `/?open=taste` | 메인 + 마이티킷/취향 창 | 한 번 열고 주소에서 지움. 로그인 필요 시 로그인 후 다시 열림 |
+| `/?open=mytikit`, `/?open=taste` | 이전 마이티킷 주소 / 취향 창 | `mytikit`은 `/mypage/orders`로 이동. `taste`는 취향 창 표시 |
 | `/login.html`, `/mypage.html#password` 등 | 예전 주소 | 새 주소로 자동 이동 |
 
 ### 공통 헤더
@@ -65,12 +71,13 @@ frontend/
 | 메뉴 그룹 | 항목 | 상태 |
 |---|---|---|
 | 나의 계정 | 회원 정보 수정, 비밀번호 변경 | 동작 |
-| 나의 티켓 | 예매 내역, 찜한 공연 | 준비 중 |
-| 나의 취향 | MBTI 취향 리포트 | 준비 중 |
-| 설정 | 알림 설정, 회원 탈퇴 | 준비 중 |
+| 나의 티켓 | 예매 내역, 찜한 공연 | `OrdersPanel`, `FavoritesPanel` 연결 |
+| 나의 취향 | MBTI 취향 리포트 | `TasteReportPanel` 연결 |
+| 설정 | 알림 설정, 회원 탈퇴 | `NotificationsPanel`, `WithdrawPanel` 연결 |
 
 - 회원 정보 수정: 닉네임·이메일·MBTI. 이메일 칸을 바꿀 때만 "현재 비밀번호" 칸이 나타납니다.
-- **준비 중 메뉴에 기능을 붙이는 방법:** `src/components/mypage/`에 화면 컴포넌트를 만들고, `src/views/MyPageView.vue`의 `MENU`에서 해당 항목의 `soon`을 지우고 `component`에 연결합니다.
+- 예매 내역은 결제·취소와 이전 모의 예매를 표시합니다. 찜은 독립 패널에서 홈과 같은 상태를 사용합니다.
+- 리포트·알림 조건·탈퇴와 DB 적용은 [mypageApi.md](mypageApi.md), 예매 상태 전이는 [booking.md](booking.md)를 따릅니다.
 
 ## 3. 인증 처리 방식
 
@@ -105,6 +112,9 @@ npm run dev        # http://localhost:5173
 - 파일을 저장하면 화면이 바로 갱신됩니다.
 
 ### Windows에 설치한 nginx로 실행
+
+아래는 로컬 개발용 구성입니다. 팀 서버의 HAProxy·nginx·TLS 배포 순서는
+[FrontToBackSetting.md](FrontToBackSetting.md)를 따릅니다.
 1. `npm run build` → `frontend/dist/`에 `index.html`과 `assets/`가 만들어집니다.
 2. nginx `html` 폴더의 기존 파일을 지우고 `dist/` **안의 내용**을 복사합니다.
    (예전 `login.html` 등이 남아 있으면 새 주소 대신 옛 화면이 열립니다.)
@@ -142,6 +152,5 @@ docker run --rm -p 8080:80 tikit-frontend
 
 ## 7. 남은 작업
 
-- 마이페이지 준비 중 메뉴: 예매 내역, 찜한 공연, MBTI 취향 리포트, 알림 설정, 회원 탈퇴
-  (예매 내역·찜·탈퇴는 지금은 메인의 마이티킷 창에서 이용할 수 있습니다)
 - 비밀번호 찾기, 이메일 인증, 로그인 유지 기간 연장(refresh token)
+- 좌석 재고·실제 결제·환불 및 외부 메일·문자·푸시 연동은 현재 범위에 포함하지 않습니다.

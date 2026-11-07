@@ -59,7 +59,7 @@
 ## 3. 도구와 환경
 
 - 로컬 Postman CLI를 우선 사용한다. 현재 확인한 버전은 1.73.0이며, 실행 시 버전과 `postman performance run -h`를 다시 확인한다.
-- Postman 조회 사전 확인은 3개 요청·6개 검사를 통과했다. 현재 로컬 컬렉션의 `postman performance run`은 초기화 오류(`error while parsing createbBy`)로 시작되지 않아, 본 부하는 `load_test.py`의 HTTPX 실행기를 사용한다. 전체 공유 예산·API별 판정·1초 VU 표본·독립된 지표 감시를 포함하며 결과를 Postman 성능 측정 결과로 표시하지 않는다.
+- Postman 조회 사전 확인은 3개 요청·6개 검사를 통과했다. 현재 로컬 컬렉션의 `postman performance run`은 초기화 오류(`error while parsing createbBy`)로 시작되지 않아, 본 부하는 `loadTest.py`의 HTTPX 실행기를 사용한다. 전체 공유 예산·API별 판정·1초 VU 표본·독립된 지표 감시를 포함하며 결과를 Postman 성능 측정 결과로 표시하지 않는다.
 - Grafana 지표 API는 인증이 필요하다. 확인된 Prometheus `http://192.168.0.187:9090`에서 서버·DB 지표를 직접 조회한다. 필수 지표 누락·오래된 표본·10초 수집 시간 초과 시 중단한다. 서버 지표 수집은 VU 표본·오류율·지연 중단 감시와 별도로 수행한다.
 - 부하 발생기는 가능하면 서비스·DB와 다른 장비에 둔다. 발생기의 CPU·네트워크도 기록한다.
 - 실제 접속 경로인 프록시 → Nginx → FastAPI → DB를 우선 측정한다. 실제 배치가 문서와 같은지는 확인이 필요하다.
@@ -76,7 +76,7 @@
 3. 실제 서비스와 Grafana 연결, 인증, 서버·DB 지표 수집, 쓰기 결과 대조 접근을 확인한다. DB 주소가 서비스 배포 환경에 대응하는지 확인하며 개인 로컬 DB 설정을 운영 DB 설정으로 간주하지 않는다. 필요한 자격 증명은 실행자의 로컬 환경에서만 제공한다.
 4. 실행별 고유 ID를 만들고 대상·전체/행동 예산·계정 매핑·원본 페르소나 스냅샷·입력 해시·시작 기준을 기록한다. 기존 실행 ID나 결과가 있으면 새 실행인지 재개인지 확인하고 임의로 덮어쓰거나 재실행하지 않는다. 기존 보고서는 같은 경로에 새 결과를 작성하기 전에 실행별 보관 디렉터리에 보존한다.
 5. `personas.json`이 100명이면 기존 프로필을 유지한 채 신규 200명을 중복 없이 추가하고 `metadata.count`를 300으로 맞춘다. 이미 300명이면 추가하지 않는다. 다른 수라면 기존 데이터를 삭제하지 말고 차이를 보고한다. 생성기를 `--count 300`으로 다시 돌려 원본을 덮어쓰지 않는다.
-6. 실행 도구는 `syntheticData/playwright/` 한 폴더에 모은다. `run.py`·`run_periods.py`는 과거 화면 행동 캠페인용이며 기존 인원 제한을 유지한다. 300명 API 부하는 `load_test.py`와 `load_*.py`를 사용한다. 과거 캠페인은 해당 실행 폴더의 `profiles-input.json`과 입력 해시로 원본 100명을 재현한다.
+6. 실행 도구는 `syntheticData/playwright/` 한 폴더에 모은다. `run.py`·`runPeriods.py`는 과거 화면 행동 캠페인용이며 기존 인원 제한을 유지한다. 300명 API 부하는 `loadTest.py`와 `load*.py`를 사용한다. 과거 캠페인은 해당 실행 폴더의 `profiles-input.json`과 입력 해시로 원본 100명을 재현한다.
 7. 실제 서비스에서 기존 합성 계정의 존재와 신원을 대조한다. 다른 팀원이 계정·비밀번호 파일을 갖고 있지 않으면 로컬로 제공받는다. 같은 이메일로 무작정 재가입하거나 기존 비밀번호를 재설정하지 않는다. 신규로 필요한 계정만 생성하고 이번 실행에서 만든 회원 수를 전체 예산에 포함한다.
 8. 컬렉션, VU별 데이터 분리, 공유 쓰기 예산, 구간별 중단 감시와 종료 수단을 준비하고 작은 실행으로 검증한다. Postman 컬렉션 변수를 VU 간 전역 카운터로 간주하지 않는다. 성능 도구의 지원 범위가 부족하면 이를 설명하고 조건을 만족하는 실행 방법을 마련한다.
 9. 사전 확인부터 단계적으로 실행하고 결과를 `docs/loadTestResult.md`에 작성한다. 계정·접근 정보 또는 필수 계측이 없어 실행할 수 없는 부분은 구체적으로 기록하고, 준비된 항목까지 보존한다. 관측·상한 제어가 준비되지 않은 상태에서 실제 서비스에 고부하를 보내지 않는다.
@@ -92,13 +92,13 @@
 ```powershell
 # 준비만 수행한다. 실제 가입·예매·행동 로그 전송은 하지 않는다.
 $loadRunId = 'load-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
-python -m syntheticData.playwright.load_test --run-id $loadRunId
+python -m syntheticData.playwright.loadTest --run-id $loadRunId
 ```
 
 사용자가 시작을 지시한 경우에만 같은 준비 ID에 `--execute`를 붙인다. 이때부터 없는 계정만 가입시키고 총 300명의 로그인·행동·부하 전송을 시작한다.
 
 ```powershell
-python -m syntheticData.playwright.load_test --run-id $loadRunId --execute
+python -m syntheticData.playwright.loadTest --run-id $loadRunId --execute
 ```
 
 기존 계정 정보가 다른 위치에 있으면 실행자 로컬 환경 변수 `TIKIT_ACCOUNT_STATE`로 파일 위치를 지정한다. 원본 캠페인 `state.json` 또는 계정 매핑과 자격 증명이 있는 부하 실행기의 `load-state.json` 형식을 지원한다. 파일 내용은 출력·커밋하지 않는다. 파일이 없거나 신원이 다르면 재가입·비밀번호 재설정으로 우회하지 않는다.
@@ -120,7 +120,7 @@ python -m syntheticData.playwright.load_test --run-id $loadRunId --execute
 이 옵션으로 오류·포화 중단 기준이나 목표 미달을 우회하지 않는다.
 
 ```powershell
-python -m syntheticData.playwright.load_test --run-id load-20261106-prepare --resume-load --execute
+python -m syntheticData.playwright.loadTest --run-id load-20261106-prepare --resume-load --execute
 ```
 
 이번 연결 중단 후 서비스 노드 `.175`, `.176`, `.179`의 재시작도 확인됐다.
@@ -153,6 +153,16 @@ API 경로의 공통 접두사는 `/api/v1`이다.
 예매마다 새 UUID 요청 키를 사용하고, 중복 검증 시나리오에서만 같은 키를 재사용한다. 계정·예매 ID·토큰을 다른 VU의 값으로 덮어쓰지 않도록 분리한다.
 
 행동 로그 배치는 현재 서버 제한인 최대 10개를 따른다. 합성 표시와 실행 ID를 포함하고 실제 발생 시각을 기록한다. 기존 페르소나 분석용 가상 기간을 성능 측정 시간으로 사용하지 않는다. API로 생성한 로그는 실제 UI에서 발생한 로그와 구분한다.
+
+신규 행동 로그는 MongoDB `tikit.events`에 저장한다. 로컬 점검 설정과 대상 서버의
+`MONGODB_EVENTS_COLLECTION=events`가 일치해야 한다. 과거 최초 100명·추가 방문 로그가
+있는 `tikit.simulation`과 계정·입력·예산을 보관한 `artifacts/`는 보존한다.
+이번 실행을 위해 과거 데이터를 지우거나 옮기지 않는다.
+
+별도 JSON에 있던 후속 시나리오 제안은 위 요청 흐름과 아래 실행 단계로 통합했다.
+콘서트·야구 집중, 지속 혼합 부하, 동일 요청 키 중복 검증은 현재 실행기의 구현을 따른다.
+제안 당시의 80/15/5 비율은 현재 사용자 방문 비율로 정의하며 HTTP 요청 비율로 보지 않는다.
+개별 좌석 재고·홀드 모델이 없으므로 좌석 선점·초과 판매 방지 검증은 이 테스트 범위 밖이다.
 
 ## 5. 실행 순서
 
@@ -274,10 +284,10 @@ AGENTS.md와 docs/loadTestPlan.md를 읽고, 문서의 확정 조건과
 
 ## 9. 근거 자료
 
-- 기존 후속 시나리오: `syntheticData/playwright/load_scenarios.json`
-- 기존 데이터·실행 보존 안내: `syntheticData/playwright/playwrightGuide.md`
-- 배치 제안: `docs/serverSpec.md` — 실제 적용 여부는 별도 확인 필요
-- 서버 주소 기록: `docs/networkInfo.md` — 실행 대상 확정을 대체하지 않음
+- 부하 시나리오·단계: 이 문서의 4~5절 및 `syntheticData/playwright/loadTest.py`의 `stage_plan()`
+- 기존 데이터·실행 보존 안내: `playwrightGuide.md`
+- 서버 구성·미확정 자원: [serverSpec.md](serverSpec.md)
+- 최신 서버 주소·역할 원본: [networkInfo.md](networkInfo.md) — 실행 대상 확정을 대체하지 않음
 - [Postman CLI 성능 실행 문서](https://learning.postman.com/docs/postman-cli/postman-cli-run-performance-test/)
 
 API와 배치 정보는 작성 시점의 저장소를 기준으로 한다. 실행 전에 현재 코드·배포 상태와 다시 대조한다.

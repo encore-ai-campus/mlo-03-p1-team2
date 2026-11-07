@@ -1,8 +1,7 @@
 # TIKIT 예매(Booking) 기능 명세
 
 공연 예매 → 모의 결제 → 예매 취소 기능의 명세입니다.
-원래 별도 폴더 `booking-app/`(Python 단일 서버 + SQLite/MariaDB + Vue 단일 페이지)에 있던 기능을
-`backend/`(FastAPI)와 `frontend/`(Vue 3 + Vue Router + Pinia) 구조로 옮겼습니다.
+현재 신규 화면은 `/reservations` API를 사용합니다. 이 문서는 예매 상태·금액·API 계약의 기준입니다.
 백엔드·프론트엔드 실행 방법은 [backend.md](backend.md), [frontend.md](frontend.md)를 참고하세요.
 
 > 실제 결제·환불·티켓 발급은 발생하지 않는 **시연용 모의 결제**입니다. 좌석 번호·재고 관리와 실제 PG 연동은 포함하지 않습니다.
@@ -19,10 +18,10 @@
 | F4 | 예매 요청 | 예매 내용 확인·동의 후 예매 생성. 예매는 `예매 요청`, 결제는 `결제 대기` 상태로 생성 | 필요 |
 | F5 | 모의 결제 | 결제 대기 건을 결제 완료로 변경, 예매 확정. 예매 완료 창 또는 마이티킷에서 실행 | 필요 |
 | F6 | 예매 취소 | 결제 대기/결제 완료 건을 취소. 예매·결제가 함께 취소되며 금액·결제 완료 시각은 보존 | 필요 |
-| F7 | 마이티킷 | `/my-tickets` 화면에서 예매·결제 내역(상태, 금액, 결제 완료 일시) 확인, 결제·취소 | 필요 |
+| F7 | 마이티킷 | `/mypage/orders` 화면에서 예매·결제 내역(상태, 금액, 결제 완료 일시) 확인, 결제·취소 | 필요 |
 | F8 | 중복 예매 방지 | 예매 창마다 발급한 요청 키(UUID)로 재시도·더블클릭 시 같은 예매를 돌려줌 | 필요 |
 | F9 | 상태 이력·분석 이벤트 | 모든 상태 변경을 이력으로 남기고, 예매 시작·요청·결제·취소 이벤트를 수집 | 필요 |
-| F10 | 내 데이터 | 예매 내역을 포함한 데이터 내려받기(JSON), 계정 삭제 시 예매·결제·이력 함께 삭제 | 필요 |
+| F10 | 내보내기·탈퇴 API | 내보내기 API는 예매 내역을 포함하고 탈퇴 시 예매·결제·이력 함께 삭제. 예매 패널의 기능은 아님 | 필요 |
 
 ---
 
@@ -40,9 +39,9 @@
    ▼
 [예매 창] 03 완료 ── 상태: 결제 대기
    │ 결제하기 ──▶ 상태: 결제 완료
-   │ 예매 내역 확인하기 ──▶ /my-tickets
+   │ 예매 내역 확인하기 ──▶ /mypage/orders
    ▼
-[마이티킷 /my-tickets] 예매 카드 목록
+[마이티킷 /mypage/orders] 예매 카드 목록
    ├ 결제 대기: [결제하기] [예매 취소]
    ├ 결제 완료: 결제 완료 일시 표시, [예매 취소]
    └ 결제 취소: 버튼 없음 (금액·결제 완료 일시는 그대로 표시)
@@ -50,8 +49,8 @@
 ```
 
 - 마이티킷은 로그인이 필요한 화면으로, 비로그인 사용자는 로그인 화면으로 이동했다가 돌아옵니다.
-- 상단 `마이티킷` 메뉴와 마이페이지의 `예매 내역` 메뉴가 `/my-tickets`로 연결됩니다.
-- 이전 주소 `/?open=mytikit`은 `/my-tickets`로 바뀌어 이동합니다.
+- 상단 `마이티킷` 메뉴와 마이페이지의 `예매 내역` 메뉴가 `/mypage/orders`로 연결됩니다.
+- 이전 주소 `/my-tickets`와 `/?open=mytikit`은 `/mypage/orders`로 이동하는 호환 경로입니다.
 - 시각은 서버에서 UTC로 내려오며 화면에서는 한국 시간(분 단위)으로 표시합니다.
 
 ---
@@ -264,7 +263,7 @@ FROM events GROUP BY performance_id, type;
 | `app/api/routes/users.py` | 내보내기에 `reservations` 포함, 탈퇴 시 예매 데이터 삭제 |
 | `app/core/config.py` | 상태값·집계 이벤트 상수 |
 | `alembic/versions/0002_reservations.py` | 테이블 3개 생성 + `events.reservation_id` 추가 |
-| `tests/test_reservations.py` | 예매 흐름 테스트 8건 |
+| `tests/test_reservations.py` | 예매·결제·취소·중복 요청·계정 격리 검사 |
 
 ### frontend/src/
 
@@ -273,63 +272,41 @@ FROM events GROUP BY performance_id, type;
 | `composables/useReservations.js` | 예매 API 호출 (`list`, `create`, `complete`, `cancel`), 401 시 로그인 화면 이동 |
 | `components/BookingModal.vue` | 예매 창 3단계 (날짜·회차 → 예매 확인 → 완료/결제하기) |
 | `components/TicketCard.vue` | 마이티킷 예매 카드 (포스터·정보·금액·상태·버튼) |
-| `views/MyTicketsView.vue` | `/my-tickets` 화면 (예매 목록, 취소 확인, 이전 모의 예매, 찜, 내 데이터) |
-| `router/index.js` | `/my-tickets` 경로 (로그인 필요) |
+| `components/mypage/OrdersPanel.vue` | `/mypage/orders`의 예매 목록·결제·취소·이전 모의 예매 |
+| `router/index.js` | 마이페이지 인증 및 이전 `/my-tickets` 주소 리다이렉트 |
 | `views/HomeView.vue` | `?show=`, `?resume=booking` 처리, 마이티킷 이동 |
 | `components/AppHeader.vue`, `views/MyPageView.vue` | 마이티킷·예매 내역 메뉴 연결 |
 | `utils/index.js` | 상태 라벨, 좌석 라벨, 한국 시간 표시, 요청 키(UUID) 발급 |
 | `assets/styles.css` | 마이티킷·결제 상태 스타일 (하단 블록) |
 
-기존 `MyTicketModal.vue`(팝업)는 `/my-tickets` 화면으로 대체되어 삭제했습니다.
+예매 내역은 `MyPageView.vue` 안의 `OrdersPanel.vue`로 통합됐습니다.
+찜·리포트·알림·탈퇴는 별도 마이페이지 패널이며 [mypageApi.md](mypageApi.md)를 따릅니다.
 
 ---
 
-## 7. booking-app 에서 바뀐 점
+## 7. 호환 경로와 기능 범위
 
-| 항목 | booking-app | 현재 |
-|---|---|---|
-| 서버 | `server.py` (표준 라이브러리 HTTP 서버) | FastAPI 라우터 (`/api/v1`) |
-| DB | SQLite 또는 MariaDB, `schema.sql` | MySQL + SQLAlchemy, Alembic 마이그레이션 |
-| 공연 데이터 | `performances.json` | 기존 `performances` 테이블 (`app/db/seed.py`) |
-| 인증 | HttpOnly 세션 쿠키 + 동일 출처 검사 | JWT Bearer 토큰 (기존 회원 기능 그대로) |
-| 필드 이름 | camelCase (`performanceId`, `paymentStatus`) | snake_case (`performance_id`, `payment_status`) |
-| 오류 형식 | `{ "error": "…" }`, 입력 오류 400 | `{ "detail": "…" }`, 입력 오류 422 |
-| 동시성 | 전역 잠금 행으로 모든 쓰기 직렬화 | 예매 행 잠금 + UNIQUE 제약 |
-| 화면 | 단일 `App.vue` + 해시 주소(`#my-tickets`) | Vue Router 화면(`/my-tickets`) + 컴포넌트·컴포저블 분리 |
-| 찜 | 브라우저 localStorage | 서버 API(`/favorites`) |
+기존 `/orders` API는 결제 방법을 선택하면 바로 `MOCK_PAID`로 저장하는 이전 방식이다.
+호환을 위해 유지하며 해당 내역은 예매 내역의 `이전 모의 예매`에 표시한다.
+신규 화면은 `/reservations`를 사용하고, `/my-tickets`는 `/mypage/orders`로 이동한다.
 
-기존 `/orders`(결제 방법을 고르면 바로 `MOCK_PAID`로 저장하는 이전 방식) API는 호환을 위해 남겨 두었으며,
-그 내역은 마이티킷의 `이전 모의 예매`에 표시됩니다. 새 예매는 모두 `/reservations`를 사용합니다.
-
----
+실제 PG 결제·환불, 개별 좌석 재고·홀드·번호 관리와 티켓 발급은 구현 범위 밖이다.
+MongoDB 행동 이벤트와 관계형 DB 업무 이벤트의 이름·저장 계약은
+[eventTracking.md](eventTracking.md)를 따른다.
 
 ## 8. 실행과 검증
 
-```powershell
-# 백엔드: 새 테이블 반영
-cd backend
-python -m alembic upgrade head
-python -m uvicorn app.main:app --port 8000
+환경 설치·마이그레이션·서버 기동은 [backend.md](backend.md),
+화면 실행·빌드는 [frontend.md](frontend.md)의 공통 절차를 사용한다.
 
-# 프론트엔드
-cd frontend
-npm run dev        # http://localhost:5173
-```
+`backend/tests/test_reservations.py`에서 다음을 확인한다.
 
-```powershell
-cd backend
-python -m pytest -q          # 29건 (예매 흐름 8건 포함)
-cd ../frontend
-npm run build
-```
+- 예매 요청 → 결제 → 취소 상태 전이, 금액·완료 시각·상태 이력 보존
+- 결제 대기 상태의 취소와 같은 요청 키 재시도·내용 충돌
+- 비로그인·다른 사용자 접근 차단 및 사용자별 목록 격리
+- 관람일·회차·수량·좌석 등급·요청 키 검증
+- 결제 목록·랭킹, 업무 이벤트, 데이터 내보내기·탈퇴 처리
 
-`tests/test_reservations.py`가 확인하는 내용
-
-- 요청 → 결제 → 취소 상태 전이, 결제 완료 시각·금액 보존, 상태 이력 6건, 이벤트 3건
-- 결제 대기 상태에서 바로 취소
-- 같은 요청 키 재시도 시 같은 예매(200), 내용이 다르면 409
-- 비로그인 401, 다른 사용자의 예매 접근 404, 목록 격리
-- 관람일·회차·수량·좌석·요청 키 검증
-- 결제 목록, 결제 완료가 랭킹에 반영
-- `booking_started` 이벤트 허용, 서버 전용 이벤트 차단
-- 데이터 내보내기에 예매 포함, 탈퇴 시 예매·결제·이력 삭제
+테스트 개수·통과 여부는 실제 실행 결과로 확인한다.
+실제 서버의 부하·지연·동시성 측정은 [loadTestPlan.md](loadTestPlan.md)와
+[loadTestResult.md](loadTestResult.md)의 별도 검증이다.
