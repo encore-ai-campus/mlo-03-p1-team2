@@ -4,8 +4,8 @@ from pathlib import Path
 
 import httpx
 
-from syntheticData.playwright.load_client import Api, ApiFailure
-from syntheticData.playwright.load_control import Budget, Metrics
+from syntheticData.playwright.loadClient import Api, ApiFailure
+from syntheticData.playwright.loadControl import Budget, Metrics
 
 
 class ClientTests(unittest.IsolatedAsyncioTestCase):

@@ -40,7 +40,7 @@ class Campaign:
         self.path = self.directory / 'state.json'
         self.profile_path = profiles_for_run(self.directory, PROFILES)
         fingerprint = {'base_url': args.base_url.rstrip('/'), 'profiles_sha256': file_sha256(self.profile_path),
-                       'seed': args.seed, 'collection': 'simulation', 'generator_version': '1.0'}
+                       'seed': args.seed, 'collection': 'events', 'generator_version': '1.0'}
         if self.path.exists():
             self.state = json.loads(self.path.read_text(encoding='utf-8'))
             check_resume(self.state, fingerprint)

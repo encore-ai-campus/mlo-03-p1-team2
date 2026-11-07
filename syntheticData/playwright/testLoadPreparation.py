@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from syntheticData.generatePersonas import generate_personas
-from syntheticData.playwright.load_preparation import expand_file, profiles_for_run
+from syntheticData.playwright.loadPreparation import expand_file, profiles_for_run
 from syntheticData.playwright.scenarios import save_profiles_snapshot
 
 

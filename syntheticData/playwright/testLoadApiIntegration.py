@@ -16,9 +16,9 @@ from sqlalchemy import create_engine, select, func
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from syntheticData.playwright.load_client import Api
-from syntheticData.playwright.load_control import Metrics
-from syntheticData.playwright.load_test import Campaign
+from syntheticData.playwright.loadClient import Api
+from syntheticData.playwright.loadControl import Metrics
+from syntheticData.playwright.loadTest import Campaign
 from app.main import app
 from app.db.base import Base
 from app.db.session import get_db
@@ -57,7 +57,7 @@ class ApiIntegrationTests(unittest.IsolatedAsyncioTestCase):
         app.dependency_overrides[get_event_collection] = lambda: mongo
         try:
             with (tempfile.TemporaryDirectory() as d,
-                  patch('syntheticData.playwright.load_test.ARTIFACTS', Path(d)),
+                  patch('syntheticData.playwright.loadTest.ARTIFACTS', Path(d)),
                   patch('app.core.security.get_settings', return_value=SimpleNamespace(
                       jwt_secret='offline-test-secret-at-least-32-bytes', jwt_algorithm='HS256', jwt_expire_minutes=60))):
                 campaign = Campaign('offline-test')

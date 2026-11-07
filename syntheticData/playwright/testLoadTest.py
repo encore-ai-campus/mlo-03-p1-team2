@@ -6,8 +6,8 @@ from types import SimpleNamespace
 from pathlib import Path
 from unittest.mock import patch
 
-from syntheticData.playwright.load_control import Metrics
-from syntheticData.playwright.load_test import Campaign, stage_plan, spike_vus, write_report, email, auth_resume_allowed, token_activation_delay
+from syntheticData.playwright.loadControl import Metrics
+from syntheticData.playwright.loadTest import Campaign, stage_plan, spike_vus, write_report, email, auth_resume_allowed, token_activation_delay
 
 
 class RunTests(unittest.TestCase):
@@ -54,7 +54,7 @@ class RunTests(unittest.TestCase):
             directory.mkdir()
             (directory / 'state.json').write_text('{}')
             (directory / 'profiles-input.json').write_text('original-input')
-            with patch('syntheticData.playwright.load_test.ARTIFACTS', root):
+            with patch('syntheticData.playwright.loadTest.ARTIFACTS', root):
                 with self.assertRaises(ValueError):
                     Campaign('old')
             self.assertEqual((directory / 'profiles-input.json').read_text(), 'original-input')
@@ -79,7 +79,7 @@ class RunTests(unittest.TestCase):
             directory.mkdir(parents=True)
             state = dict(run_id='test', phase='PREPARED', credentials={'email': 'private-password'},
                          stages=[], samples=[], preparation_notes=[])
-            with patch('syntheticData.playwright.load_test.ROOT', root):
+            with patch('syntheticData.playwright.loadTest.ROOT', root):
                 write_report(state, Metrics(), directory)
             report = (root / 'docs/loadTestResult.md').read_text(encoding='utf-8')
             self.assertNotIn('private-password', report)
@@ -92,13 +92,13 @@ class MonitoringDeadlineTests(unittest.IsolatedAsyncioTestCase):
     async def test_stalled_monitor_does_not_block_sampler_or_stop_signal(self):
         async def blocked(_):
             await asyncio.sleep(10)
-        with tempfile.TemporaryDirectory() as d, patch('syntheticData.playwright.load_test.ARTIFACTS', Path(d)):
+        with tempfile.TemporaryDirectory() as d, patch('syntheticData.playwright.loadTest.ARTIFACTS', Path(d)):
             campaign = Campaign('test-monitor')
             campaign.http = object()
             campaign.api = SimpleNamespace(epoch=time.monotonic(), inflight=0)
             spec = dict(name='test', mode='mixed', vus=1, seconds=5)
             started = time.monotonic()
-            with patch('syntheticData.playwright.load_test.collect', blocked), patch('syntheticData.playwright.load_test.MONITOR_TIMEOUT', .02):
+            with patch('syntheticData.playwright.loadTest.collect', blocked), patch('syntheticData.playwright.loadTest.MONITOR_TIMEOUT', .02):
                 await asyncio.wait_for(asyncio.gather(campaign.sample(spec, started),
                                                       campaign.resource_watch(spec, started)), timeout=.5)
             self.assertTrue(campaign.stop.is_set())

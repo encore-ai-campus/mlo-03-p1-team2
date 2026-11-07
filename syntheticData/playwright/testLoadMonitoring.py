@@ -2,7 +2,7 @@ import copy
 import unittest
 import time
 
-from syntheticData.playwright.load_monitoring import reason, CRITICAL_HOSTS, QUERIES
+from syntheticData.playwright.loadMonitoring import reason, CRITICAL_HOSTS, QUERIES
 
 
 def healthy():

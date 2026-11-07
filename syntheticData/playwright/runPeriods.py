@@ -34,7 +34,7 @@ class PeriodCampaign(Campaign):
         if len(self.plans) != 100:
             raise ValueError('This campaign is restricted to the existing 100 personas')
         fingerprint = {'base_url':args.base_url,'profiles_sha256':digest,'seed':args.seed,
-                       'collection':'simulation','generator_version':'periods-1.0',
+                       'collection':'events','generator_version':'periods-1.0',
                        'source_run':args.source_run,'source_sha256':file_sha256(source_path),
                        'period_start':args.start.isoformat(),'days':args.days,'visits_per_user':args.visits}
         if self.path.exists():
@@ -213,7 +213,7 @@ async def execute_periods(args):
         return
     baseline = campaign.directory / 'period-baseline.json'
     if not baseline.exists():
-        raise ValueError('Run verify_periods.py --baseline before browser actions')
+        raise ValueError('Run verifyPeriods.py --baseline before browser actions')
     campaign.check_pilot()
     campaign.check_server()
     from playwright.async_api import async_playwright

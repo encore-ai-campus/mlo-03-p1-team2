@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from safety import run_bounded, safe_message, save_json, compare_payload, visit_errors, check_server_identity, retained_favorites
+from safety import run_bounded, safe_message, save_json, compare_payload, visit_errors, check_server_identity, retained_favorites, campaign_collection
 
 
 class SafetyTests(unittest.IsolatedAsyncioTestCase):
@@ -36,11 +36,22 @@ class SafetyTests(unittest.IsolatedAsyncioTestCase):
 
     def test_wrong_server_or_collection_is_refused_before_browser_actions(self):
         expected = {'run_id': 'run1', 'instance_id': 'instance1'}
-        good = dict(expected, collection='simulation')
+        good = dict(expected, collection='events')
         check_server_identity(expected, good)
-        for bad in (dict(good, collection='events'), dict(good, instance_id='other')):
+        for bad in (dict(good, collection='simulation'), dict(good, instance_id='other')):
             with self.assertRaises(ValueError):
                 check_server_identity(expected, bad)
+
+    def test_new_campaign_uses_events_and_historical_verification_keeps_its_collection(self):
+        self.assertEqual(campaign_collection(), 'events')
+        for name in ('simulation', 'events'):
+            state = {'fingerprint': {'collection': name}}
+            self.assertEqual(campaign_collection(state), name)
+        for name in ('', 'other', None):
+            with self.assertRaises(ValueError):
+                campaign_collection({'fingerprint': {'collection': name}})
+        with self.assertRaises(ValueError):
+            campaign_collection({'fingerprint': {}})
 
     def test_replayed_browse_keeps_previously_saved_favorites(self):
         self.assertEqual(retained_favorites(['old-show'], ['new-show', 'old-show']), ['new-show', 'old-show'])

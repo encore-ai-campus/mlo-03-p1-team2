@@ -8,7 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 
-from syntheticData.playwright.load_test import Campaign, load_resume_plan, stage_plan, idle_restart_hosts, digest, email
+from syntheticData.playwright.loadTest import Campaign, load_resume_plan, stage_plan, idle_restart_hosts, digest, email
 
 
 class ResumePlanTests(unittest.TestCase):
@@ -95,14 +95,14 @@ class ResumeExecutionTests(unittest.IsolatedAsyncioTestCase):
                 pid = url.rsplit('/', 1)[-1]
                 return SimpleNamespace(raise_for_status=lambda: None,
                     json=lambda: dict(id=pid, title=pid, available_dates=['2026-11-06'], slots=['18:00']))
-            with (patch('syntheticData.playwright.load_test.ARTIFACTS', root / 'artifacts'),
-                  patch('syntheticData.playwright.load_test.ROOT', root),
-                  patch('syntheticData.playwright.load_test.PROFILES', source),
-                  patch('syntheticData.playwright.load_test.Evidence', return_value=fake_evidence),
-                  patch('syntheticData.playwright.load_test.collect', AsyncMock(return_value=current)),
-                  patch('syntheticData.playwright.load_test.monitoring_reason',
+            with (patch('syntheticData.playwright.loadTest.ARTIFACTS', root / 'artifacts'),
+                  patch('syntheticData.playwright.loadTest.ROOT', root),
+                  patch('syntheticData.playwright.loadTest.PROFILES', source),
+                  patch('syntheticData.playwright.loadTest.Evidence', return_value=fake_evidence),
+                  patch('syntheticData.playwright.loadTest.collect', AsyncMock(return_value=current)),
+                  patch('syntheticData.playwright.loadTest.monitoring_reason',
                         side_effect=lambda a,b: 'critical_host_restarted' if a != b else None),
-                  patch('syntheticData.playwright.load_test.asyncio.sleep', AsyncMock())):
+                  patch('syntheticData.playwright.loadTest.asyncio.sleep', AsyncMock())):
                 campaign = Campaign('test-resume')
                 campaign.state = initial.state
                 campaign.budget.data.update(committed=[10, 6])
@@ -125,7 +125,7 @@ class ResumeExecutionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_existing_account_disappearing_never_causes_signup_on_resume(self):
         with tempfile.TemporaryDirectory() as directory, patch(
-                'syntheticData.playwright.load_test.ARTIFACTS', Path(directory)):
+                'syntheticData.playwright.loadTest.ARTIFACTS', Path(directory)):
             campaign = Campaign('test-resume')
             campaign.profiles = [dict(email='persona0001@example.com')]
             campaign.evidence = SimpleNamespace(members=lambda: {})
@@ -137,7 +137,7 @@ class ResumeExecutionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_resume_execute_requires_prior_audit(self):
         with tempfile.TemporaryDirectory() as directory, patch(
-                'syntheticData.playwright.load_test.ARTIFACTS', Path(directory)):
+                'syntheticData.playwright.loadTest.ARTIFACTS', Path(directory)):
             campaign = Campaign('test-resume')
             with self.assertRaisesRegex(RuntimeError, 'read-only preparation'):
                 await campaign.execute(object(), resume_load=True)

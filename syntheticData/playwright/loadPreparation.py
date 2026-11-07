@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from syntheticData.generatePersonas import expand_personas, validate_dataset
-from syntheticData.playwright.load_control import save
+from syntheticData.playwright.loadControl import save
 from syntheticData.playwright.scenarios import profiles_for_run
 
 

@@ -4,14 +4,14 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 
-from syntheticData.playwright.load_control import Budget, BudgetExceeded, Metrics, stage_limit, save
+from syntheticData.playwright.loadControl import Budget, BudgetExceeded, Metrics, stage_limit, save
 
 
 class BudgetTests(unittest.IsolatedAsyncioTestCase):
     async def test_failed_persistence_cannot_admit_a_request_or_consume_phantom_rows(self):
         with tempfile.TemporaryDirectory() as d:
             b = Budget(Path(d) / 'budget.json')
-            with patch('syntheticData.playwright.load_control.save', side_effect=PermissionError):
+            with patch('syntheticData.playwright.loadControl.save', side_effect=PermissionError):
                 with self.assertRaises(PermissionError):
                     b.reserve(2, 2)
             self.assertEqual(b.used(), (0, 0))
@@ -29,7 +29,7 @@ class BudgetTests(unittest.IsolatedAsyncioTestCase):
                 if len(attempts) == 1:
                     raise PermissionError('transient reader lock')
                 return replace(source, target)
-            with patch('syntheticData.playwright.load_control.os.replace', locked_once):
+            with patch('syntheticData.playwright.loadControl.os.replace', locked_once):
                 save(path, {'value': 'new'})
             self.assertEqual(json.loads(path.read_text())['value'], 'new')
             self.assertEqual(len(attempts), 2)

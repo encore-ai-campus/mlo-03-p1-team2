@@ -12,7 +12,7 @@ import sys
 
 from periods import aggregate_periods, KST, transaction_snapshot, transaction_event_errors
 from run import HERE
-from safety import save_json, compare_payload, visit_errors
+from safety import save_json, compare_payload, visit_errors, campaign_collection
 from scenarios import file_sha256, profiles_for_run
 
 ROOT = HERE.parents[1]
@@ -30,7 +30,8 @@ def verify_periods(args):
     settings = Settings(_env_file=ROOT/'backend/.env')
     engine = create_engine(settings.database_url,pool_pre_ping=True)
     mongo = MongoClient(settings.mongodb_url,serverSelectionTimeoutMS=5000,tz_aware=True)
-    collection = mongo[settings.mongodb_db]['simulation']
+    collection_name = campaign_collection(state)
+    collection = mongo[settings.mongodb_db][collection_name]
     ids = [a['user_id'] for a in state['accounts'].values()]
     with Session(engine) as db:
         users = {u.id:u for u in db.scalars(select(User).where(User.id.in_(ids)))}
@@ -50,7 +51,7 @@ def verify_periods(args):
                     raise ValueError('Existing account mapping does not match persona')
             tracked = subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode().split('\0')
             protected = [p for p in tracked if p and (ROOT/p).is_file()]
-            additions = {'PERIODS.md','test_periods.py','periods.py','run_periods.py','verify_periods.py','load_scenarios.json'}
+            additions = {'testPeriods.py','periods.py','runPeriods.py','verifyPeriods.py'}
             protected += [str(p.relative_to(ROOT)).replace('\\','/') for p in HERE.iterdir()
                           if p.is_file() and p.name not in additions]
             if (ROOT/'docs/erd.html').exists():
@@ -174,10 +175,14 @@ def verify_periods(args):
                 reservation=reservations.get(actual['props'].get('reservation_id'))
                 check(reservation is not None and not transaction_event_errors(transaction_snapshot(reservation),actual),
                       'Tracking/SQL transaction amount or reference mismatch: '+eid)
-        check(mongo[settings.mongodb_db]['events'].count_documents({'props.synthetic_run_id':args.run_id})==0,
-              'Period campaign leaked into original events')
+        other_collection = 'simulation' if collection_name == 'events' else 'events'
+        check(mongo[settings.mongodb_db][other_collection].count_documents({'props.synthetic_run_id':args.run_id})==0,
+              f'Period campaign logs found outside {collection_name}')
         externally_committed=[]
         for path,digest in baseline['protected_files'].items():
+            if not (ROOT/path).is_file():
+                check(False,'Preexisting file removed: '+path)
+                continue
             current=file_sha256(ROOT/path)
             if current!=digest and Path(path).suffix in ('.md','.html'):
                 committed=subprocess.run(['git','show','HEAD:'+path],cwd=ROOT,capture_output=True)

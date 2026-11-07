@@ -1,6 +1,6 @@
 """Prepare by default. Production writes require the explicit --execute flag.
 
-From the repository root: python -m syntheticData.playwright.load_test --run-id ID
+From the repository root: python -m syntheticData.playwright.loadTest --run-id ID
 Artifacts contain credentials: never commit or print them.
 """
 import argparse
@@ -20,11 +20,11 @@ from urllib.parse import urlencode
 
 import httpx
 
-from syntheticData.playwright.load_client import Api, ApiFailure
-from syntheticData.playwright.load_control import Budget, BudgetExceeded, Metrics, save, stage_limit, summarize
-from syntheticData.playwright.load_database import Evidence
-from syntheticData.playwright.load_monitoring import collect, reason as monitoring_reason, CRITICAL_HOSTS
-from syntheticData.playwright.load_preparation import digest, expand_file
+from syntheticData.playwright.loadClient import Api, ApiFailure
+from syntheticData.playwright.loadControl import Budget, BudgetExceeded, Metrics, save, stage_limit, summarize
+from syntheticData.playwright.loadDatabase import Evidence
+from syntheticData.playwright.loadMonitoring import collect, reason as monitoring_reason, CRITICAL_HOSTS
+from syntheticData.playwright.loadPreparation import digest, expand_file
 from syntheticData.playwright.scenarios import save_profiles_snapshot
 
 ROOT = Path(__file__).resolve().parents[2]
