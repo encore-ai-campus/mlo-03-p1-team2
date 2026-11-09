@@ -119,7 +119,11 @@ gantt
 
 ## 08. 진행 결과·검증
 
----
+###[Tikit 기능 명세] ###
+
+<img width="250" height="250" alt="01_home" src="https://github.com/user-attachments/assets/054676fd-0fb8-45fb-817e-09a6d63ad7ea" />
+
+[Tikit 기능 명세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Functional-Specification)
 
 ## 09. 회고
 
