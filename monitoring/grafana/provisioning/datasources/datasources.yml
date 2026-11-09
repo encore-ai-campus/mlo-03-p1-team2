@@ -1,0 +1,25 @@
+# /etc/grafana/provisioning/datasources/datasources.yml (mon-metrics, 192.168.0.184)
+# Grafana 시작 시 데이터 소스를 자동 등록합니다.
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus
+    access: proxy
+    url: http://localhost:9090
+    isDefault: true
+    jsonData:
+      timeInterval: 30s        # scrape_interval 과 맞춰 불필요하게 촘촘한 쿼리 방지
+      httpMethod: POST
+      queryTimeout: 60s
+
+  - name: Loki
+    type: loki
+    uid: loki
+    access: proxy
+    url: http://192.168.0.186:3100
+    jsonData:
+      maxLines: 1000
+      timeout: 60

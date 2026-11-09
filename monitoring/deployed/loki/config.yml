@@ -1,0 +1,75 @@
+# /etc/loki/config.yml (192.168.0.189)
+# Loki 3.x 단일 바이너리 + 로컬 파일시스템
+# 변경 이력: /tmp/loki → /var/lib/loki, 보관 72h, debug → warn, 불필요 기능 비활성화
+
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+  log_level: warn
+  grpc_server_max_concurrent_streams: 1000
+
+common:
+  instance_addr: 127.0.0.1
+  path_prefix: /var/lib/loki
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+  storage:
+    filesystem:
+      chunks_directory: /var/lib/loki/chunks
+      rules_directory: /var/lib/loki/rules
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+# 보관 기간이 지난 로그를 실제로 지우는 것은 compactor 입니다.
+compactor:
+  working_directory: /var/lib/loki/compactor
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 2h
+  retention_delete_worker_count: 50
+  delete_request_store: filesystem
+
+limits_config:
+  retention_period: 72h            # 디스크 여유(약 2.7GB)를 고려해 3일
+  ingestion_rate_mb: 4
+  ingestion_burst_size_mb: 8
+  max_global_streams_per_user: 1000
+  max_label_names_per_series: 15
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+  max_query_series: 500
+  max_query_parallelism: 4
+  max_entries_limit_per_query: 5000
+  allow_structured_metadata: true
+  volume_enabled: true
+
+querier:
+  max_concurrent: 4
+
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
+
+frontend:
+  encoding: protobuf
+
+pattern_ingester:
+  enabled: false
+
+analytics:
+  reporting_enabled: false

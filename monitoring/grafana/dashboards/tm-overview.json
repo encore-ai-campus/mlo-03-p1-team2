@@ -1,0 +1,2879 @@
+{
+  "uid": "tm-overview",
+  "title": "00 · 운영 한눈에 보기",
+  "description": "전체 서버 상태, 자원 사용률, 오류 로그를 한 화면에서 확인",
+  "tags": [
+    "tikit-monitoring"
+  ],
+  "timezone": "browser",
+  "editable": true,
+  "graphTooltip": 1,
+  "refresh": "30s",
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "1h"
+    ]
+  },
+  "templating": {
+    "list": []
+  },
+  "links": [
+    {
+      "title": "Tikit Monitoring",
+      "type": "dashboards",
+      "tags": [
+        "tikit-monitoring"
+      ],
+      "asDropdown": true,
+      "includeVars": false,
+      "keepTime": true,
+      "icon": "external link",
+      "targetBlank": false,
+      "tooltip": "",
+      "url": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "row",
+      "title": "요약",
+      "collapsed": false,
+      "panels": [],
+      "id": 1,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "type": "stat",
+      "title": "수집 대상",
+      "description": "Prometheus 가 수집하는 전체 대상 수",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "count(up{instance!=\"localhost:9100\"})",
+          "refId": "A",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "auto",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false
+      },
+      "id": 2,
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "정상",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "count(up{instance!=\"localhost:9100\"} == 1) or vector(0)",
+          "refId": "A",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "auto",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false
+      },
+      "id": 3,
+      "gridPos": {
+        "x": 4,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "장애",
+      "description": "응답하지 않는 수집 대상 수. 아래 상태 그리드에서 빨간 칸을 확인하세요.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "count(up{instance!=\"localhost:9100\"} == 0) or vector(0)",
+          "refId": "A",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "auto",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false
+      },
+      "id": 4,
+      "gridPos": {
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "최고 CPU 사용률",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max(100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{job=\"node\",instance!=\"localhost:9100\",mode=\"idle\"}[$__rate_interval]))))",
+          "refId": "A",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "auto",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false
+      },
+      "id": 5,
+      "gridPos": {
+        "x": 12,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "최고 메모리 사용률",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max(100 * (1 - node_memory_MemAvailable_bytes{job=\"node\",instance!=\"localhost:9100\"} / node_memory_MemTotal_bytes{job=\"node\",instance!=\"localhost:9100\"}))",
+          "refId": "A",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "auto",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false
+      },
+      "id": 6,
+      "gridPos": {
+        "x": 16,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "최고 루트 디스크 사용률",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max(100 * (1 - node_filesystem_avail_bytes{job=\"node\",instance!=\"localhost:9100\",mountpoint=\"/\",fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"} / node_filesystem_size_bytes{job=\"node\",instance!=\"localhost:9100\",mountpoint=\"/\",fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"}))",
+          "refId": "A",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "auto",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false
+      },
+      "id": 7,
+      "gridPos": {
+        "x": 20,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "type": "stat",
+      "title": "서버 · 수집 대상 상태",
+      "description": "초록: 정상 수집 / 빨강: exporter 또는 서버 응답 없음",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "up{instance!=\"localhost:9100\"}",
+          "refId": "A",
+          "legendFormat": "{{instance}}",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "정상",
+                  "color": "green",
+                  "index": 0
+                },
+                "0": {
+                  "text": "장애",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ]
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.171:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "171 · MariaDB-1 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.172:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "172 · MariaDB-2 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.173:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "173 · MariaDB-3 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.174:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "174 · MongoDB · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.175:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "175 · FastAPI-1 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.176:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "176 · FastAPI-2 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.177:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "177 · Nginx-1 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.178:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "178 · Nginx-2 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.179:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "179 · HAProxy 백엔드 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.180:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "180 · HAProxy-180 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.181:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "181 · HAProxy 프런트 · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.187:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.188:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "188 · Grafana · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.189:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "189 · Loki · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.183:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "183 · (이전) Grafana · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.186:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "186 · (이전) Loki · ${__field.labels.job}"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^localhost:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus · ${__field.labels.job}"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 13,
+          "valueSize": 26
+        }
+      },
+      "id": 8,
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 24,
+        "h": 6
+      }
+    },
+    {
+      "type": "row",
+      "title": "자원 사용률",
+      "collapsed": false,
+      "panels": [],
+      "id": 9,
+      "gridPos": {
+        "x": 0,
+        "y": 11,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "CPU 사용률",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{job=\"node\",instance!=\"localhost:9100\",mode=\"idle\"}[$__rate_interval])))",
+          "refId": "A",
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "instant": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "showPoints": "never",
+            "spanNulls": true,
+            "lineInterpolation": "smooth",
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisSoftMin": 0,
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "max": 100
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.171:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "171 · MariaDB-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.172:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "172 · MariaDB-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.173:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "173 · MariaDB-3"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.174:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "174 · MongoDB"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.175:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "175 · FastAPI-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.176:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "176 · FastAPI-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.177:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "177 · Nginx-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.178:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "178 · Nginx-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.179:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "179 · HAProxy 백엔드"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.180:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "180 · HAProxy-180"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.181:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "181 · HAProxy 프런트"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.187:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.188:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "188 · Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.189:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "189 · Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.183:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "183 · (이전) Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.186:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "186 · (이전) Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^localhost:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 10,
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 9
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "메모리 사용률",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "100 * (1 - node_memory_MemAvailable_bytes{job=\"node\",instance!=\"localhost:9100\"} / node_memory_MemTotal_bytes{job=\"node\",instance!=\"localhost:9100\"})",
+          "refId": "A",
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "instant": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "showPoints": "never",
+            "spanNulls": true,
+            "lineInterpolation": "smooth",
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisSoftMin": 0,
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "max": 100
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.171:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "171 · MariaDB-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.172:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "172 · MariaDB-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.173:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "173 · MariaDB-3"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.174:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "174 · MongoDB"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.175:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "175 · FastAPI-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.176:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "176 · FastAPI-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.177:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "177 · Nginx-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.178:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "178 · Nginx-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.179:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "179 · HAProxy 백엔드"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.180:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "180 · HAProxy-180"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.181:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "181 · HAProxy 프런트"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.187:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.188:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "188 · Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.189:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "189 · Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.183:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "183 · (이전) Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.186:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "186 · (이전) Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^localhost:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 11,
+      "gridPos": {
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 9
+      }
+    },
+    {
+      "type": "bargauge",
+      "title": "루트 디스크 사용률",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "100 * (1 - node_filesystem_avail_bytes{job=\"node\",instance!=\"localhost:9100\",mountpoint=\"/\",fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"} / node_filesystem_size_bytes{job=\"node\",instance!=\"localhost:9100\",mountpoint=\"/\",fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"})",
+          "refId": "A",
+          "legendFormat": "{{instance}}",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.171:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "171 · MariaDB-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.172:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "172 · MariaDB-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.173:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "173 · MariaDB-3"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.174:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "174 · MongoDB"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.175:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "175 · FastAPI-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.176:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "176 · FastAPI-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.177:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "177 · Nginx-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.178:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "178 · Nginx-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.179:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "179 · HAProxy 백엔드"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.180:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "180 · HAProxy-180"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.181:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "181 · HAProxy 프런트"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.187:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.188:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "188 · Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.189:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "189 · Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.183:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "183 · (이전) Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.186:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "186 · (이전) Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^localhost:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "left",
+        "sizing": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "id": 12,
+      "gridPos": {
+        "x": 0,
+        "y": 21,
+        "w": 8,
+        "h": 9
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Load (코어당 %)",
+      "description": "1분 load average ÷ CPU 코어 수. 100% 이상이면 CPU 대기 작업이 쌓이는 중",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "100 * node_load1{job=\"node\",instance!=\"localhost:9100\"} / on (instance) count by (instance) (node_cpu_seconds_total{job=\"node\",instance!=\"localhost:9100\",mode=\"idle\"})",
+          "refId": "A",
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "instant": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "showPoints": "never",
+            "spanNulls": true,
+            "lineInterpolation": "smooth",
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisSoftMin": 0
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.171:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "171 · MariaDB-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.172:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "172 · MariaDB-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.173:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "173 · MariaDB-3"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.174:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "174 · MongoDB"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.175:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "175 · FastAPI-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.176:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "176 · FastAPI-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.177:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "177 · Nginx-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.178:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "178 · Nginx-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.179:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "179 · HAProxy 백엔드"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.180:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "180 · HAProxy-180"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.181:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "181 · HAProxy 프런트"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.187:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.188:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "188 · Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.189:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "189 · Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.183:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "183 · (이전) Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.186:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "186 · (이전) Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^localhost:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 13,
+      "gridPos": {
+        "x": 8,
+        "y": 21,
+        "w": 8,
+        "h": 9
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "네트워크 트래픽 (수신+송신)",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (instance) (rate(node_network_receive_bytes_total{job=\"node\",instance!=\"localhost:9100\",device!~\"lo|veth.*|docker.*|br-.*\"}[$__rate_interval]) + rate(node_network_transmit_bytes_total{job=\"node\",instance!=\"localhost:9100\",device!~\"lo|veth.*|docker.*|br-.*\"}[$__rate_interval]))",
+          "refId": "A",
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "instant": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "showPoints": "never",
+            "spanNulls": true,
+            "lineInterpolation": "smooth",
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisSoftMin": 0
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.171:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "171 · MariaDB-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.172:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "172 · MariaDB-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.173:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "173 · MariaDB-3"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.174:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "174 · MongoDB"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.175:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "175 · FastAPI-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.176:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "176 · FastAPI-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.177:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "177 · Nginx-1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.178:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "178 · Nginx-2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.179:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "179 · HAProxy 백엔드"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.180:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "180 · HAProxy-180"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.181:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "181 · HAProxy 프런트"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.187:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.188:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "188 · Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.189:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "189 · Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.183:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "183 · (이전) Grafana"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*192\\.168\\.0\\.186:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "186 · (이전) Loki"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^localhost:.*"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "187 · Prometheus"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 14,
+      "gridPos": {
+        "x": 16,
+        "y": 21,
+        "w": 8,
+        "h": 9
+      }
+    },
+    {
+      "type": "row",
+      "title": "서버 요약표",
+      "collapsed": false,
+      "panels": [],
+      "id": 15,
+      "gridPos": {
+        "x": 0,
+        "y": 30,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "type": "table",
+      "title": "서버별 현재 상태",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "셀 색상: 70% 이상 노랑, 85% 이상 빨강",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (instance) (up{job=\"node\",instance!=\"localhost:9100\"})",
+          "refId": "UP",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (instance) (100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{job=\"node\",instance!=\"localhost:9100\",mode=\"idle\"}[$__rate_interval]))))",
+          "refId": "CPU",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (instance) (100 * (1 - node_memory_MemAvailable_bytes{job=\"node\",instance!=\"localhost:9100\"} / node_memory_MemTotal_bytes{job=\"node\",instance!=\"localhost:9100\"}))",
+          "refId": "MEM",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (instance) (100 * (1 - node_filesystem_avail_bytes{job=\"node\",instance!=\"localhost:9100\",mountpoint=\"/\",fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"} / node_filesystem_size_bytes{job=\"node\",instance!=\"localhost:9100\",mountpoint=\"/\",fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"}))",
+          "refId": "DISK",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (instance) (node_time_seconds{job=\"node\",instance!=\"localhost:9100\"} - node_boot_time_seconds{job=\"node\",instance!=\"localhost:9100\"})",
+          "refId": "UPTIME",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "count by (instance) (node_cpu_seconds_total{job=\"node\",instance!=\"localhost:9100\",mode=\"idle\"})",
+          "refId": "CORES",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (instance) (node_memory_MemTotal_bytes{job=\"node\",instance!=\"localhost:9100\"})",
+          "refId": "MEMTOTAL",
+          "legendFormat": "__auto",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "instance",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "__name__": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "job": true,
+              "job 1": true,
+              "job 2": true,
+              "job 3": true,
+              "job 4": true,
+              "job 5": true,
+              "job 6": true,
+              "job 7": true
+            },
+            "indexByName": {
+              "instance": 0,
+              "Value #UP": 1,
+              "Value #CPU": 2,
+              "Value #MEM": 3,
+              "Value #DISK": 4,
+              "Value #CORES": 5,
+              "Value #MEMTOTAL": 6,
+              "Value #UPTIME": 7
+            },
+            "renameByName": {
+              "instance": "서버",
+              "Value #UP": "상태",
+              "Value #CPU": "CPU",
+              "Value #MEM": "메모리",
+              "Value #DISK": "루트 디스크",
+              "Value #CORES": "코어",
+              "Value #MEMTOTAL": "총 메모리",
+              "Value #UPTIME": "가동 시간"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "sort": [
+              {
+                "field": "서버"
+              }
+            ]
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "서버"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.171:.*",
+                      "result": {
+                        "text": "171 · MariaDB-1",
+                        "index": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.172:.*",
+                      "result": {
+                        "text": "172 · MariaDB-2",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.173:.*",
+                      "result": {
+                        "text": "173 · MariaDB-3",
+                        "index": 2
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.174:.*",
+                      "result": {
+                        "text": "174 · MongoDB",
+                        "index": 3
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.175:.*",
+                      "result": {
+                        "text": "175 · FastAPI-1",
+                        "index": 4
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.176:.*",
+                      "result": {
+                        "text": "176 · FastAPI-2",
+                        "index": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.177:.*",
+                      "result": {
+                        "text": "177 · Nginx-1",
+                        "index": 6
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.178:.*",
+                      "result": {
+                        "text": "178 · Nginx-2",
+                        "index": 7
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.179:.*",
+                      "result": {
+                        "text": "179 · HAProxy 백엔드",
+                        "index": 8
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.180:.*",
+                      "result": {
+                        "text": "180 · HAProxy-180",
+                        "index": 9
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.181:.*",
+                      "result": {
+                        "text": "181 · HAProxy 프런트",
+                        "index": 10
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.187:.*",
+                      "result": {
+                        "text": "187 · Prometheus",
+                        "index": 11
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.188:.*",
+                      "result": {
+                        "text": "188 · Grafana",
+                        "index": 12
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.189:.*",
+                      "result": {
+                        "text": "189 · Loki",
+                        "index": 13
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.183:.*",
+                      "result": {
+                        "text": "183 · (이전) Grafana",
+                        "index": 14
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "192\\.168\\.0\\.186:.*",
+                      "result": {
+                        "text": "186 · (이전) Loki",
+                        "index": 15
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "localhost:.*",
+                      "result": {
+                        "text": "187 · Prometheus",
+                        "index": 16
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "상태"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "1": {
+                        "text": "정상",
+                        "color": "green",
+                        "index": 0
+                      },
+                      "0": {
+                        "text": "장애",
+                        "color": "red",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^(CPU|메모리|루트 디스크)$"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 70
+                    },
+                    {
+                      "color": "red",
+                      "value": 85
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic",
+                  "valueDisplayMode": "text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "총 메모리"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "가동 시간"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "id": 16,
+      "gridPos": {
+        "x": 0,
+        "y": 31,
+        "w": 24,
+        "h": 10
+      }
+    },
+    {
+      "type": "row",
+      "title": "로그",
+      "collapsed": false,
+      "panels": [],
+      "id": 17,
+      "gridPos": {
+        "x": 0,
+        "y": 41,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "서비스별 로그 유입량",
+      "description": "",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "sum by (service_name) (count_over_time({service_name=~\".+\"}[$__auto]))",
+          "refId": "A",
+          "queryType": "range",
+          "legendFormat": "{{service_name}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 2,
+            "fillOpacity": 80,
+            "gradientMode": "opacity",
+            "showPoints": "never",
+            "spanNulls": true,
+            "lineInterpolation": "smooth",
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "axisSoftMin": 0
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "noValue": "로그 수집 대기 중"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "sum"
+          ],
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 18,
+      "gridPos": {
+        "x": 0,
+        "y": 42,
+        "w": 12,
+        "h": 10
+      }
+    },
+    {
+      "type": "logs",
+      "title": "최근 오류 로그",
+      "description": "error / exception / traceback / fatal / critical / panic 이 포함된 로그",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "{service_name=~\".+\"} |~ `(?i)(error|exception|traceback|fatal|critical|panic)`",
+          "refId": "A",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "enableLogDetails": true,
+        "sortOrder": "Descending",
+        "dedupStrategy": "none",
+        "prettifyLogMessage": false,
+        "showLabels": false,
+        "showCommonLabels": false
+      },
+      "id": 19,
+      "gridPos": {
+        "x": 12,
+        "y": 42,
+        "w": 12,
+        "h": 10
+      }
+    }
+  ],
+  "schemaVersion": 41
+}

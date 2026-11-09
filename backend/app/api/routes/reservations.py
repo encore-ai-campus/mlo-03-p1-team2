@@ -8,11 +8,15 @@
 
 예매·결제 생성/변경, 상태 이력, 이벤트 기록은 하나의 트랜잭션으로 저장합니다.
 """
-from typing import Literal
+import logging
+import random
+import time
+from collections.abc import Callable
+from typing import Literal, TypeVar
 
 from fastapi import APIRouter, HTTPException, Response, status
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
 
 from app.api.deps import CurrentUser, DbSession
@@ -22,11 +26,49 @@ from app.models.user import utcnow
 from app.schemas.reservation import PaymentOut, ReservationIn, ReservationOut
 
 router = APIRouter(tags=["reservations"])
+log = logging.getLogger(__name__)
+T = TypeVar("T")
 
 NOT_FOUND = "예매 내역을 찾을 수 없습니다."
 KEY_REUSED = "이미 사용한 예매 요청 키입니다. 예매 창을 다시 열어 주세요."
 # 같은 요청 키로 다시 보냈을 때 비교하는 항목
 _SAME_REQUEST_FIELDS = ("performance_id", "performance_date", "session_time", "seat_grade", "quantity")
+# MariaDB/MySQL이 "트랜잭션을 다시 실행하라"고 돌려주는 오류: 1213 데드락, 1205 잠금 대기 시간 초과
+RETRYABLE_DB_ERRORS = {1213, 1205}
+MAX_ATTEMPTS = 3
+
+
+def _is_retryable(exc: OperationalError) -> bool:
+    args = getattr(exc.orig, "args", ())
+    return bool(args) and args[0] in RETRYABLE_DB_ERRORS
+
+
+def _with_retry(db: Session, work: Callable[[], T]) -> T:
+    """트랜잭션 전체(work)를 실행하고, 데드락·잠금 대기 시간 초과면 롤백 후 처음부터 다시 실행합니다.
+
+    롤백하면 세션의 객체가 만료되므로 work는 매번 DB에서 상태를 다시 읽습니다.
+    work가 변경 없이 끝나거나(이미 같은 상태, 같은 요청 재전송) HTTPException으로 끝나도
+    트랜잭션을 여기서 닫습니다. 그래야 FOR UPDATE 잠금이 응답 전에 풀리고, 트랜잭션 종료 시점의
+    데드락도 재시도 범위 안에서 처리됩니다(응답 후 get_db의 close에서 터지지 않습니다).
+    """
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            result = work()
+            if db.in_transaction():
+                db.commit()   # 변경이 없으면 잠금만 풉니다. expire_on_commit=False라 객체는 그대로입니다.
+            return result
+        except HTTPException:
+            db.rollback()
+            raise
+        except OperationalError as exc:
+            db.rollback()
+            if not _is_retryable(exc) or attempt == MAX_ATTEMPTS:
+                raise
+            log.warning("retrying transaction after MariaDB error %s (attempt %d/%d)",
+                        exc.orig.args[0], attempt, MAX_ATTEMPTS)
+            # 경합한 트랜잭션끼리 같은 순간에 다시 부딪히지 않도록 조금씩 다르게 기다립니다.
+            time.sleep(random.uniform(0.01, 0.05) * attempt)
+    raise AssertionError("unreachable")
 
 
 def _history(db: Session, r: Reservation, entity: str, before: str | None, after: str, at) -> None:
@@ -64,6 +106,10 @@ def create_reservation(body: ReservationIn, response: Response, user: CurrentUse
         raise HTTPException(422, "선택할 수 없는 회차입니다.")
 
     key = str(body.request_key)
+    return _with_retry(db, lambda: _create_once(db, p, body, response, user, key))
+
+
+def _create_once(db: Session, p: Performance, body: ReservationIn, response: Response, user: User, key: str):
     existing = _find_by_key(db, user.id, key)
     if existing:
         return _replay(existing, body, response)
@@ -81,11 +127,12 @@ def create_reservation(body: ReservationIn, response: Response, user: CurrentUse
     )
     r.payment = Payment(amount=amount, currency="KRW", status="PENDING", requested_at=now, updated_at=now)
     db.add(r)
-    db.flush()  # id 확정 (이력·이벤트에서 참조)
-    _history(db, r, "reservation", None, "REQUESTED", now)
-    _history(db, r, "payment", None, "PENDING", now)
-    _event(db, user, r, "reservation_requested", now)
     try:
+        # 고유 키 위반은 INSERT가 실행되는 flush에서 나므로 flush부터 commit까지 함께 감쌉니다.
+        db.flush()  # id 확정 (이력·이벤트에서 참조)
+        _history(db, r, "reservation", None, "REQUESTED", now)
+        _history(db, r, "payment", None, "PENDING", now)
+        _event(db, user, r, "reservation_requested", now)
         db.commit()
     except IntegrityError:
         # 같은 키로 동시에 들어온 요청: 먼저 저장된 예매를 돌려줍니다.
@@ -125,6 +172,10 @@ def list_payments(user: CurrentUser, db: DbSession):
 
 @router.post("/reservations/{reservation_id}/{action}", response_model=ReservationOut)
 def change_reservation(reservation_id: str, action: Literal["complete", "cancel"], user: CurrentUser, db: DbSession):
+    return _with_retry(db, lambda: _change_once(db, reservation_id, action, user))
+
+
+def _change_once(db: Session, reservation_id: str, action: str, user: User):
     # 행 잠금(FOR UPDATE)으로 결제·취소가 동시에 들어와도 상태가 한 번만 바뀌게 합니다.
     r = db.scalar(
         select(Reservation).where(Reservation.id == reservation_id, Reservation.user_id == user.id)

@@ -1,0 +1,18 @@
+// =====================================================================
+// mon-logs VM 전용 (192.168.0.186: Loki) — common.alloy 와 함께 배치
+// 위치: /etc/alloy/mon-logs.alloy
+// =====================================================================
+
+prometheus.scrape "loki" {
+  targets         = [{ "__address__" = "127.0.0.1:3100" }]
+  job_name        = "loki"
+  scrape_interval = "60s"
+  forward_to      = [prometheus.remote_write.central.receiver]
+}
+
+loki.source.journal "loki_service" {
+  matches    = "_SYSTEMD_UNIT=loki.service"
+  max_age    = "12h"
+  labels     = { service = "monitoring" }
+  forward_to = [loki.write.central.receiver]
+}

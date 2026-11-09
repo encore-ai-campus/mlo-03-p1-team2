@@ -1,0 +1,60 @@
+// =====================================================================
+// FastAPI VM 전용 (192.168.0.175, 176) — common.alloy 와 함께 배치
+// 위치: /etc/alloy/fastapi.alloy
+//
+// 선택 환경 변수 (/etc/default/alloy):
+//   FASTAPI_SCHEME  기본 "http"  (SSL 2단계 적용 후에는 "https")
+//   FASTAPI_PORT    기본 "8000"  (SSL 2단계 적용 후에는 "8443")
+// =====================================================================
+
+// ---------------------------------------------------------------------
+// 메트릭: prometheus-fastapi-instrumentator 가 노출하는 /metrics
+// (앱 쪽 작업은 docs/monitoringSpec.md 6-1 참고)
+// ---------------------------------------------------------------------
+prometheus.scrape "fastapi" {
+  targets = [{
+    "__address__" = "127.0.0.1:" + coalesce(sys.env("FASTAPI_PORT"), "8000"),
+  }]
+  job_name        = "fastapi"
+  scheme          = coalesce(sys.env("FASTAPI_SCHEME"), "http")
+  metrics_path    = "/metrics"
+  scrape_interval = "30s"
+  scrape_timeout  = "10s"
+
+  // 루프백 접속이라 인증서의 IP SAN 과 주소가 다릅니다. 같은 VM 내부 통신에 한해 검증을 생략합니다.
+  tls_config {
+    insecure_skip_verify = true
+  }
+
+  forward_to = [prometheus.remote_write.central.receiver]
+}
+
+// ---------------------------------------------------------------------
+// 로그: systemd 서비스(tikit-api) 의 stdout/stderr → journald
+// ---------------------------------------------------------------------
+loki.source.journal "fastapi" {
+  matches    = "_SYSTEMD_UNIT=tikit-api.service"
+  max_age    = "12h"
+  labels     = { service = "fastapi" }
+  forward_to = [loki.process.fastapi.receiver]
+}
+
+loki.process "fastapi" {
+  // 179 HAProxy 헬스체크(3초마다)와 Alloy 의 /metrics 수집 로그는 버립니다.
+  // 이것만으로 FastAPI 로그량의 대부분이 줄어듭니다.
+  stage.drop {
+    expression          = "\"GET /(health|metrics) HTTP"
+    drop_counter_reason = "healthcheck_or_metrics"
+  }
+
+  // uvicorn 형식 "INFO:     ..." 에서 레벨 추출 → 라벨 (값 종류가 적어 안전)
+  stage.regex {
+    expression = "^(?P<level>[A-Z]+):"
+  }
+
+  stage.labels {
+    values = { level = "" }
+  }
+
+  forward_to = [loki.write.central.receiver]
+}

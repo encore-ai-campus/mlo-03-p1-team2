@@ -1,0 +1,47 @@
+# /etc/prometheus/rules/recording.yml
+# 대시보드에서 반복 계산되는 무거운 쿼리를 30초마다 미리 계산해 둡니다.
+# 대시보드는 원본 대신 아래 record 이름을 조회합니다.
+
+groups:
+  - name: node
+    rules:
+      - record: host:node_cpu_utilisation:rate5m
+        expr: 1 - avg by (host) (rate(node_cpu_seconds_total{mode="idle"}[5m]))
+
+      - record: host:node_memory_utilisation:ratio
+        expr: 1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)
+
+      - record: host:node_filesystem_utilisation:ratio
+        expr: |
+          1 - (
+            node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"}
+            / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"}
+          )
+
+  - name: fastapi
+    rules:
+      # 상태 코드 그룹(2xx/4xx/5xx)별 초당 요청 수
+      - record: fastapi:http_requests:rate5m
+        expr: sum by (host, status) (rate(http_requests_total{job="fastapi"}[5m]))
+
+      # 핸들러별 초당 요청 수
+      - record: fastapi:http_requests_by_handler:rate5m
+        expr: sum by (handler, method) (rate(http_requests_total{job="fastapi"}[5m]))
+
+      # 5xx 비율
+      - record: fastapi:http_5xx:ratio_rate5m
+        expr: |
+          sum by (host) (rate(http_requests_total{job="fastapi", status="5xx"}[5m]))
+          / clamp_min(sum by (host) (rate(http_requests_total{job="fastapi"}[5m])), 1e-9)
+
+      # 응답 시간 p95 / p99
+      - record: fastapi:http_request_duration_seconds:p95_5m
+        expr: histogram_quantile(0.95, sum by (le, host) (rate(http_request_duration_highr_seconds_bucket{job="fastapi"}[5m])))
+
+      - record: fastapi:http_request_duration_seconds:p99_5m
+        expr: histogram_quantile(0.99, sum by (le, host) (rate(http_request_duration_highr_seconds_bucket{job="fastapi"}[5m])))
+
+  - name: haproxy
+    rules:
+      - record: haproxy:backend_http_responses:rate5m
+        expr: sum by (host, proxy, code) (rate(haproxy_backend_http_responses_total[5m]))
