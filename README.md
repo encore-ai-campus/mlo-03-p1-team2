@@ -114,6 +114,7 @@ gantt
 <img width="1280" height="721" alt="image" src="https://github.com/user-attachments/assets/3e0ce5bd-c6e9-4612-840f-998992123f35" />
 
 [→ 시스템 구성 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/System-Architecture)
+[→ 시스템 흐름 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Process-Flows)
 
 ---
 
@@ -135,7 +136,7 @@ gantt
 | 구분 | 안내 |
 |---|---|
 | 백엔드 실행 | 환경 설정과 FastAPI 실행 (docs/backend.md) |
-| 프론트엔드 실행 | 개발 서버 실행과 빌드 (docs/frontend.md) |
+| 프런트엔드 실행 | 개발 서버 실행과 빌드 (docs/frontend.md) |
 | 서버 배포 | 프록시 연결과 HTTPS 설정 (docs/FrontToBackSetting.md) |
 | 데이터 자동화 | 가상 사용자와 행동 데이터 생성 (docs/playwrightGuide.md) |
 | 전체 문서 | 문서 목록 (docs/index.md) |
