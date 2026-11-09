@@ -99,11 +99,12 @@ gantt
     분석·문서 작성             :done, presentation, 2026-11-09, 1d
 ```
 
-[📋 요구사항 이슈](https://github.com/encore-ai-campus/mlo-03-p1-team2/issues)
+[요구사항 명세서](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Requirements-Specification)
 
 ---
 
 ## 05. 🏗 시스템 아키텍처
+<img width="1280" height="721" alt="image" src="https://github.com/user-attachments/assets/3e0ce5bd-c6e9-4612-840f-998992123f35" />
 
 ---
 
@@ -117,13 +118,14 @@ gantt
 
 ---
 
-## 08. 진행 결과·검증
+## 08. 진행 결과
 
-###[Tikit 기능 명세] ###
+<img width="49%" alt="화면 1" src="https://github.com/user-attachments/assets/f77759a5-fa35-47fd-852f-39ba7085f257" />
+<img width="49%" alt="화면 2" src="https://github.com/user-attachments/assets/afc0151c-81df-4a8d-b138-17328d01629d" />
 
-<img width="250" height="250" alt="01_home" src="https://github.com/user-attachments/assets/054676fd-0fb8-45fb-817e-09a6d63ad7ea" />
+[기능 소개](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Functional-Specification)
 
-[Tikit 기능 명세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Functional-Specification)
+---
 
 ## 09. 회고
 
