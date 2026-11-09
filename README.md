@@ -107,7 +107,7 @@ gantt
 
 <img width="566" height="1024" alt="image" src="https://github.com/user-attachments/assets/533a4fa1-a554-40ac-bcde-88e611758815" />
 
-[→ 데이터 구조](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Core-Database-Tables)
+[→ 데이터 구조](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/%EC%A3%BC%EC%9A%94-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0)
 
 ---
 
@@ -115,9 +115,9 @@ gantt
 
 <img width="1280" height="721" alt="image" src="https://github.com/user-attachments/assets/3e0ce5bd-c6e9-4612-840f-998992123f35" />
 
-[→ 시스템 구성 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/System-Architecture)
+[→ 시스템 구성 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
 
-[→ 시스템 흐름 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Process-Flows)
+[→ 시스템 흐름 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/%EC%A3%BC%EC%9A%94-%EC%B2%98%EB%A6%AC-%ED%9D%90%EB%A6%84)
 
 ---
 
