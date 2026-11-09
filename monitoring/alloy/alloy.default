@@ -1,0 +1,17 @@
+# /etc/default/alloy — VM마다 ALLOY_HOST 값만 바꿔서 사용합니다.
+# alloy.service 가 EnvironmentFile 로 읽습니다.
+
+# 파일이 아닌 디렉터리를 지정하면 /etc/alloy/*.alloy 를 모두 읽습니다.
+CONFIG_FILE="/etc/alloy"
+
+CUSTOM_ARGS="--disable-reporting"
+
+RESTART_ON_UPGRADE=true
+
+# VM 식별 이름 (host 라벨). 예: fastapi175, fastapi176, nginx177, nginx178,
+# haproxy179, haproxy181, mon-metrics184, mon-logs186
+ALLOY_HOST="CHANGE_ME"
+
+# FastAPI VM 에서만 사용. SSL 2단계(uvicorn :8443) 적용 후 주석 해제
+#FASTAPI_SCHEME="https"
+#FASTAPI_PORT="8443"

@@ -1,0 +1,193 @@
+{
+  "info": {
+    "name": "tikit load test precheck (read-only)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "docs/loadTestPlan.md 사전 기능 확인. 읽기 전용이므로 DB 레코드를 만들지 않는다."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://www.yaaho.kro.kr"
+    }
+  ],
+  "item": [
+    {
+      "name": "performances popular",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/performances?sort=popular",
+        "header": [
+          {
+            "key": "User-Agent",
+            "value": "tikit-loadtest/1.0 (synthetic, postman precheck)"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('responds under 1s', () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+              "pm.test('non-empty list', () => pm.expect(pm.response.json()).to.be.an('array').that.is.not.empty);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "performances ranking",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/performances/ranking",
+        "header": [
+          {
+            "key": "User-Agent",
+            "value": "tikit-loadtest/1.0 (synthetic, postman precheck)"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('responds under 1s', () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+              "pm.test('<=5 items with purchases', () => { const d = pm.response.json(); pm.expect(d.length).to.be.within(1,5); pm.expect(d[0]).to.have.property('purchases'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/performances?q=%EC%BD%98%EC%84%9C%ED%8A%B8",
+        "header": [
+          {
+            "key": "User-Agent",
+            "value": "tikit-loadtest/1.0 (synthetic, postman precheck)"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('responds under 1s', () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+              "pm.test('array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "detail city",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/performances/city",
+        "header": [
+          {
+            "key": "User-Agent",
+            "value": "tikit-loadtest/1.0 (synthetic, postman precheck)"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('responds under 1s', () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+              "pm.test('city has dates and slots', () => { const d = pm.response.json(); pm.expect(d.id).to.eql('city'); pm.expect(d.available_dates).to.not.be.empty; pm.expect(d.slots).to.not.be.empty; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "detail baseball",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/performances/baseball",
+        "header": [
+          {
+            "key": "User-Agent",
+            "value": "tikit-loadtest/1.0 (synthetic, postman precheck)"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('responds under 1s', () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+              "pm.test('baseball has dates and slots', () => { const d = pm.response.json(); pm.expect(d.id).to.eql('baseball'); pm.expect(d.available_dates).to.not.be.empty; pm.expect(d.slots).to.not.be.empty; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "unknown performance is 404",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/performances/does-not-exist",
+        "header": [
+          {
+            "key": "User-Agent",
+            "value": "tikit-loadtest/1.0 (synthetic, postman precheck)"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "reservations need auth",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/reservations",
+        "header": [
+          {
+            "key": "User-Agent",
+            "value": "tikit-loadtest/1.0 (synthetic, postman precheck)"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 401 without token', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

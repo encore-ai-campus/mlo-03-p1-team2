@@ -1,0 +1,82 @@
+// =====================================================================
+// nginx VM 전용 (192.168.0.177, 178) — common.alloy 와 함께 배치
+// 위치: /etc/alloy/nginx.alloy
+//
+// 사전 작업:
+//   1) monitoring/nginx/monitoring.conf 적용 (JSON 접근 로그 + stub_status)
+//   2) apt install prometheus-nginx-exporter (127.0.0.1:9113)
+//   3) usermod -aG adm alloy   (/var/log/nginx 읽기 권한)
+// =====================================================================
+
+// ---------------------------------------------------------------------
+// 메트릭: nginx-prometheus-exporter (stub_status 기반)
+// ---------------------------------------------------------------------
+prometheus.scrape "nginx" {
+  targets         = [{ "__address__" = "127.0.0.1:9113" }]
+  job_name        = "nginx"
+  scrape_interval = "30s"
+  forward_to      = [prometheus.remote_write.central.receiver]
+}
+
+// ---------------------------------------------------------------------
+// 로그
+// ---------------------------------------------------------------------
+local.file_match "nginx_access" {
+  path_targets = [{
+    "__path__" = "/var/log/nginx/access.json.log",
+    "service"  = "nginx",
+    "log_type" = "access",
+  }]
+}
+
+local.file_match "nginx_error" {
+  path_targets = [{
+    "__path__" = "/var/log/nginx/error.log",
+    "service"  = "nginx",
+    "log_type" = "error",
+  }]
+}
+
+loki.source.file "nginx_access" {
+  targets    = local.file_match.nginx_access.targets
+  forward_to = [loki.process.nginx_access.receiver]
+}
+
+loki.source.file "nginx_error" {
+  targets    = local.file_match.nginx_error.targets
+  forward_to = [loki.write.central.receiver]
+}
+
+loki.process "nginx_access" {
+  stage.json {
+    expressions = {
+      time   = "",
+      uri    = "",
+      status = "",
+      ua     = "http_user_agent",
+    }
+  }
+
+  // 해시가 붙은 정적 파일 요청은 버립니다 (트래픽 분석은 메트릭으로 충분).
+  stage.drop {
+    source              = "uri"
+    expression          = "^/(assets/|favicon\\.ico)"
+    drop_counter_reason = "static_asset"
+  }
+
+  // 181 HAProxy 헬스체크(GET /, User-Agent 없음)를 버립니다.
+  stage.drop {
+    source              = "ua,uri"
+    separator           = ";"
+    expression          = "^-?;/$"
+    drop_counter_reason = "healthcheck"
+  }
+
+  // nginx 기록 시각을 로그 시각으로 사용 (전송 지연이 있어도 시간 순서 유지)
+  stage.timestamp {
+    source = "time"
+    format = "RFC3339"
+  }
+
+  forward_to = [loki.write.central.receiver]
+}

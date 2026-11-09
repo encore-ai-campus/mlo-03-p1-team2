@@ -1,0 +1,2511 @@
+{
+  "metadata": {
+    "schema_version": "1.1",
+    "generator_version": "1.2",
+    "count": 100,
+    "seed": 42,
+    "synthetic": true
+  },
+  "users": [
+    {
+      "id": "b6b44d84-1e25-5035-b43a-224ecb0b6e04",
+      "name": "박수연",
+      "email": "persona0001@example.com",
+      "mbti": "ESTP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 10,
+        "스포츠": 4,
+        "전시": 47,
+        "클래식": 22,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "a4419cf1-67bb-5007-8cbf-01eac1144226",
+      "name": "권도현",
+      "email": "persona0002@example.com",
+      "mbti": "ESFP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 13,
+        "뮤지컬": 5,
+        "스포츠": 53,
+        "전시": 11,
+        "클래식": 8,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "592710a7-20f9-58a0-863f-cd15ef47a504",
+      "name": "김솔비",
+      "email": "persona0003@example.com",
+      "mbti": "ISTJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 12,
+        "스포츠": 5,
+        "전시": 44,
+        "클래식": 18,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 거의 매주 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "8a8a73a6-07d4-5733-9f47-44a64b79eae7",
+      "name": "배서준",
+      "email": "persona0004@example.com",
+      "mbti": "ENFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 40,
+        "뮤지컬": 18,
+        "스포츠": 17,
+        "전시": 12,
+        "클래식": 6,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "fa2ebe71-118a-50de-abb2-5b6a79a91b34",
+      "name": "양진우",
+      "email": "persona0005@example.com",
+      "mbti": "ISFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 44,
+        "뮤지컬": 20,
+        "스포츠": 13,
+        "전시": 7,
+        "클래식": 6,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 거의 매주 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "69ec9f31-2fe5-50a2-9e49-51aa38c62bfc",
+      "name": "임승민",
+      "email": "persona0006@example.com",
+      "mbti": "ISFJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 13,
+        "스포츠": 6,
+        "전시": 18,
+        "클래식": 41,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 친구들과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "ff6bca25-7517-5b03-b90b-aef20026a326",
+      "name": "배유진",
+      "email": "persona0007@example.com",
+      "mbti": "ESFJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 8,
+        "뮤지컬": 41,
+        "스포츠": 3,
+        "전시": 7,
+        "클래식": 12,
+        "연극": 29
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "0b163040-e124-5438-819b-ba9951c950d1",
+      "name": "임지호",
+      "email": "persona0008@example.com",
+      "mbti": "ISFJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 13,
+        "스포츠": 3,
+        "전시": 20,
+        "클래식": 41,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "bb9e86f5-25c6-56bf-9c02-d113d232c451",
+      "name": "김예준",
+      "email": "persona0009@example.com",
+      "mbti": "ENTJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 38,
+        "스포츠": 6,
+        "전시": 7,
+        "클래식": 12,
+        "연극": 28
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 친구들과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "7b4b9005-8633-56d2-80da-c3d9446eecec",
+      "name": "최지우",
+      "email": "persona0010@example.com",
+      "mbti": "ENTJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 14,
+        "뮤지컬": 7,
+        "스포츠": 54,
+        "전시": 10,
+        "클래식": 6,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "f07f6e6e-068b-5d67-8468-8d60c8165c0e",
+      "name": "노나래",
+      "email": "persona0011@example.com",
+      "mbti": "ISFP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 8,
+        "스포츠": 7,
+        "전시": 48,
+        "클래식": 20,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "4efe2daa-54da-586c-8ff0-230a5dc4f5f5",
+      "name": "백유림",
+      "email": "persona0012@example.com",
+      "mbti": "ISTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 10,
+        "스포츠": 3,
+        "전시": 22,
+        "클래식": 47,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "76c8268f-5e89-5acf-a356-5732813c2e21",
+      "name": "박성현",
+      "email": "persona0013@example.com",
+      "mbti": "ENFJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 9,
+        "스포츠": 8,
+        "전시": 44,
+        "클래식": 18,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 거의 매주 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "b12f9d56-e696-5ba8-9e48-473cb4d65952",
+      "name": "임현진",
+      "email": "persona0014@example.com",
+      "mbti": "ENTJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 38,
+        "스포츠": 2,
+        "전시": 7,
+        "클래식": 12,
+        "연극": 29
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 친구들과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "a8a5a461-4e97-5259-b9d3-2b0fbdc6077a",
+      "name": "박명진",
+      "email": "persona0015@example.com",
+      "mbti": "ENTJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 17,
+        "뮤지컬": 4,
+        "스포츠": 58,
+        "전시": 10,
+        "클래식": 2,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "fc5eac22-d0d8-574d-b9c3-9d24d68ccc63",
+      "name": "민진우",
+      "email": "persona0016@example.com",
+      "mbti": "ISFJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 34,
+        "스포츠": 3,
+        "전시": 10,
+        "클래식": 13,
+        "연극": 31
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "b6414e2e-2009-5cd0-9d96-a02366fec424",
+      "name": "이태윤",
+      "email": "persona0017@example.com",
+      "mbti": "INTJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 16,
+        "뮤지컬": 4,
+        "스포츠": 52,
+        "전시": 12,
+        "클래식": 6,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 거의 매주 혼자 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "0fe9ae96-17cd-5adc-9f30-1a6e0371a0f5",
+      "name": "우은채",
+      "email": "persona0018@example.com",
+      "mbti": "ESTJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 35,
+        "스포츠": 8,
+        "전시": 10,
+        "클래식": 9,
+        "연극": 31
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "c90962db-2f7d-56ee-85e0-3143bfab8f91",
+      "name": "권서준",
+      "email": "persona0019@example.com",
+      "mbti": "ENTJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 8,
+        "뮤지컬": 9,
+        "스포츠": 4,
+        "전시": 19,
+        "클래식": 47,
+        "연극": 13
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "8602414f-ef47-5633-bb4e-a035a66e4cb1",
+      "name": "고재원",
+      "email": "persona0020@example.com",
+      "mbti": "ENTP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 8,
+        "스포츠": 4,
+        "전시": 46,
+        "클래식": 22,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "f5fb7f4d-407d-5945-a4ef-da86a67759bc",
+      "name": "한은우",
+      "email": "persona0021@example.com",
+      "mbti": "ENFP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 9,
+        "스포츠": 3,
+        "전시": 21,
+        "클래식": 44,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "9bf948d0-6880-525b-b1a5-386a80eb7899",
+      "name": "오명진",
+      "email": "persona0022@example.com",
+      "mbti": "INTP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 11,
+        "스포츠": 5,
+        "전시": 45,
+        "클래식": 23,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "e808b27e-b1ed-535f-a715-e6e8aecb0fac",
+      "name": "남주원",
+      "email": "persona0023@example.com",
+      "mbti": "ISTJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 7,
+        "스포츠": 56,
+        "전시": 14,
+        "클래식": 4,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "스포츠·전시에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "0ad82568-31a7-50aa-84f3-39113a8928b5",
+      "name": "유태오",
+      "email": "persona0024@example.com",
+      "mbti": "ESFJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 35,
+        "스포츠": 8,
+        "전시": 8,
+        "클래식": 12,
+        "연극": 30
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "4b52ff3f-9f94-5ad8-8930-777594b1e529",
+      "name": "임지안",
+      "email": "persona0025@example.com",
+      "mbti": "INFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 37,
+        "뮤지컬": 21,
+        "스포츠": 14,
+        "전시": 11,
+        "클래식": 7,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "f0bfbf06-177d-5ca9-be1a-628b0f3b016b",
+      "name": "양하늘",
+      "email": "persona0026@example.com",
+      "mbti": "ISTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 8,
+        "스포츠": 2,
+        "전시": 18,
+        "클래식": 51,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 몇 달에 한 번 친구들과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "615701e8-731b-584a-bc49-401a8b17ef7a",
+      "name": "강준영",
+      "email": "persona0027@example.com",
+      "mbti": "INFJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 31,
+        "스포츠": 8,
+        "전시": 9,
+        "클래식": 11,
+        "연극": 30
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "6f37e610-00f7-5f8d-8822-3e9eac1555f6",
+      "name": "노다희",
+      "email": "persona0028@example.com",
+      "mbti": "ESTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 11,
+        "스포츠": 3,
+        "전시": 19,
+        "클래식": 48,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "a99283f3-16d6-5a0a-b313-9208cd6f8523",
+      "name": "진영준",
+      "email": "persona0029@example.com",
+      "mbti": "ISTP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 17,
+        "뮤지컬": 8,
+        "스포츠": 51,
+        "전시": 9,
+        "클래식": 3,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 거의 매주 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "319cf115-b044-5cca-a776-c82c46f48ee6",
+      "name": "구승현",
+      "email": "persona0030@example.com",
+      "mbti": "ISTP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 38,
+        "뮤지컬": 22,
+        "스포츠": 12,
+        "전시": 9,
+        "클래식": 8,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "3de5e4bd-db2a-5644-baa0-fe9f7bae5db4",
+      "name": "손해솔",
+      "email": "persona0031@example.com",
+      "mbti": "ISFJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 17,
+        "뮤지컬": 5,
+        "스포츠": 55,
+        "전시": 12,
+        "클래식": 3,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "20840676-269b-57cb-9fd3-8a400506983c",
+      "name": "손혜원",
+      "email": "persona0032@example.com",
+      "mbti": "ENTP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 41,
+        "뮤지컬": 17,
+        "스포츠": 17,
+        "전시": 12,
+        "클래식": 3,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 거의 매주 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "4e87a072-e457-556d-8330-299541b96c6c",
+      "name": "유가은",
+      "email": "persona0033@example.com",
+      "mbti": "INFJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 8,
+        "스포츠": 7,
+        "전시": 19,
+        "클래식": 49,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "7a331797-f8ab-529a-82e4-aeb92eab73cc",
+      "name": "한연우",
+      "email": "persona0034@example.com",
+      "mbti": "ENFJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 16,
+        "뮤지컬": 7,
+        "스포츠": 52,
+        "전시": 11,
+        "클래식": 7,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 몇 달에 한 번 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "813bd679-9dc3-572e-b7b5-3aab2e610906",
+      "name": "성지원",
+      "email": "persona0035@example.com",
+      "mbti": "INFJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 8,
+        "스포츠": 8,
+        "전시": 48,
+        "클래식": 17,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "f9ff993f-bb92-59bb-9178-3e2c2aecf749",
+      "name": "유건우",
+      "email": "persona0036@example.com",
+      "mbti": "ISFJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 18,
+        "뮤지컬": 2,
+        "스포츠": 59,
+        "전시": 10,
+        "클래식": 3,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "bf754b85-9600-575d-9746-8328afa18721",
+      "name": "차세아",
+      "email": "persona0037@example.com",
+      "mbti": "ISFP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 9,
+        "스포츠": 4,
+        "전시": 41,
+        "클래식": 22,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "ac81c72b-d2a1-5739-8325-c9b3ebb539ab",
+      "name": "송연우",
+      "email": "persona0038@example.com",
+      "mbti": "ENFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 45,
+        "뮤지컬": 19,
+        "스포츠": 14,
+        "전시": 7,
+        "클래식": 7,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 몇 달에 한 번 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "4f8f8ea5-c4c2-5197-8918-2ff66d8bda01",
+      "name": "장다은",
+      "email": "persona0039@example.com",
+      "mbti": "ENFJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 15,
+        "뮤지컬": 4,
+        "스포츠": 53,
+        "전시": 13,
+        "클래식": 2,
+        "연극": 13
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "c90e39bf-554d-5509-a27e-2ea4afff3be0",
+      "name": "정지우",
+      "email": "persona0040@example.com",
+      "mbti": "INFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 38,
+        "뮤지컬": 18,
+        "스포츠": 16,
+        "전시": 11,
+        "클래식": 5,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 거의 매주 친구들과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "452a158a-f54c-524e-973e-d2c66270bac7",
+      "name": "정지안",
+      "email": "persona0041@example.com",
+      "mbti": "ESFJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 14,
+        "뮤지컬": 11,
+        "스포츠": 4,
+        "전시": 44,
+        "클래식": 18,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "0d2f69b2-8718-5e0e-8f31-9936f22098e2",
+      "name": "남다은",
+      "email": "persona0042@example.com",
+      "mbti": "ENTP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 41,
+        "뮤지컬": 23,
+        "스포츠": 15,
+        "전시": 7,
+        "클래식": 2,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "7cf941b3-6c6b-5652-8da4-bbd2d33080ee",
+      "name": "전준서",
+      "email": "persona0043@example.com",
+      "mbti": "ESTJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 14,
+        "뮤지컬": 4,
+        "스포츠": 55,
+        "전시": 13,
+        "클래식": 4,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "e36529fa-8571-5130-a539-e950c8588b8b",
+      "name": "황다은",
+      "email": "persona0044@example.com",
+      "mbti": "INTJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 37,
+        "스포츠": 2,
+        "전시": 10,
+        "클래식": 11,
+        "연극": 29
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "496735e4-92ca-562a-8641-4f91861d51d0",
+      "name": "전예린",
+      "email": "persona0045@example.com",
+      "mbti": "ENTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 7,
+        "스포츠": 7,
+        "전시": 21,
+        "클래식": 44,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "84c5afa4-7cec-5aa1-b224-8e2c2d2d4881",
+      "name": "송현서",
+      "email": "persona0046@example.com",
+      "mbti": "ISFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 38,
+        "뮤지컬": 19,
+        "스포츠": 15,
+        "전시": 11,
+        "클래식": 6,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 거의 매주 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "65b676e8-b30b-55f9-9ba8-1e365565395f",
+      "name": "홍유림",
+      "email": "persona0047@example.com",
+      "mbti": "ENFP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 8,
+        "스포츠": 4,
+        "전시": 46,
+        "클래식": 18,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "358450eb-b37c-5e68-9a72-015e1fef972b",
+      "name": "우다희",
+      "email": "persona0048@example.com",
+      "mbti": "ESFJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 11,
+        "스포츠": 4,
+        "전시": 22,
+        "클래식": 47,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 몇 달에 한 번 친구들과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "5964cbc9-5a66-5045-ac08-0b5830443928",
+      "name": "하유진",
+      "email": "persona0049@example.com",
+      "mbti": "INTP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 41,
+        "뮤지컬": 18,
+        "스포츠": 15,
+        "전시": 9,
+        "클래식": 7,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "0545181b-fa24-5903-95c1-beac89e74ae3",
+      "name": "박예준",
+      "email": "persona0050@example.com",
+      "mbti": "INFJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 10,
+        "스포츠": 7,
+        "전시": 45,
+        "클래식": 21,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 친구들과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "8039accc-636a-502a-a79d-fa1ab5d24498",
+      "name": "남수연",
+      "email": "persona0051@example.com",
+      "mbti": "ISTJ",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 37,
+        "뮤지컬": 19,
+        "스포츠": 16,
+        "전시": 10,
+        "클래식": 7,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 몇 달에 한 번 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "11148f13-cab6-588f-88ff-7ca23bf55691",
+      "name": "허명진",
+      "email": "persona0052@example.com",
+      "mbti": "INTP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 13,
+        "뮤지컬": 6,
+        "스포츠": 56,
+        "전시": 9,
+        "클래식": 5,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 거의 매주 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "d78379b3-3c00-5589-994c-b9a4f23f9450",
+      "name": "허소율",
+      "email": "persona0053@example.com",
+      "mbti": "ESFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 45,
+        "뮤지컬": 18,
+        "스포츠": 15,
+        "전시": 9,
+        "클래식": 3,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "7fd4698c-533b-553c-8fd2-6802b4f55fd2",
+      "name": "정나래",
+      "email": "persona0054@example.com",
+      "mbti": "ESFP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 10,
+        "스포츠": 6,
+        "전시": 44,
+        "클래식": 18,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 거의 매주 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "1c10661d-ab90-5979-a50d-9a0f81887fce",
+      "name": "박혜원",
+      "email": "persona0055@example.com",
+      "mbti": "ENFP",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 10,
+        "뮤지컬": 34,
+        "스포츠": 7,
+        "전시": 8,
+        "클래식": 11,
+        "연극": 30
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "a9ac4caf-6194-54d9-b8ff-a3319656525f",
+      "name": "송건우",
+      "email": "persona0056@example.com",
+      "mbti": "ENFP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 17,
+        "뮤지컬": 8,
+        "스포츠": 54,
+        "전시": 7,
+        "클래식": 7,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "ee7afc7e-2dd4-5141-943a-7a41e942557a",
+      "name": "하예린",
+      "email": "persona0057@example.com",
+      "mbti": "ENFJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 35,
+        "스포츠": 7,
+        "전시": 11,
+        "클래식": 10,
+        "연극": 28
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "5b5f3493-f073-53a4-982c-4196a4fe3445",
+      "name": "권지원",
+      "email": "persona0058@example.com",
+      "mbti": "INFP",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 37,
+        "스포츠": 8,
+        "전시": 8,
+        "클래식": 12,
+        "연극": 28
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 혼자 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "a904ae14-1a9b-5acf-9479-c541e741208a",
+      "name": "차소윤",
+      "email": "persona0059@example.com",
+      "mbti": "INTJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 14,
+        "스포츠": 3,
+        "전시": 20,
+        "클래식": 46,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "40ff785f-d408-5a98-b88f-9b355e803cbd",
+      "name": "우현진",
+      "email": "persona0060@example.com",
+      "mbti": "ESTP",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 8,
+        "뮤지컬": 34,
+        "스포츠": 6,
+        "전시": 13,
+        "클래식": 13,
+        "연극": 26
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "90020ea1-70c8-5a11-a7ca-82d13f62469d",
+      "name": "정지율",
+      "email": "persona0061@example.com",
+      "mbti": "ESFP",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 10,
+        "뮤지컬": 34,
+        "스포츠": 7,
+        "전시": 10,
+        "클래식": 8,
+        "연극": 31
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 몇 달에 한 번 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "916d5d22-553a-5d90-ab41-6222471f24c3",
+      "name": "한재이",
+      "email": "persona0062@example.com",
+      "mbti": "ESTP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 18,
+        "뮤지컬": 5,
+        "스포츠": 56,
+        "전시": 10,
+        "클래식": 3,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 몇 달에 한 번 친구들과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "c3fa6ce2-4301-5bd2-841a-57b72e08735c",
+      "name": "장가은",
+      "email": "persona0063@example.com",
+      "mbti": "ISFJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 33,
+        "스포츠": 2,
+        "전시": 12,
+        "클래식": 12,
+        "연극": 30
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "5fc87e24-53dc-5e17-b291-0dcb297ea5cf",
+      "name": "문명진",
+      "email": "persona0064@example.com",
+      "mbti": "INTJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 13,
+        "스포츠": 5,
+        "전시": 18,
+        "클래식": 44,
+        "연극": 13
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 혼자 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "a9d357a6-7583-5b51-bf23-4467539c6d94",
+      "name": "홍지안",
+      "email": "persona0065@example.com",
+      "mbti": "ENTP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 17,
+        "뮤지컬": 6,
+        "스포츠": 56,
+        "전시": 7,
+        "클래식": 6,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 거의 매주 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "4dd8836e-669a-5a4c-9c46-81fbef89daee",
+      "name": "강희수",
+      "email": "persona0066@example.com",
+      "mbti": "ISTJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 13,
+        "뮤지컬": 7,
+        "스포츠": 5,
+        "전시": 42,
+        "클래식": 23,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "8d889955-f067-5a98-b38d-67c80a3e07e3",
+      "name": "전하늘",
+      "email": "persona0067@example.com",
+      "mbti": "ISFP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 10,
+        "스포츠": 6,
+        "전시": 43,
+        "클래식": 18,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 거의 매주 친구들과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "7f6011d6-664a-5a2f-bed7-883a6e5ae4c8",
+      "name": "윤채린",
+      "email": "persona0068@example.com",
+      "mbti": "ENTJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 34,
+        "스포츠": 8,
+        "전시": 11,
+        "클래식": 10,
+        "연극": 28
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "4b5bd3b1-4d18-58f9-93d2-0284ebb71631",
+      "name": "홍수연",
+      "email": "persona0069@example.com",
+      "mbti": "ESFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 40,
+        "뮤지컬": 20,
+        "스포츠": 14,
+        "전시": 7,
+        "클래식": 7,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 몇 달에 한 번 친구들과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "3d3e26ad-5822-58b2-b0c2-26ebe67b1294",
+      "name": "한지율",
+      "email": "persona0070@example.com",
+      "mbti": "INFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 39,
+        "뮤지컬": 19,
+        "스포츠": 13,
+        "전시": 13,
+        "클래식": 3,
+        "연극": 13
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "5e7db645-3dfa-5e7d-9842-f76ce0f48307",
+      "name": "구예준",
+      "email": "persona0071@example.com",
+      "mbti": "ISTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 8,
+        "스포츠": 8,
+        "전시": 21,
+        "클래식": 43,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "942b2226-5d1c-57df-bc91-00b15729645b",
+      "name": "진준서",
+      "email": "persona0072@example.com",
+      "mbti": "ISTJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 8,
+        "스포츠": 4,
+        "전시": 46,
+        "클래식": 18,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 거의 매주 친구들과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "08e2ee4f-79d6-55c0-8cad-2e179c0b5122",
+      "name": "최다온",
+      "email": "persona0073@example.com",
+      "mbti": "ISFP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 10,
+        "뮤지컬": 8,
+        "스포츠": 4,
+        "전시": 46,
+        "클래식": 20,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "occasional",
+        "discovery_style": "mixed"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 친구들과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "8ff32cc1-9ce7-5392-8866-3c560e617db1",
+      "name": "전영준",
+      "email": "persona0074@example.com",
+      "mbti": "ESTJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 8,
+        "뮤지컬": 9,
+        "스포츠": 3,
+        "전시": 46,
+        "클래식": 21,
+        "연극": 13
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "faf57e40-f532-5a39-b1c9-2a2af4701643",
+      "name": "차지원",
+      "email": "persona0075@example.com",
+      "mbti": "INTP",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 8,
+        "뮤지컬": 13,
+        "스포츠": 3,
+        "전시": 44,
+        "클래식": 21,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 거의 매주 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "2f8192e8-189e-5314-b979-934acfc5d8c1",
+      "name": "우소희",
+      "email": "persona0076@example.com",
+      "mbti": "INTJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 10,
+        "뮤지컬": 38,
+        "스포츠": 5,
+        "전시": 11,
+        "클래식": 7,
+        "연극": 29
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 친구들과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "1110506d-e7e8-5ea9-83dc-aed3762696ad",
+      "name": "우재윤",
+      "email": "persona0077@example.com",
+      "mbti": "INFJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 17,
+        "뮤지컬": 5,
+        "스포츠": 50,
+        "전시": 12,
+        "클래식": 5,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 거의 매주 친구들과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "eaf19552-db60-5413-976c-3c6487abaa20",
+      "name": "양유나",
+      "email": "persona0078@example.com",
+      "mbti": "INFP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 12,
+        "스포츠": 8,
+        "전시": 20,
+        "클래식": 43,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "7949ae03-c184-5cdb-b5e9-935111f6f015",
+      "name": "정건우",
+      "email": "persona0079@example.com",
+      "mbti": "ISTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 7,
+        "뮤지컬": 9,
+        "스포츠": 4,
+        "전시": 23,
+        "클래식": 44,
+        "연극": 13
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "monthly",
+        "discovery_style": "adventurous"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 한 달에 한두 번 친구들과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "e0ae27df-39a5-593b-877a-52dafe330bda",
+      "name": "박소윤",
+      "email": "persona0080@example.com",
+      "mbti": "INTJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 9,
+        "스포츠": 6,
+        "전시": 20,
+        "클래식": 43,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "311f4b02-de86-5828-a9b5-3e10590619f4",
+      "name": "허채린",
+      "email": "persona0081@example.com",
+      "mbti": "ESTJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 13,
+        "뮤지컬": 11,
+        "스포츠": 3,
+        "전시": 46,
+        "클래식": 18,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 거의 매주 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "d6a56d2a-85fc-59cd-98ab-3ab08b43f385",
+      "name": "양예린",
+      "email": "persona0082@example.com",
+      "mbti": "ESFP",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 10,
+        "뮤지컬": 36,
+        "스포츠": 2,
+        "전시": 10,
+        "클래식": 9,
+        "연극": 33
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 몇 달에 한 번 친구들과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "e459034c-05eb-5421-9a14-dbd3c4213491",
+      "name": "주민재",
+      "email": "persona0083@example.com",
+      "mbti": "ESFJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 12,
+        "스포츠": 5,
+        "전시": 20,
+        "클래식": 40,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 친구들과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "212e80f2-4b99-5435-8cd7-4a48095db462",
+      "name": "김진우",
+      "email": "persona0084@example.com",
+      "mbti": "ESTJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 16,
+        "뮤지컬": 3,
+        "스포츠": 58,
+        "전시": 11,
+        "클래식": 2,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "98066cb6-bb7b-5123-a060-b93576438fb4",
+      "name": "최희수",
+      "email": "persona0085@example.com",
+      "mbti": "ISTJ",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 41,
+        "뮤지컬": 21,
+        "스포츠": 17,
+        "전시": 7,
+        "클래식": 2,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "875a91ab-ed5f-5af7-9c42-0db8e53a2e1e",
+      "name": "진재윤",
+      "email": "persona0086@example.com",
+      "mbti": "INTJ",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 42,
+        "뮤지컬": 19,
+        "스포츠": 19,
+        "전시": 10,
+        "클래식": 3,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 거의 매주 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "c8d2665d-2255-5eba-9d9d-12b94ac7ae6f",
+      "name": "곽은우",
+      "email": "persona0087@example.com",
+      "mbti": "INFJ",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 15,
+        "뮤지컬": 5,
+        "스포츠": 57,
+        "전시": 8,
+        "클래식": 5,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 한 달에 한두 번 친구들과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "5025246d-eacb-5c0c-a3c1-c8bebf2cebec",
+      "name": "우다온",
+      "email": "persona0088@example.com",
+      "mbti": "ESTP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 13,
+        "뮤지컬": 8,
+        "스포츠": 51,
+        "전시": 8,
+        "클래식": 8,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 몇 달에 한 번 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "42504d1b-d0e4-5cf3-8d5b-5b732cc1e43f",
+      "name": "한지민",
+      "email": "persona0089@example.com",
+      "mbti": "INTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 11,
+        "뮤지컬": 9,
+        "스포츠": 8,
+        "전시": 18,
+        "클래식": 47,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "occasional",
+        "discovery_style": "adventurous"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 몇 달에 한 번 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "6521bf2a-5841-515f-a6a6-cb15c998d929",
+      "name": "윤서준",
+      "email": "persona0090@example.com",
+      "mbti": "INFP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 43,
+        "뮤지컬": 21,
+        "스포츠": 12,
+        "전시": 9,
+        "클래식": 3,
+        "연극": 12
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "0026e9e4-2ce6-5445-ab74-ccae41e8b91e",
+      "name": "송태윤",
+      "email": "persona0091@example.com",
+      "mbti": "ENFJ",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 38,
+        "뮤지컬": 23,
+        "스포츠": 17,
+        "전시": 7,
+        "클래식": 8,
+        "연극": 7
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 거의 매주 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "e9c57160-7b2a-5824-a395-5e5e4034d638",
+      "name": "유선우",
+      "email": "persona0092@example.com",
+      "mbti": "ESTJ",
+      "persona": "art_explorer",
+      "preferred_categories": [
+        "전시",
+        "클래식"
+      ],
+      "category_weights": {
+        "콘서트": 9,
+        "뮤지컬": 9,
+        "스포츠": 8,
+        "전시": 44,
+        "클래식": 22,
+        "연극": 8
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "전시·클래식에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "1855c052-b946-58a2-b5d1-a9201aa318cd",
+      "name": "유현서",
+      "email": "persona0093@example.com",
+      "mbti": "ESTJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 8,
+        "뮤지컬": 35,
+        "스포츠": 5,
+        "전시": 13,
+        "클래식": 7,
+        "연극": 32
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 연인과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    },
+    {
+      "id": "1c1cbe0e-4ea1-529d-90cb-8cb6f05a5f86",
+      "name": "임다은",
+      "email": "persona0094@example.com",
+      "mbti": "ESFJ",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 37,
+        "뮤지컬": 20,
+        "스포츠": 17,
+        "전시": 9,
+        "클래식": 8,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "partner",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 한 달에 한두 번 연인과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "52d3fb97-28ed-5d8d-b1c2-828610c617dc",
+      "name": "우보라",
+      "email": "persona0095@example.com",
+      "mbti": "ESTP",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 8,
+        "뮤지컬": 35,
+        "스포츠": 6,
+        "전시": 12,
+        "클래식": 12,
+        "연극": 27
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "monthly",
+        "discovery_style": "mixed"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 한 달에 한두 번 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "910beb4a-db65-55a2-93d3-fd7f6c1acb50",
+      "name": "송유진",
+      "email": "persona0096@example.com",
+      "mbti": "INFJ",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 13,
+        "뮤지컬": 13,
+        "스포츠": 3,
+        "전시": 19,
+        "클래식": 41,
+        "연극": 11
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "frequent",
+        "discovery_style": "mixed"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 거의 매주 혼자 관람하고, 익숙한 작품과 새로운 작품을 번갈아 찾아요."
+    },
+    {
+      "id": "37fa6a08-2a70-526d-a97c-c26bf837d26e",
+      "name": "민태민",
+      "email": "persona0097@example.com",
+      "mbti": "ISTP",
+      "persona": "live_fan",
+      "preferred_categories": [
+        "콘서트",
+        "뮤지컬"
+      ],
+      "category_weights": {
+        "콘서트": 38,
+        "뮤지컬": 19,
+        "스포츠": 16,
+        "전시": 12,
+        "클래식": 5,
+        "연극": 10
+      },
+      "viewing_style": {
+        "companion": "friends",
+        "attendance_frequency": "frequent",
+        "discovery_style": "familiar"
+      },
+      "bio": "콘서트·뮤지컬에 관심이 많아요. 거의 매주 친구들과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "1bbd4980-e3ed-5bf6-bfef-8a3780727ac9",
+      "name": "박태민",
+      "email": "persona0098@example.com",
+      "mbti": "INTP",
+      "persona": "sports_fan",
+      "preferred_categories": [
+        "스포츠",
+        "콘서트"
+      ],
+      "category_weights": {
+        "콘서트": 16,
+        "뮤지컬": 3,
+        "스포츠": 50,
+        "전시": 11,
+        "클래식": 7,
+        "연극": 13
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "monthly",
+        "discovery_style": "familiar"
+      },
+      "bio": "스포츠·콘서트에 관심이 많아요. 한 달에 한두 번 가족과 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "b19ae0de-8b0a-5ee2-a2d2-ad191a3fc2c9",
+      "name": "윤지우",
+      "email": "persona0099@example.com",
+      "mbti": "ENTP",
+      "persona": "classic_lover",
+      "preferred_categories": [
+        "클래식",
+        "전시"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 8,
+        "스포츠": 2,
+        "전시": 22,
+        "클래식": 47,
+        "연극": 9
+      },
+      "viewing_style": {
+        "companion": "solo",
+        "attendance_frequency": "occasional",
+        "discovery_style": "familiar"
+      },
+      "bio": "클래식·전시에 관심이 많아요. 몇 달에 한 번 혼자 관람하고, 익숙한 아티스트와 작품을 주로 찾아요."
+    },
+    {
+      "id": "cd9c06d6-3cb2-5c2f-a947-866e7e9b734b",
+      "name": "안가은",
+      "email": "persona0100@example.com",
+      "mbti": "ENFJ",
+      "persona": "story_lover",
+      "preferred_categories": [
+        "뮤지컬",
+        "연극"
+      ],
+      "category_weights": {
+        "콘서트": 12,
+        "뮤지컬": 34,
+        "스포츠": 6,
+        "전시": 12,
+        "클래식": 6,
+        "연극": 30
+      },
+      "viewing_style": {
+        "companion": "family",
+        "attendance_frequency": "frequent",
+        "discovery_style": "adventurous"
+      },
+      "bio": "뮤지컬·연극에 관심이 많아요. 거의 매주 가족과 관람하고, 처음 접하는 아티스트와 작품도 적극적으로 찾아요."
+    }
+  ]
+}

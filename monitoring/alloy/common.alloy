@@ -1,0 +1,87 @@
+// =====================================================================
+// 공통 설정 — 모든 VM에 배치합니다.
+// 위치: /etc/alloy/common.alloy
+// /etc/default/alloy 에 CONFIG_FILE="/etc/alloy" 로 지정하면
+// 디렉터리 안의 *.alloy 파일을 모두 읽습니다.
+//
+// 필수 환경 변수 (/etc/default/alloy):
+//   ALLOY_HOST   VM 식별 이름 (예: nginx177). 177·178·181 호스트명이 모두
+//                "test" 로 같기 때문에 hostname 대신 이 값을 host 라벨로 씁니다.
+// =====================================================================
+
+logging {
+  level  = "warn"
+  format = "logfmt"
+}
+
+// ---------------------------------------------------------------------
+// 전송 대상
+// ---------------------------------------------------------------------
+
+// 메트릭 → Prometheus (mon-metrics, 192.168.0.184)
+// Prometheus 는 --web.enable-remote-write-receiver 로 실행되어야 합니다.
+// remote_write 는 WAL을 사용하므로 Prometheus가 잠시 내려가도 복구 후 재전송합니다.
+prometheus.remote_write "central" {
+  endpoint {
+    url = "http://192.168.0.184:9090/api/v1/write"
+
+    queue_config {
+      max_shards           = 2      // 소규모 환경: 전송 동시성 제한
+      capacity             = 2500
+      max_samples_per_send = 1000
+    }
+  }
+
+  external_labels = {
+    host = sys.env("ALLOY_HOST"),
+  }
+}
+
+// 로그 → Loki (mon-logs, 192.168.0.186)
+loki.write "central" {
+  endpoint {
+    url        = "http://192.168.0.186:3100/loki/api/v1/push"
+    batch_size = "512KiB"
+    batch_wait = "2s"
+  }
+
+  external_labels = {
+    host = sys.env("ALLOY_HOST"),
+  }
+}
+
+// ---------------------------------------------------------------------
+// 호스트 메트릭 (node_exporter 대체 — 별도 설치 불필요)
+// ---------------------------------------------------------------------
+prometheus.exporter.unix "node" {
+  // VM에서 의미 없는 collector 를 꺼서 시계열 수를 줄입니다.
+  disable_collectors = ["btrfs", "infiniband", "ipvs", "nfs", "nfsd", "xfs", "zfs", "bonding", "fibrechannel", "tapestats"]
+}
+
+prometheus.scrape "node" {
+  targets         = prometheus.exporter.unix.node.targets
+  job_name        = "node"
+  scrape_interval = "30s"
+  forward_to      = [prometheus.remote_write.central.receiver]
+}
+
+// Alloy 자기 자신의 메트릭 (에이전트 오버헤드 확인용)
+prometheus.exporter.self "alloy" { }
+
+prometheus.scrape "alloy" {
+  targets         = prometheus.exporter.self.alloy.targets
+  job_name        = "alloy"
+  scrape_interval = "60s"
+  forward_to      = [prometheus.remote_write.central.receiver]
+}
+
+// ---------------------------------------------------------------------
+// 시스템 오류 로그 (journald, priority err 이상만)
+// OOM kill, 서비스 비정상 종료 같은 사건만 가볍게 수집합니다.
+// ---------------------------------------------------------------------
+loki.source.journal "system_errors" {
+  matches    = "PRIORITY=0 PRIORITY=1 PRIORITY=2 PRIORITY=3"
+  max_age    = "12h"
+  labels     = { service = "system", level = "error" }
+  forward_to = [loki.write.central.receiver]
+}

@@ -1,0 +1,19 @@
+// =====================================================================
+// mon-metrics VM 전용 (192.168.0.184: Prometheus + Grafana) — common.alloy 와 함께 배치
+// 위치: /etc/alloy/mon-metrics.alloy
+// Prometheus 자체 메트릭은 prometheus.yml 의 self-scrape 로 수집합니다.
+// =====================================================================
+
+prometheus.scrape "grafana" {
+  targets         = [{ "__address__" = "127.0.0.1:3000" }]
+  job_name        = "grafana"
+  scrape_interval = "60s"
+  forward_to      = [prometheus.remote_write.central.receiver]
+}
+
+loki.source.journal "monitoring_services" {
+  matches    = "_SYSTEMD_UNIT=prometheus.service _SYSTEMD_UNIT=grafana-server.service"
+  max_age    = "12h"
+  labels     = { service = "monitoring" }
+  forward_to = [loki.write.central.receiver]
+}

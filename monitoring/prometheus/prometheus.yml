@@ -1,0 +1,21 @@
+# /etc/prometheus/prometheus.yml (mon-metrics, 192.168.0.184)
+#
+# 수집은 각 VM의 Alloy 가 담당하고 remote_write 로 밀어 넣습니다.
+# 이 파일에는 Prometheus 자기 자신과 recording rule 만 둡니다.
+# 실행 옵션은 prometheus.default 를 참고하세요.
+
+global:
+  scrape_interval: 30s
+  scrape_timeout: 10s
+  evaluation_interval: 30s
+
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 60s
+    static_configs:
+      - targets: ["localhost:9090"]
+        labels:
+          host: mon-metrics184
