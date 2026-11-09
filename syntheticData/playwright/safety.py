@@ -10,8 +10,16 @@ def safe_message(error, password):
     return str(error).replace(password, '[redacted]')
 
 
+def campaign_collection(state=None):
+    """New writes use events; read-only verification follows the saved run."""
+    collection = 'events' if state is None else state['fingerprint'].get('collection')
+    if collection not in ('events', 'simulation'):
+        raise ValueError('Unknown campaign collection')
+    return collection
+
+
 def check_server_identity(expected, actual):
-    if (actual.get('collection') != 'simulation' or actual.get('run_id') != expected['run_id']
+    if (actual.get('collection') != 'events' or actual.get('run_id') != expected['run_id']
             or actual.get('instance_id') != expected['instance_id']):
         raise ValueError('Refusing a server that is not this simulation instance')
 

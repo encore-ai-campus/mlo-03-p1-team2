@@ -29,7 +29,7 @@ def serve(args):
     node = args.node_executable or os.environ.get('TIKIT_NODE') or shutil.which('node')
     if not node or not Path(backend_python).exists():
         raise ValueError('Provide --node-executable and --backend-python for installed runtimes')
-    env_backend = dict(os.environ, MONGODB_EVENTS_COLLECTION='simulation',
+    env_backend = dict(os.environ, MONGODB_EVENTS_COLLECTION='events',
                        SIMULATION_ACCESS_KEY=target['key'], SIMULATION_RUN_ID=args.run_id,
                        SIMULATION_INSTANCE_ID=target['instance_id'],
                        PYTHONPATH=os.pathsep.join([str(HERE), str(ROOT / 'backend')]))
@@ -38,7 +38,7 @@ def serve(args):
     logs = []
     try:
         for name, command, cwd, env in [
-            ('backend', [backend_python, '-m', 'uvicorn', 'simulation_app:app', '--host', '127.0.0.1', '--port', '8001'], ROOT / 'backend', env_backend),
+            ('backend', [backend_python, '-m', 'uvicorn', 'simulationApp:app', '--host', '127.0.0.1', '--port', '8001'], ROOT / 'backend', env_backend),
             ('frontend', [node, 'node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', '5174', '--strictPort'], ROOT / 'frontend', env_frontend),
         ]:
             log = (directory / f'{name}.log').open('ab')
@@ -60,7 +60,7 @@ def serve(args):
         else:
             raise RuntimeError('Simulation server did not become ready')
         save_json(directory / 'server.json', target)
-        print('Guarded simulation servers ready: 5174 -> 8001 -> simulation', flush=True)
+        print('Guarded automation servers ready: 5174 -> 8001 -> events', flush=True)
         while all(child.poll() is None for child in children):
             time.sleep(1)
     except KeyboardInterrupt:
