@@ -107,6 +107,8 @@ gantt
 
 <img width="566" height="1024" alt="image" src="https://github.com/user-attachments/assets/533a4fa1-a554-40ac-bcde-88e611758815" />
 
+[→ ERD 및 데이터 구조](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/ERD)
+
 ---
 
 ## 06. 주요 프로시저
@@ -114,11 +116,12 @@ gantt
 <img width="1280" height="721" alt="image" src="https://github.com/user-attachments/assets/3e0ce5bd-c6e9-4612-840f-998992123f35" />
 
 [→ 시스템 구성 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/System-Architecture)
+
 [→ 시스템 흐름 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Process-Flows)
 
 ---
 
-## 07. 진행 결과
+## 07. 수행 결과
 
 <img width="49%" alt="화면 1" src="https://github.com/user-attachments/assets/f77759a5-fa35-47fd-852f-39ba7085f257" />
 <img width="49%" alt="화면 2" src="https://github.com/user-attachments/assets/afc0151c-81df-4a8d-b138-17328d01629d" />
@@ -127,11 +130,11 @@ gantt
 
 ---
 
-## 09. 회고
+## 08. 회고
 
 ---
 
-## 10. 문서 및 실행 안내
+## 09. 문서 및 실행 안내
 
 | 구분 | 안내 |
 |---|---|
