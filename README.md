@@ -1,10 +1,10 @@
-# 🎫 Tikit (티킷)
+# Tikit (티킷)
 
 > 고객 행동 데이터 기반 공연 예매 및 데이터 분석 플랫폼
 
 ---
 
-## 01. 👥 팀 소개
+## 01. 팀 소개
 
 **팀명: 티키타카 (TikiTaka)**
 
@@ -17,7 +17,7 @@
 
 ---
 
-## 02. 📌 프로젝트 개요
+## 02. 프로젝트 개요
 
 ### 2.1 프로젝트명
 
@@ -44,9 +44,9 @@
 
 ---
 
-## 03. 🛠 기술 스택
+## 03. 기술 스택
 
-### 📚 Skills
+### Skills
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![SQL](https://img.shields.io/badge/SQL-4479A1?style=for-the-badge)
@@ -54,28 +54,28 @@
 ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 
-### ⚙️ Infra
+### Infra
 
 ![VMware Workstation / Fusion](https://img.shields.io/badge/VMware_Workstation_%2F_Fusion-607078?style=for-the-badge)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
 ![HAProxy](https://img.shields.io/badge/HAProxy-1E4B75?style=for-the-badge)
 
-### 📊 Monitoring
+### Monitoring
 
 ![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
 ![Grafana Alloy](https://img.shields.io/badge/Grafana_Alloy-F46800?style=for-the-badge)
 ![Loki](https://img.shields.io/badge/Loki-F7B93E?style=for-the-badge)
 ![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)
 
-### 🤝 Collaboration
+### Collaboration
 
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
 ---
 
-## 04. 📅 WBS
+## 04. WBS
 
 ```mermaid
 gantt
@@ -103,7 +103,7 @@ gantt
 
 ---
 
-## 05. 🗃 ERD
+## 05. ERD
 
 <img width="566" height="1024" alt="image" src="https://github.com/user-attachments/assets/533a4fa1-a554-40ac-bcde-88e611758815" />
 
@@ -131,6 +131,18 @@ gantt
 ---
 
 ## 08. 회고
+
+### 김한울
+
+> "회고 작성 예정"
+
+### 오정민
+
+> "회고 작성 예정"
+
+### 정상효
+
+> "회고 작성 예정"
 
 ---
 
