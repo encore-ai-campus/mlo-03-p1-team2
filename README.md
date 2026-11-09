@@ -154,4 +154,5 @@ gantt
 | 프런트엔드 실행 | 개발 서버 실행과 빌드 (docs/frontend.md) |
 | 서버 배포 | 프록시 연결과 HTTPS 설정 (docs/FrontToBackSetting.md) |
 | 데이터 자동화 | 가상 사용자와 행동 데이터 생성 (docs/playwrightGuide.md) |
+| 아키텍처 의사결정 | 주요 기술 선택 및 아키텍처 변경에 대한 의사결정 기록 (docs/adr) |
 | 전체 문서 | 문서 목록 (docs/index.md) |
