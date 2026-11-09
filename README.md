@@ -107,7 +107,7 @@ gantt
 
 <img width="566" height="1024" alt="image" src="https://github.com/user-attachments/assets/533a4fa1-a554-40ac-bcde-88e611758815" />
 
-[→ ERD 및 데이터 구조](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/ERD)
+[→ 데이터 구조](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Core-Database-Tables)
 
 ---
 
