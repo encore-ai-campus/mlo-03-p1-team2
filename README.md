@@ -99,33 +99,30 @@ gantt
     분석·문서 작성             :done, presentation, 2026-11-09, 1d
 ```
 
-[요구사항 명세서](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Requirements-Specification)
+[→ 요구사항 명세서](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Requirements-Specification)
 
 ---
 
-## 05. 🏗 시스템 아키텍처
-<img width="1280" height="721" alt="image" src="https://github.com/user-attachments/assets/3e0ce5bd-c6e9-4612-840f-998992123f35" />
-
-[시스템 구성 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/System-Architecture)
-
----
-
-## 06. 🗃 ERD
+## 05. 🗃 ERD
 
 <img width="566" height="1024" alt="image" src="https://github.com/user-attachments/assets/533a4fa1-a554-40ac-bcde-88e611758815" />
 
 ---
 
-## 07. 주요 프로시저
+## 06. 주요 프로시저
+
+<img width="1280" height="721" alt="image" src="https://github.com/user-attachments/assets/3e0ce5bd-c6e9-4612-840f-998992123f35" />
+
+[→ 시스템 구성 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/System-Architecture)
 
 ---
 
-## 08. 진행 결과
+## 07. 진행 결과
 
 <img width="49%" alt="화면 1" src="https://github.com/user-attachments/assets/f77759a5-fa35-47fd-852f-39ba7085f257" />
 <img width="49%" alt="화면 2" src="https://github.com/user-attachments/assets/afc0151c-81df-4a8d-b138-17328d01629d" />
 
-[기능 소개](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Functional-Specification)
+[→ 기능 소개](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Functional-Specification)
 
 ---
 
@@ -133,4 +130,12 @@ gantt
 
 ---
 
-## 10. 문서·실행 안내
+## 10. 문서 및 실행 안내
+
+| 구분 | 안내 |
+|---|---|
+| 백엔드 실행 | 환경 설정과 FastAPI 실행 (docs/backend.md) |
+| 프론트엔드 실행 | 개발 서버 실행과 빌드 (docs/frontend.md) |
+| 서버 배포 | 프록시 연결과 HTTPS 설정 (docs/FrontToBackSetting.md) |
+| 데이터 자동화 | 가상 사용자와 행동 데이터 생성 (docs/playwrightGuide.md) |
+| 전체 문서 | 문서 목록 (docs/index.md) |
