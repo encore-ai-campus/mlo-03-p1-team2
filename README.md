@@ -125,6 +125,8 @@ gantt
 ## 07. 수행 결과
 <img src="docs/images/playwrighting.gif" width="320" alt="Playwright 자동화 시연" />
 
+[→ 기능 소개](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Functional-Specification)
+
 ---
 
 ## 08. 회고
