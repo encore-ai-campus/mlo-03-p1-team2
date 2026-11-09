@@ -106,6 +106,8 @@ gantt
 ## 05. 🏗 시스템 아키텍처
 <img width="1280" height="721" alt="image" src="https://github.com/user-attachments/assets/3e0ce5bd-c6e9-4612-840f-998992123f35" />
 
+[시스템 구성 상세](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/System-Architecture)
+
 ---
 
 ## 06. 🗃 ERD
