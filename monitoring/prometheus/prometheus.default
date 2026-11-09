@@ -1,0 +1,14 @@
+# /etc/default/prometheus (Ubuntu apt 패키지 기준)
+# prometheus.service 의 ExecStart=/usr/bin/prometheus $ARGS 로 전달됩니다.
+#
+# --web.enable-remote-write-receiver : Alloy 의 remote_write 수신
+# retention.time + retention.size    : 둘 중 먼저 도달하는 기준으로 삭제 (디스크 상한 보장)
+
+ARGS="--config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/var/lib/prometheus/metrics2/ \
+  --storage.tsdb.retention.time=7d \
+  --storage.tsdb.retention.size=15GB \
+  --web.enable-remote-write-receiver \
+  --web.listen-address=0.0.0.0:9090 \
+  --query.max-concurrency=4 \
+  --log.level=warn"
