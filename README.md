@@ -129,7 +129,7 @@ gantt
 
 <img width="480" height="226" alt="화면 녹화 중 2026-11-09 145942" src="https://github.com/user-attachments/assets/200f7aa7-0d84-488b-9572-64afe48e9028" />
 
-[→ 기능 소개](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/Functional-Specification)
+[→ 주요 기능 소개](https://github.com/encore-ai-campus/mlo-03-p1-team2/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C)
 
 ---
 
