@@ -13,7 +13,7 @@
 | <img src="https://github.com/user-attachments/assets/fb0b0b0f-60b8-4f1b-9035-baa75c7b5903" width="150" alt="김한울"> | <img src="https://github.com/OZAM0415.png" width="120" alt="오정민"> | <img width="120" height="120" alt="정상효" src="https://github.com/user-attachments/assets/5680e383-1dcb-4e1c-9e58-77f838c24c88" />|
 | [@hannyeee](https://github.com/hannyeee) | [@OZAM0415](https://github.com/OZAM0415) | [@nomorehuman90](https://github.com/nomorehuman90) |
 | 예매 및 결제 관리 | 공연 관리 | 회원 관리 |
-| 팀장 1 | 팀장 2 | 팀장(진) 3 |
+| 팀장 1 | 팀장 2 | 팀장 3 |
 
 ---
 
@@ -137,7 +137,7 @@ gantt
 
 ### 김한울
 
-> "회고 작성 예정"
+> "AI를 활용해 직접 결과물을 만들어 보는 과정이 재밌었고, 이것저것 시도해 볼 수 있어서 좋았습니다."
 
 ### 오정민
 
@@ -153,9 +153,9 @@ gantt
 
 | 구분 | 안내 |
 |---|---|
-| 백엔드 실행 | 환경 설정과 FastAPI 실행 (docs/backend.md) |
-| 프런트엔드 실행 | 개발 서버 실행과 빌드 (docs/frontend.md) |
-| 서버 배포 | 프록시 연결과 HTTPS 설정 (docs/FrontToBackSetting.md) |
-| 데이터 자동화 | 가상 사용자와 행동 데이터 생성 (docs/playwrightGuide.md) |
-| 아키텍처 의사결정 | 주요 기술 선택 및 아키텍처 변경에 대한 의사결정 기록 (docs/adr) |
-| 전체 문서 | 문서 목록 (docs/index.md) |
+| 백엔드 실행 | [환경 설정과 FastAPI 실행](docs/backend.md) |
+| 프런트엔드 실행 | [개발 서버 실행과 빌드](docs/frontend.md) |
+| 서버 배포 | [프록시 연결과 HTTPS 설정](docs/FrontToBackSetting.md) |
+| 데이터 자동화 | [가상 사용자와 행동 데이터 생성](docs/playwrightGuide.md) |
+| 아키텍처 의사결정 | [주요 기술 선택 및 아키텍처 변경에 대한 의사결정 기록](docs/adr) |
+| 전체 문서 | [문서 목록](docs/index.md) |
